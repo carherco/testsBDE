@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Resultado - {{ parent() }}{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="card shadow p-4 mx-auto" style="max-width:900px;">
+        <h2 class="text-center">Resultado del Examen</h2>
+        <p class="fs-4 mt-3 text-center">Has acertado <strong>{{ puntos }}</strong> de <strong>{{ total }}</strong> preguntas.</p>
+        <p class="fs-3 fw-bold text-{{ porcentaje >= 50 ? 'success' : 'danger' }} text-center">{{ porcentaje }}%</p>
+        <div class="text-center mt-3">
+            <a href="{{ path('app_home') }}" class="btn btn-primary">Volver al inicio</a>
+            <a href="javascript:history.back()" class="btn btn-outline-secondary ms-2">Volver al examen</a>
+        </div>
+
+        <hr class="my-4">
+        <h5>Detalle de preguntas</h5>
+        {% for detalle in detalles %}
+            <div class="mb-3">
+                <p><strong>{{ detalle.pregunta.texto }}</strong></p>
+                <p>Tu respuesta: <span class="fw-bold text-{{ detalle.acertada ? 'success' : 'danger' }}">{{ detalle.elegida }}</span> — Correcta: <span class="fw-bold text-success">{{ detalle.correcta }}</span></p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
