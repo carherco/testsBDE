@@ -79,15 +79,16 @@ class ExamController extends AbstractController
 
             $pregunta = $em->getRepository(Pregunta::class)->find($preguntaId);
             if ($pregunta) {
-                $correcta = $pregunta->getCorrecta();
-                $acertada = ($correcta === $respuesta);
+                $correcta = strtolower($pregunta->getCorrecta());
+                $respuestaUsuario = strtolower($respuesta);
+                $acertada = ($correcta === $respuestaUsuario);
                 if ($acertada) $puntos++;
                 $total++;
 
                 $detalles[] = [
                     'pregunta' => $pregunta,
                     'elegida' => $respuesta,
-                    'correcta' => $correcta,
+                    'correcta' => $pregunta->getCorrecta(),
                     'acertada' => $acertada,
                 ];
             }
