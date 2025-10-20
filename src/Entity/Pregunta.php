@@ -127,4 +127,24 @@ class Pregunta
             default => null
         };
     }
+
+    public function getOpcionesAleatorias(): array
+    {
+        $opciones = [
+            'a' => $this->opcionA,
+            'b' => $this->opcionB,
+            'c' => $this->opcionC,
+            'd' => $this->opcionD,
+        ];
+        
+        $keys = array_keys($opciones);
+        shuffle($keys);
+        
+        $opcionesAleatorias = [];
+        foreach ($keys as $key) {
+            $opcionesAleatorias[$key] = $opciones[$key];
+        }
+        
+        return $opcionesAleatorias;
+    }
 }
