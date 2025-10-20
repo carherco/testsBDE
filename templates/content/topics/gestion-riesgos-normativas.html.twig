@@ -1,0 +1,101 @@
+{% extends 'content/base.html.twig' %}
+
+{% block content_title %}Tema 14: Gestión de Riesgos y Normativas{% endblock %}
+
+{% block content_body %}
+<div class="content-section">
+    <h1>Gestión de riesgos y normativas de seguridad</h1>
+
+            <h2>1️⃣ Metodologías de evaluación de riesgos</h2>
+            <p><strong>Concepto:</strong> La evaluación de riesgos consiste en identificar, analizar y priorizar los riesgos que pueden afectar a los activos de información.</p>
+            <p><strong>Pasos principales:</strong></p>
+            <ul>
+                <li>Identificación de activos críticos: datos, aplicaciones, infraestructuras.</li>
+                <li>Identificación de amenazas: malware, ataques internos, fallos de hardware.</li>
+                <li>Identificación de vulnerabilidades: fallos de software, malas configuraciones, contraseñas débiles.</li>
+                <li>Análisis de riesgo: evaluar impacto y probabilidad de cada amenaza.</li>
+                <li>Priorización de riesgos: enfocar recursos en los riesgos más críticos.</li>
+            </ul>
+            <p><strong>Metodologías comunes:</strong></p>
+            <ul>
+                <li>ISO 31000</li>
+                <li>OCTAVE</li>
+                <li>NIST SP 800-30</li>
+            </ul>
+            <p><strong>Tipos de análisis:</strong></p>
+            <ul>
+                <li>Cualitativo: basado en la percepción de expertos (alto, medio, bajo).</li>
+                <li>Cuantitativo: basado en datos numéricos, estimando pérdidas y probabilidades.</li>
+            </ul>
+
+            <h2>2️⃣ Gestión de incidentes de seguridad</h2>
+            <p><strong>Concepto:</strong> Un incidente de seguridad es cualquier evento que comprometa la confidencialidad, integridad o disponibilidad de la información.</p>
+            <p><strong>Ciclo de gestión de incidentes:</strong></p>
+            <ul>
+                <li>Preparación: definir políticas, roles y herramientas.</li>
+                <li>Detección y notificación: identificar incidentes mediante alertas, logs y monitorización.</li>
+                <li>Análisis: evaluar gravedad, impacto y posibles causas.</li>
+                <li>Contención: evitar que el incidente se propague.</li>
+                <li>Erradicación: eliminar la amenaza y corregir vulnerabilidades.</li>
+                <li>Recuperación: restaurar sistemas y datos afectados.</li>
+                <li>Lecciones aprendidas: mejorar procesos y controles de seguridad.</li>
+            </ul>
+            <p><strong>Ejemplos de incidentes:</strong> Malware, ransomware, filtración de datos, fallos de configuración en la nube.</p>
+            <p><strong>Buenas prácticas:</strong></p>
+            <ul>
+                <li>Mantener un plan de respuesta a incidentes actualizado.</li>
+                <li>Registrar todos los eventos y acciones tomadas.</li>
+                <li>Revisar periódicamente los incidentes para prevenir futuros problemas.</li>
+            </ul>
+
+            <h2>3️⃣ Políticas y Normativas de TI</h2>
+
+            <h3>ISO 27001</h3>
+            <ul>
+                <li>Estándar internacional para un Sistema de Gestión de Seguridad de la Información (SGSI).</li>
+                <li>Protege la información mediante controles y procedimientos.</li>
+                <li>Componentes clave: evaluación de riesgos, controles físicos/lógicos/administrativos, auditorías y mejora continua.</li>
+            </ul>
+
+            <h3>RGPD (Reglamento General de Protección de Datos)</h3>
+            <ul>
+                <li>Protege los datos personales en la UE.</li>
+                <li>Obligaciones principales: consentimiento explícito, derecho de acceso/rectificación/supresión, notificación de brechas de seguridad.</li>
+                <li>Requiere medidas técnicas y organizativas para garantizar la seguridad de los datos.</li>
+            </ul>
+
+            <h3>Relación entre riesgos y normativas</h3>
+            <ul>
+                <li>La gestión de riesgos permite priorizar controles según impacto y probabilidad.</li>
+                <li>Normativas como ISO 27001 y RGPD definen requisitos obligatorios para reducir riesgos legales y financieros.</li>
+            </ul>
+
+            <h2>📌 Resumen rápido</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>Área</th>
+                    <th>Objetivo</th>
+                    <th>Ejemplo práctico</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Evaluación de riesgos</td>
+                    <td>Identificar y priorizar riesgos</td>
+                    <td>Determinar qué vulnerabilidades son críticas</td>
+                </tr>
+                <tr>
+                    <td>Gestión de incidentes</td>
+                    <td>Detectar, contener y recuperar</td>
+                    <td>Responder ante un ataque de ransomware</td>
+                </tr>
+                <tr>
+                    <td>Políticas y normativas</td>
+                    <td>Cumplir requisitos legales y proteger datos</td>
+                    <td>Implementar ISO 27001 y RGPD</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+{% endblock %}
