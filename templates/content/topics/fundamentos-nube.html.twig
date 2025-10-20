@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ tema.nombre }} - {{ parent() }}{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="card">
+        <div class="card-body">
+            <h1>{{ tema.nombre }}</h1>
+
+            <h2>1️⃣ ¿Qué es la computación en la nube?</h2>
+            <p><strong>Concepto:</strong> La computación en la nube es la entrega de servicios informáticos a través de Internet, incluyendo servidores, almacenamiento, bases de datos, redes, software y análisis.</p>
+            
+            <h2>2️⃣ Modelos de servicio</h2>
+            <h3>IaaS (Infrastructure as a Service)</h3>
+            <ul>
+                <li>Proporciona infraestructura virtualizada</li>
+                <li>Ejemplos: AWS EC2, Azure Virtual Machines</li>
+                <li>Control total sobre el sistema operativo</li>
+            </ul>
+
+            <h3>PaaS (Platform as a Service)</h3>
+            <ul>
+                <li>Plataforma de desarrollo y despliegue</li>
+                <li>Ejemplos: Google App Engine, Azure App Service</li>
+                <li>Enfoque en el desarrollo de aplicaciones</li>
+            </ul>
+
+            <h3>SaaS (Software as a Service)</h3>
+            <ul>
+                <li>Software listo para usar</li>
+                <li>Ejemplos: Office 365, Salesforce</li>
+                <li>Acceso a través del navegador</li>
+            </ul>
+
+            <h2>3️⃣ Modelos de despliegue</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="alert alert-info">
+                        <h5>Nube pública</h5>
+                        <p>Servicios ofrecidos por terceros a través de Internet</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="alert alert-warning">
+                        <h5>Nube privada</h5>
+                        <p>Infraestructura dedicada a una sola organización</p>
+                    </div>
+                </div>
+            </div>
+
+            <h2>4️⃣ Ventajas principales</h2>
+            <ul>
+                <li>✅ <strong>Escalabilidad:</strong> Recursos bajo demanda</li>
+                <li>✅ <strong>Costos:</strong> Pago por uso</li>
+                <li>✅ <strong>Flexibilidad:</strong> Acceso desde cualquier lugar</li>
+                <li>✅ <strong>Mantenimiento:</strong> Gestionado por el proveedor</li>
+            </ul>
+
+            <div class="mt-4">
+                <a href="{{ path('app_exam') }}?tema={{ tema.id }}&cantidad=10&tiempo=0" class="btn btn-primary">
+                    🎯 Hacer examen de este tema
+                </a>
+                <a href="{{ path('app_content_index') }}" class="btn btn-outline-secondary">
+                    📚 Ver todos los temas
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

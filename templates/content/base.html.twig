@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% block content_title %}Contenido{% endblock %} - {{ parent() }}{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header">
+                    <h5>📚 Temas</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    {% for tema_nav in temas_nav|default([]) %}
+                        <a href="{{ path('app_content_show', {id: tema_nav.id}) }}" 
+                           class="list-group-item list-group-item-action {{ tema_nav.id == tema.id|default(0) ? 'active' : '' }}">
+                            {{ tema_nav.nombre }}
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-body">
+                    {% block content_body %}{% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<style>
+    .content-section h2 { color: #004080; margin-top: 2rem; }
+    .content-section h3 { color: #0066cc; margin-top: 1.5rem; }
+    .content-section table { margin: 1rem 0; }
+    .content-section .alert { margin: 1rem 0; }
+    body.dark .content-section h2 { color: #80c0ff; }
+    body.dark .content-section h3 { color: #99ccff; }
+</style>
+{% endblock %}

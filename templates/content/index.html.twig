@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contenidos de Estudio - {{ parent() }}{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="card shadow p-4 mx-auto" style="max-width:1000px;">
+        <h1 class="text-center mb-4">📚 Contenidos de Estudio</h1>
+        <p class="text-center text-muted mb-4">Accede al material de estudio organizado por temas</p>
+        
+        <div class="row">
+            {% for tema in temas %}
+                <div class="col-md-6 col-lg-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{ tema.nombre }}</h5>
+                            <div class="mt-auto">
+                                <a href="{{ path('app_content_show', {id: tema.id}) }}" class="btn btn-primary btn-sm">
+                                    Ver contenido
+                                </a>
+                                <a href="{{ path('app_exam') }}?tema={{ tema.id }}&cantidad=10&tiempo=0" class="btn btn-outline-secondary btn-sm">
+                                    Hacer examen
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="{{ path('app_home') }}" class="btn btn-outline-primary">← Volver al simulador</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
