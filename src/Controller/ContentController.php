@@ -38,14 +38,13 @@ class ContentController extends AbstractController
             4 => 'bases-datos',
             5 => 'arquitectura-sistemas-apis',
             6 => 'seguridad-informatica',
-            7 => 'fundamentos-nube',
-            8 => 'fundamentos-ciberseguridad',
-            9 => 'virtualizacion-recursos',
-            10 => 'arquitecturas-tecnologias-nube',
-            11 => 'redes-conectividad',
-            12 => 'almacenamiento-nube',
-            13 => 'gestion-vulnerabilidades',
-            14 => 'gestion-riesgos-normativas',
+            7 => 'fundamentos-ingenieria-software',
+            8 => 'diseno-interfaces-usuario',
+            9 => 'logica-negocio-backend',
+            10 => 'informacion-economico-financiera',
+            11 => 'fundamentos-erp',
+            12 => 'fundamentos-blockchain-dlt',
+            13 => 'desarrollo-contratos-inteligentes',
         ];
 
         $templateFile = $templateMap[$id] ?? 'default';

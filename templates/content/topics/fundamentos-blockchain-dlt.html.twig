@@ -1,0 +1,188 @@
+{% extends 'content/base.html.twig' %}
+
+{% block content_title %}Tema 12: Fundamentos de blockchain y DLT{% endblock %}
+
+{% block content_body %}
+<div class="content-section">
+    <h1>Fundamentos de blockchain y DLT</h1>
+    <p class="lead">Guía completa: conceptos, mecanismos de consenso, tipos de blockchains, seguridad de wallets/exchanges y plataformas (Ethereum / Hyperledger).</p>
+
+    <h2 id="conceptos">1. Conceptos clave: blockchain, DLT y criptomonedas</h2>
+    <h3>¿Qué es una blockchain?</h3>
+    <p>Una <strong>blockchain</strong> es un <em>registro distribuido</em> (ledger) que guarda transacciones en <strong>bloques</strong> encadenados mediante funciones criptográficas (hashes). Cada bloque referencia al anterior, lo que aporta integridad e inmutabilidad.</p>
+
+    <h3>DLT — Distributed Ledger Technology</h3>
+    <p>DLT es el término genérico para ledgers distribuidos; la blockchain es una forma concreta de DLT. En una DLT, múltiples nodos mantienen una copia del ledger y alcanzan consenso sobre su estado.</p>
+
+    <h3>Criptomonedas y tokens</h3>
+    <ul>
+        <li><strong>Criptomoneda:</strong> moneda nativa de una blockchain (ej. Bitcoin, Ether).</li>
+        <li><strong>Token:</strong> representación digital de valor u utilidad que se emite sobre otra blockchain (ej. tokens ERC-20 en Ethereum).</li>
+    </ul>
+
+    <h3>Propiedades fundamentales</h3>
+    <ul>
+        <li><strong>Descentralización:</strong> no hay única autoridad central.</li>
+        <li><strong>Inmutabilidad:</strong> los bloques válidos no se pueden cambiar sin consenso.</li>
+        <li><strong>Trazabilidad:</strong> todo cambio queda registrado públicamente (según tipo de red).</li>
+        <li><strong>Transparencia vs Privacidad:</strong> las blockchains públicas son transparentes; otras permiten privacidad.</li>
+    </ul>
+
+    <h2 id="estructura">2. Estructura técnica de un bloque y seguridad criptográfica</h2>
+    <h3>Componentes de un bloque</h3>
+    <ul>
+        <li><strong>Header (cabecera):</strong> contiene el hash del bloque previo, timestamp, merkle root, nonce (en PoW) y otros metadatos.</li>
+        <li><strong>Merkle root:</strong> hash que representa todas las transacciones del bloque (útil para verificar integridad sin descargar todo).</li>
+        <li><strong>Transacciones:</strong> lista de operaciones (envíos de valor, datos, llamadas a contratos).</li>
+    </ul>
+
+    <h3>Hashes y firmas</h3>
+    <p>Los <strong>hashes</strong> (SHA-256 en Bitcoin, Keccak-256 en Ethereum) garantizan integridad: un cambio mínimo produce un hash totalmente distinto. Las <strong>firmas digitales</strong> (ECDSA o ed25519) autentican al emisor de una transacción mediante pares de claves pública/privada.</p>
+
+    <h3>Merkle proofs (prueba de pertenencia)</h3>
+    <p>Permiten demostrar que una transacción está incluida en un bloque sin enviar todas las transacciones: se usan en nodos ligeros (SPV).</p>
+
+    <h2 id="consenso">3. Mecanismos de consenso</h2>
+    <p>El consenso es el mecanismo que permite a los nodos acordar el estado del ledger en presencia de fallos y actores maliciosos.</p>
+
+    <h3>Proof of Work (PoW)</h3>
+    <p><strong>Idea:</strong> los mineros compiten resolviendo un problema computacional costoso (p. ej. encontrar un nonce cuya hash cumpla una dificultad). El ganador propone el bloque y recibe recompensa.</p>
+    <p><strong>Pros:</strong> probado en producción, resistente a manipulación si la mayoría es honesta.<br>
+    <strong>Contras:</strong> consumo energético alto, escalabilidad limitada, latencia y coste por transacción.</p>
+
+    <h3>Proof of Stake (PoS)</h3>
+    <p><strong>Idea:</strong> validadores son seleccionados según la cantidad de criptomoneda que tienen "en stake" (bloqueada). No se requiere trabajo computacional intensivo.</p>
+    <p><strong>Pros:</strong> eficiencia energética, potencialmente mayor escalabilidad.<br>
+    <strong>Contras:</strong> riesgos de centralización si pocos grandes stakers, complejidad en diseño (slashing, finality).</p>
+
+    <h3>Otros mecanismos</h3>
+    <p>PoA (Proof of Authority), DPoS (Delegated PoS), PBFT y variantes tolerantes a fallos bizantinos. Elegir mecanismo depende de requisitos: descentralización vs rendimiento.</p>
+
+    <h3>Conceptos importantes</h3>
+    <ul>
+        <li><strong>Finality:</strong> cuándo una transacción se considera irrevocable (PoS suele proveer finality más rápido que PoW en diseños específicos).</li>
+        <li><strong>51% attack:</strong> si un actor controla >50% del poder (hashrate o stake) puede reescribir la cadena.</li>
+    </ul>
+
+    <h2 id="tipos">4. Tipos de blockchains</h2>
+    <h3>Públicas</h3>
+    <p>Acceso abierto: cualquiera puede leer y/o participar en la validación. Ej.: Bitcoin, Ethereum (mainnet).</p>
+
+    <h3>Privadas</h3>
+    <p>La red es administrada por una única organización; acceso restringido. Ej.: blockchain interna de una empresa.</p>
+
+    <h3>Consorcio (permissioned / consortium)</h3>
+    <p>Un conjunto de organizaciones (consorcio) comparten y validan: ideal para casos interempresariales (bancos, cadenas de suministro).</p>
+
+    <h3>Decisión de diseño</h3>
+    <p>La elección pública/privada/consorcio depende de requisitos de <strong>gobernanza, privacidad, rendimiento y cumplimiento legal</strong>.</p>
+
+    <h2 id="wallets">5. Seguridad de wallets y exchanges</h2>
+    <h3>Wallets (billeteras)</h3>
+    <p>Dos tipos esenciales:</p>
+    <ul>
+        <li><strong>Hot wallets:</strong> conectadas a Internet (exchange wallets, wallets de navegador). Convenientes pero más expuestas.</li>
+        <li><strong>Cold wallets:</strong> offline (hardware wallets, paper wallets). Más seguras para almacenamiento a largo plazo.</li>
+    </ul>
+
+    <h3>Conceptos clave</h3>
+    <ul>
+        <li><strong>Clave privada:</strong> permite firmar transacciones. Su pérdida implica pérdida de acceso a fondos.</li>
+        <li><strong>Seed / mnemonic (BIP-39):</strong> frase de 12/24 palabras usada para recuperar claves determinísticas.</li>
+        <li><strong>Multisig:</strong> requiere varias firmas para ejecutar una transacción — útil para seguridad corporativa.</li>
+    </ul>
+
+    <h3>Seguridad en exchanges</h3>
+    <ul>
+        <li>Los exchanges centralizados guardan claves privadas en custodio (custodial). Riesgo: hackeo, malas prácticas, insolvencia.</li>
+        <li>Buenas prácticas: custodias con cold storage, auditorías externas, segregación de fondos, seguro (cuando exista).</li>
+    </ul>
+
+    <h3>Buenas prácticas para usuarios</h3>
+    <ul>
+        <li>Usar <strong>hardware wallets</strong> para grandes cantidades.</li>
+        <li>Habilitar <strong>MFA</strong> (2FA) en exchanges y servicios web.</li>
+        <li>No reutilizar claves privadas; mantener backups seguros de la frase semilla.</li>
+        <li>Verificar URLs y evitar phishing.</li>
+    </ul>
+
+    <h2 id="plataformas">6. Plataformas de blockchain: Ethereum y Hyperledger</h2>
+
+    <h3>Ethereum — visión práctica</h3>
+    <p><strong>Qué es:</strong> blockchain pública enfocada a contratos inteligentes y aplicaciones descentralizadas (DApps).</p>
+    <ul>
+        <li><strong>EVM (Ethereum Virtual Machine):</strong> ejecuta bytecode de contratos.</li>
+        <li><strong>Ether (ETH):</strong> token nativo utilizado para pagar gas (comisiones).</li>
+        <li><strong>Gas:</strong> medida del coste computacional para ejecutar transacciones/contratos.</li>
+        <li><strong>Testnets:</strong> redes de prueba (Goerli, Sepolia...) para desarrollo y testeo.</li>
+    </ul>
+
+    <h3>Hyperledger — visión práctica</h3>
+    <p><strong>Qué es:</strong> conjunto de proyectos (Fabric, Sawtooth...) orientado a soluciones empresariales permissioned.</p>
+    <ul>
+        <li><strong>Hyperledger Fabric:</strong> arquitectura modular, identidad gestionada (MSP), canales para privacidad y chaincode (smart contracts) en Go/Node.</li>
+        <li><strong>Casos de uso:</strong> supply chain, banca, industria donde la privacidad y control de participantes son críticos.</li>
+    </ul>
+
+    <h3>Comparación práctica</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Aspecto</th>
+                <th>Ethereum</th>
+                <th>Hyperledger Fabric</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Tipo</td>
+                <td>Pública, permissionless</td>
+                <td>Permissioned / consorcio</td>
+            </tr>
+            <tr>
+                <td>Economía</td>
+                <td>Token nativo (ETH) y mercado abierto</td>
+                <td>Sin token nativo (por defecto)</td>
+            </tr>
+            <tr>
+                <td>Privacidad</td>
+                <td>Limitada, soluciones L2/zk para privacidad</td>
+                <td>Canales y control de acceso (MSP)</td>
+            </tr>
+            <tr>
+                <td>Casos</td>
+                <td>DApps, DeFi, NFTs</td>
+                <td>Procesos empresariales, trazabilidad</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>📌 Resumen rápido</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Concepto</th>
+                <th>Resumen práctico</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>PoW</td>
+                <td>Alta seguridad comprobada, costoso energéticamente, adecuado para redes públicas descentralizadas.</td>
+            </tr>
+            <tr>
+                <td>PoS</td>
+                <td>Menor consumo energético, requiere reglas para manejar slashing y finality.</td>
+            </tr>
+            <tr>
+                <td>Wallet hot vs cold</td>
+                <td>Hot = conveniencia; Cold = seguridad a largo plazo.</td>
+            </tr>
+            <tr>
+                <td>Blockchain pública vs privada</td>
+                <td>Pública = transparencia y descentralización; Privada/Consorcio = control y privacidad.</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}

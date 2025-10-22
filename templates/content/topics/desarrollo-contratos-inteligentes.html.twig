@@ -1,0 +1,248 @@
+{% extends 'content/base.html.twig' %}
+
+{% block content_title %}Tema 13: Desarrollo de Contratos Inteligentes{% endblock %}
+
+{% block content_body %}
+<div class="content-section">
+    <h1>Desarrollo de Contratos Inteligentes</h1>
+
+    <h2>1. Smart Contracts: Definición y Uso</h2>
+    <p>
+        Un <strong>contrato inteligente</strong> (<em>smart contract</em>) es un programa informático que se ejecuta automáticamente cuando se cumplen ciertas condiciones predefinidas. Estos contratos están almacenados en una <strong>blockchain</strong> y son inmutables y transparentes.
+    </p>
+    <p>
+        Su principal objetivo es <strong>automatizar acuerdos</strong> entre partes sin necesidad de intermediarios. Una vez desplegado en la blockchain, el contrato se ejecuta exactamente como fue programado.
+    </p>
+
+    <div class="alert alert-info">
+        <strong>Ejemplo de uso:</strong> Un contrato inteligente puede liberar automáticamente un pago cuando un servicio ha sido entregado o un envío confirmado.
+    </div>
+
+    <h3>Ventajas</h3>
+    <ul>
+        <li>Eliminan intermediarios, reduciendo costes.</li>
+        <li>Garantizan la ejecución automática según las reglas codificadas.</li>
+        <li>Son transparentes: el código es verificable en la blockchain.</li>
+        <li>Ofrecen alta seguridad gracias a la criptografía y descentralización.</li>
+    </ul>
+
+    <h3>Limitaciones</h3>
+    <ul>
+        <li>Una vez desplegado, el contrato no puede modificarse fácilmente.</li>
+        <li>Errores en el código pueden tener consecuencias irreversibles.</li>
+        <li>Requieren gas o comisiones para su ejecución (en Ethereum).</li>
+    </ul>
+
+    <h2>2. Lenguajes de Programación de Contratos Inteligentes (Solidity)</h2>
+    <p>
+        El lenguaje más utilizado para desarrollar contratos inteligentes en Ethereum es <strong>Solidity</strong>, un lenguaje inspirado en JavaScript, C++ y Python. Permite definir estructuras, variables, funciones y eventos dentro de contratos.
+    </p>
+    <p>
+        Otros lenguajes incluyen:
+    </p>
+    <ul>
+        <li><strong>Vyper</strong> (Ethereum, más seguro y simple que Solidity).</li>
+        <li><strong>Rust</strong> (para blockchains como Solana o Polkadot).</li>
+        <li><strong>Go / JavaScript</strong> (para Hyperledger Fabric).</li>
+    </ul>
+
+    <h3>Ejemplo básico de contrato en Solidity</h3>
+    <pre><code>// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract HolaMundo {
+    string public mensaje;
+
+    constructor(string memory _mensaje) {
+        mensaje = _mensaje;
+    }
+
+    function actualizarMensaje(string memory _nuevoMensaje) public {
+        mensaje = _nuevoMensaje;
+    }
+}</code></pre>
+
+    <p>
+        En este ejemplo:
+    </p>
+    <ul>
+        <li><code>constructor</code> define una función que se ejecuta una sola vez al desplegar el contrato.</li>
+        <li><code>public</code> permite que la variable o función sea accesible desde fuera.</li>
+        <li>El contrato almacena un mensaje y permite actualizarlo mediante una función pública.</li>
+    </ul>
+
+    <h2>3. Desarrollo y Despliegue de Contratos Inteligentes</h2>
+    <p>
+        Para desarrollar y desplegar contratos inteligentes se utilizan herramientas específicas que facilitan el proceso de compilación, prueba y publicación en la blockchain.
+    </p>
+
+    <h3>Fases del desarrollo</h3>
+    <ol>
+        <li><strong>Diseño del contrato:</strong> definir la lógica, las funciones y las condiciones.</li>
+        <li><strong>Codificación:</strong> implementar el contrato usando Solidity u otro lenguaje compatible.</li>
+        <li><strong>Compilación:</strong> generar bytecode y ABI (interfaz binaria de aplicación).</li>
+        <li><strong>Despliegue:</strong> subir el contrato a la red mediante una transacción con gas.</li>
+        <li><strong>Interacción:</strong> usar herramientas como <em>web3.js</em> o <em>Ethers.js</em> para invocar funciones.</li>
+    </ol>
+
+    <h3>Herramientas comunes</h3>
+    <ul>
+        <li><strong>Remix IDE:</strong> entorno web para escribir, probar y desplegar contratos.</li>
+        <li><strong>Truffle Suite:</strong> framework completo de desarrollo y testeo.</li>
+        <li><strong>Hardhat:</strong> entorno moderno para desarrollo local y pruebas automatizadas.</li>
+        <li><strong>Ganache:</strong> blockchain local para pruebas rápidas.</li>
+    </ul>
+
+    <h3>El compilador Solidity (solc)</h3>
+    <p>
+        El compilador <strong>Solidity Compiler (solc)</strong> es una herramienta oficial desarrollada por el equipo de Ethereum que traduce el código fuente escrito en <code>Solidity</code> a <strong>bytecode</strong> y genera la <strong>ABI</strong> (Application Binary Interface).
+    </p>
+    <p>
+        Este proceso es necesario para que el contrato pueda ser interpretado y ejecutado por la <em>Ethereum Virtual Machine</em> (EVM), ya que la blockchain no entiende directamente el código de alto nivel.
+    </p>
+
+    <ul>
+        <li><strong>Bytecode:</strong> es el código binario que se despliega en la red Ethereum.</li>
+        <li><strong>ABI:</strong> define cómo las aplicaciones externas pueden interactuar con el contrato (funciones, eventos, parámetros, etc.).</li>
+    </ul>
+
+    <div class="note">
+        <strong>Ejemplo:</strong> al compilar un contrato con <code>solc</code>, se obtienen dos archivos principales:
+        <ul>
+            <li><code>ContractName.bin</code> → contiene el bytecode del contrato.</li>
+            <li><code>ContractName.abi</code> → define la interfaz pública para interactuar con él.</li>
+        </ul>
+    </div>
+
+    <p>
+        En entornos como <strong>Remix IDE</strong>, el compilador <code>solc</code> se ejecuta automáticamente al guardar o desplegar un contrato. En entornos locales (Truffle, Hardhat), también puede invocarse desde línea de comandos.
+    </p>
+
+    <pre><code># Ejemplo básico de compilación con solc desde terminal:
+solc --bin --abi HolaMundo.sol -o build/
+</code></pre>
+
+
+    <div class="alert alert-warning">
+        <strong>Despliegue:</strong> para desplegar un contrato se envía una transacción con su código compilado y se paga una comisión (gas). Una vez validado por la red, recibe una <em>dirección de contrato</em> única.
+    </div>
+
+    <h2>4. Vulnerabilidades en Contratos Inteligentes</h2>
+    <p>
+        A pesar de su seguridad inherente, los contratos inteligentes pueden tener <strong>vulnerabilidades en su código</strong> que atacantes pueden explotar. Algunos ejemplos históricos, como el ataque a "The DAO", demostraron la necesidad de auditar y verificar los contratos antes del despliegue.
+    </p>
+
+    <h3>Vulnerabilidades comunes</h3>
+    <ul>
+        <li><strong>Reentrancy:</strong> una función externa vuelve a llamar al contrato antes de finalizar la ejecución inicial (famoso caso de The DAO).</li>
+        <li><strong>Integer Overflow / Underflow:</strong> errores por desbordamiento numérico que alteran balances.</li>
+        <li><strong>Dependencia de timestamp:</strong> usar la hora del bloque como condición puede manipularse ligeramente por mineros.</li>
+        <li><strong>Uso incorrecto de <code>delegatecall</code>:</strong> puede ejecutar código en el contexto de otro contrato y alterar su estado.</li>
+        <li><strong>Falta de control de acceso:</strong> funciones que deberían ser privadas o restringidas pero no lo son.</li>
+    </ul>
+
+    <h3>Buenas prácticas de seguridad</h3>
+    <ul>
+        <li>Usar bibliotecas seguras como <strong>OpenZeppelin</strong>.</li>
+        <li>Aplicar el principio de <em>Checks-Effects-Interactions</em>.</li>
+        <li>Auditar el código y usar herramientas de análisis estático (Slither, MythX).</li>
+        <li>Limitar el uso de funciones <code>external</code> y <code>public</code>.</li>
+        <li>Implementar mecanismos de pausa (<code>circuit breaker</code>) ante fallos.</li>
+    </ul>
+
+    <h2>5. Plataformas de Contratos Inteligentes</h2>
+    <p>
+        Las plataformas de contratos inteligentes son responsables de verificar, facilitar y hacer cumplir los contratos inteligentes. Proporcionan la base de blockchain que necesita este tipo de contratos, ofrecen servicios de prueba y programación de contratos inteligentes y toda la infraestructura necesaria para su implementación y ejecución.
+    </p>
+
+    <h3>1. Ethereum</h3>
+    <p>Ethereum es una plataforma blockchain open-source para construir aplicaciones y organizaciones, formar activos, realizar transacciones y comunicaciones de extremo a extremo sin interferencias de ningún tipo de autoridad central.</p>
+    <ul>
+        <li>Tiene su propia criptomoneda llamada <strong>Ether</strong>, que se utiliza para pagar dentro de la red.</li>
+        <li>Ofrece aplicaciones descentralizadas (DApps) y herramientas basadas en Ethereum.</li>
+        <li><strong>Punto débil:</strong> alto consumo de energía debido al mecanismo Proof of Work (PoW), aunque están migrando a Proof of Stake (PoS).</li>
+    </ul>
+
+    <h3>2. Solana</h3>
+    <p>Solana es una plataforma opensource descentralizada de Blockchain para crear aplicaciones escalables y fáciles de usar.</p>
+    <ul>
+        <li>Se diferencia de Ethereum porque separa la lógica del programa del estado.</li>
+        <li>Los contratos se muestran en modo solo lectura y únicamente contienen la lógica del programa.</li>
+        <li><strong>Coste:</strong> entre 1 y 2 SOL (0.50 céntimos - 1 Euro) por Smart Contract.</li>
+    </ul>
+
+    <h3>3. Polkadot</h3>
+    <p>Polkadot es un ecosistema de cadena de bloques donde varias plataformas están conectadas entre sí, con un protocolo compartido.</p>
+    <ul>
+        <li>Permite a los desarrolladores crear sus propias cadenas de bloques con tokens y modelos de gobernanza personalizados.</li>
+        <li>Opera la plataforma <strong>Moonbeam</strong> compatible con Ethereum y Bitcoin.</li>
+        <li>Considerado como potencial motor para la adopción masiva de contratos inteligentes.</li>
+    </ul>
+
+    <h3>4. Hyperledger</h3>
+    <p>Marco de blockchain de código abierto alojado por The Linux Foundation, enfocado en soluciones empresariales.</p>
+    <ul>
+        <li>Plataforma común para sistemas de múltiples partes en sectores como finanzas, supply chain, salud.</li>
+        <li>Impulsado por grandes empresas como IBM, J.P. Morgan, Cisco, Intel, Accenture.</li>
+    </ul>
+
+    <h3>5. Tezos</h3>
+    <p>Ledger criptográfico automodificable cuyos protocolos se pueden actualizar automáticamente.</p>
+    <ul>
+        <li>El consenso se consigue mediante delegados, no por minería.</li>
+        <li>Requiere menos poder de cómputo y permite mayor optimización en transacciones.</li>
+        <li><strong>Uso:</strong> industrias que exigen precisión excepcional como aeronáutica y atención médica.</li>
+    </ul>
+
+    <h3>6. Stellar</h3>
+    <p>Plataforma simple y limitada, ideal para contratos inteligentes básicos como intercambio de dinero o divisas.</p>
+    <ul>
+        <li>Conjuga velocidad, rentabilidad y seguridad de las transacciones.</li>
+        <li>Utilizada por IBM para World Wire, sistema de pago global para transferencias transfronterizas.</li>
+    </ul>
+
+    <h3>7. NEM Smart Contract</h3>
+    <p>New Economy Movement (NEM) es un proyecto opensource de contabilidad distribuida.</p>
+    <ul>
+        <li>Tiene plataformas criptográficas llamadas <strong>XEM</strong> y billetera <strong>Nano Wallet</strong>.</li>
+        <li>Permite construir blockchain propias funcionando como software como servicio (SaaS).</li>
+        <li>Enfocado en administrar activos y datos a muy bajo coste.</li>
+    </ul>
+
+    <h2>📌 Resumen rápido</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Concepto/Plataforma</th>
+                <th>Descripción</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Smart Contract</td>
+                <td>Programa que se ejecuta automáticamente en blockchain cuando se cumplen condiciones</td>
+            </tr>
+            <tr>
+                <td>Solidity</td>
+                <td>Lenguaje principal para contratos en Ethereum</td>
+            </tr>
+            <tr>
+                <td>Ethereum</td>
+                <td>Plataforma líder con Ether como criptomoneda, migrando de PoW a PoS</td>
+            </tr>
+            <tr>
+                <td>Solana</td>
+                <td>Plataforma escalable que separa lógica del programa del estado</td>
+            </tr>
+            <tr>
+                <td>Hyperledger</td>
+                <td>Marco empresarial de código abierto para soluciones B2B</td>
+            </tr>
+            <tr>
+                <td>Reentrancy</td>
+                <td>Vulnerabilidad donde una función externa vuelve a llamar al contrato</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}
