@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Resumen Final - Modo Práctica{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h4 class="mb-0">🏆 Resumen Final</h4>
+                </div>
+                <div class="card-body text-center">
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <div class="card bg-success text-white">
+                                <div class="card-body">
+                                    <h2>{{ aciertos }}</h2>
+                                    <p class="mb-0">Aciertos</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card bg-danger text-white">
+                                <div class="card-body">
+                                    <h2>{{ fallos }}</h2>
+                                    <p class="mb-0">Fallos</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card bg-primary text-white">
+                                <div class="card-body">
+                                    <h2>{{ porcentaje }}%</h2>
+                                    <p class="mb-0">Puntuación</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% if porcentaje >= 80 %}
+                        <div class="alert alert-success">
+                            <h5>🎉 ¡Excelente trabajo!</h5>
+                            <p class="mb-0">Has demostrado un gran dominio del tema.</p>
+                        </div>
+                    {% elseif porcentaje >= 60 %}
+                        <div class="alert alert-warning">
+                            <h5>👍 Buen trabajo</h5>
+                            <p class="mb-0">Tienes una base sólida, pero puedes mejorar.</p>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            <h5>📚 Sigue practicando</h5>
+                            <p class="mb-0">Te recomendamos repasar el contenido del tema.</p>
+                        </div>
+                    {% endif %}
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                        <a href="{{ path('app_home') }}" class="btn btn-primary">🏠 Volver al Inicio</a>
+                        <a href="{{ path('app_content_index') }}" class="btn btn-secondary">📖 Ver Contenido</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

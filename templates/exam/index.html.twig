@@ -25,8 +25,25 @@
                     <div class="form-text">0 = sin límite</div>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary btn-lg mt-3">Comenzar examen</button>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-3">
+                <button type="submit" class="btn btn-primary btn-lg">📝 Comenzar Examen</button>
+                <button type="button" class="btn btn-success btn-lg" onclick="startPractice()">🎯 Modo Práctica</button>
+            </div>
         </form>
     </div>
 </div>
+
+<script>
+function startPractice() {
+    const tema = document.getElementById('tema').value;
+    const cantidad = document.querySelector('input[name="cantidad"]').value;
+    
+    if (!tema) {
+        alert('Por favor selecciona un tema');
+        return;
+    }
+    
+    window.location.href = `{{ path('app_practice') }}?tema=${tema}&cantidad=${cantidad}`;
+}
+</script>
 {% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modo Práctica - Pregunta {{ current }}/{{ total }}{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">🎯 Modo Práctica</h5>
+                    <span class="badge bg-primary">{{ current }}/{{ total }}</span>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="{{ path('app_practice_validate') }}">
+                        <input type="hidden" name="pregunta_id" value="{{ pregunta.id }}">
+                        
+                        <div class="mb-4">
+                            <h6>{{ pregunta.texto }}</h6>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="respuesta" value="a" id="respuesta_a" required>
+                                <label class="form-check-label" for="respuesta_a">
+                                    A) {{ pregunta.opcionA }}
+                                </label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="respuesta" value="b" id="respuesta_b" required>
+                                <label class="form-check-label" for="respuesta_b">
+                                    B) {{ pregunta.opcionB }}
+                                </label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="respuesta" value="c" id="respuesta_c" required>
+                                <label class="form-check-label" for="respuesta_c">
+                                    C) {{ pregunta.opcionC }}
+                                </label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="respuesta" value="d" id="respuesta_d" required>
+                                <label class="form-check-label" for="respuesta_d">
+                                    D) {{ pregunta.opcionD }}
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success">✓ Validar Respuesta</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
