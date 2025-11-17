@@ -1124,6 +1124,78 @@ def dijkstra(g, inicio):
     <h3>Algoritmo A* (A-star)</h3>
     <p>Versión heurística de búsqueda de rutas: combina distancia recorrida + heurística estimada al objetivo. Muy usado en pathfinding.</p>
 
+    <h3>Heurísticas por dominio</h3>
+    <p>La efectividad de A* depende de usar la heurística correcta según el dominio del problema:</p>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h4>🗺️ Navegación GPS / Mapas</h4>
+            <ul>
+                <li><strong>Distancia haversine:</strong> Distancia real entre coordenadas GPS considerando curvatura terrestre</li>
+                <li><strong>Distancia Manhattan:</strong> |lat1-lat2| + |lon1-lon2| (ciudades en cuadrícula)</li>
+                <li><strong>Tiempo estimado:</strong> Distancia / velocidad promedio del tipo de vía</li>
+            </ul>
+
+            <h4>🎮 Videojuegos / Pathfinding</h4>
+            <ul>
+                <li><strong>Distancia euclidiana:</strong> Movimiento libre en cualquier dirección</li>
+                <li><strong>Distancia Manhattan:</strong> Movimiento en 4 direcciones</li>
+                <li><strong>Distancia Chebyshev:</strong> Movimiento en 8 direcciones (incluye diagonales)</li>
+                <li><strong>Costo de terreno:</strong> Diferentes tipos de suelo (agua, montaña, etc.)</li>
+            </ul>
+
+            <h4>🚇 Redes de transporte</h4>
+            <ul>
+                <li><strong>Tiempo de viaje:</strong> Basado en horarios y frecuencias reales</li>
+                <li><strong>Número de transbordos:</strong> Penalizar cambios de línea/vehículo</li>
+                <li><strong>Costo económico:</strong> Precio real del billete</li>
+                <li><strong>Distancia física:</strong> Kilómetros reales de la ruta</li>
+            </ul>
+
+            <h4>🤖 Robótica</h4>
+            <ul>
+                <li><strong>Energía consumida:</strong> Batería necesaria para llegar al destino</li>
+                <li><strong>Obstáculos dinámicos:</strong> Considerar objetos móviles</li>
+                <li><strong>Inclinación del terreno:</strong> Costo energético de subidas/bajadas</li>
+                <li><strong>Desgaste mecánico:</strong> Preferir rutas que preserven el robot</li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <h4>🌐 Redes de comunicación</h4>
+            <ul>
+                <li><strong>Latencia:</strong> Tiempo de transmisión entre nodos</li>
+                <li><strong>Ancho de banda disponible:</strong> Capacidad de la conexión</li>
+                <li><strong>Confiabilidad:</strong> Probabilidad de fallo del enlace</li>
+                <li><strong>Costo económico:</strong> Precio del uso de la infraestructura</li>
+            </ul>
+
+            <h4>📦 Logística / Supply Chain</h4>
+            <ul>
+                <li><strong>Tiempo de entrega:</strong> Considerando horarios y días laborables</li>
+                <li><strong>Costo de transporte:</strong> Combustible, peajes, mano de obra</li>
+                <li><strong>Capacidad de carga:</strong> Limitaciones de peso/volumen</li>
+                <li><strong>Restricciones regulatorias:</strong> Permisos, aduanas, normativas</li>
+            </ul>
+
+            <h4>🏙️ Planificación urbana</h4>
+            <ul>
+                <li><strong>Densidad de tráfico:</strong> Congestión esperada por hora</li>
+                <li><strong>Accesibilidad:</strong> Rampas, ascensores para movilidad reducida</li>
+                <li><strong>Seguridad:</strong> Índices de criminalidad por zona</li>
+                <li><strong>Calidad del aire:</strong> Niveles de contaminación</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="alert alert-info">
+        <h5>📏 Requisitos de una buena heurística</h5>
+        <ul class="mb-0">
+            <li><strong>Admisible:</strong> Nunca sobreestimar el costo real</li>
+            <li><strong>Relevante al dominio:</strong> Reflejar las métricas que realmente importan</li>
+            <li><strong>Eficiente de calcular:</strong> No ser más costosa que el propio algoritmo</li>
+        </ul>
+    </div>
+
     <h3>Detección de ciclos</h3>
     <ul>
         <li><strong>Grafos dirigidos:</strong> usar DFS con 3 colores (blanco/gris/negro)</li>
@@ -1147,23 +1219,6 @@ CREATE TABLE aristas (
   FOREIGN KEY (origen) REFERENCES nodos(id),
   FOREIGN KEY (destino) REFERENCES nodos(id)
 );</code></pre>
-
-    <h3>Cargar grafo en PHP</h3>
-    <pre><code>&lt;?php
-$mysqli = new mysqli('host','user','pass','db');
-$grafo = [];
-$res = $mysqli->query("SELECT id FROM nodos");
-while($r = $res->fetch_assoc()){
-    $grafo[$r['id']] = [];
-}
-$res = $mysqli->query("SELECT origen,destino,peso FROM aristas");
-while($a = $res->fetch_assoc()){
-    $grafo[$a['origen']][] = [
-        'destino'=> (int)$a['destino'], 
-        'peso'=> (float)$a['peso']
-    ];
-}
-?></code></pre>
 
     <h2>📌 Resumen rápido</h2>
     <table class="table table-striped">
