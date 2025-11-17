@@ -1,0 +1,233 @@
+{% extends 'content/base.html.twig' %}
+
+{% block content_title %}Tema 2: Fundamentos de Redes{% endblock %}
+
+{% block content_body %}
+<div class="content-section">
+    <h1>Fundamentos de Redes</h1>
+    <p class="lead">TCP/IP, DNS, HTTP, modelos OSI y conceptos esenciales de comunicaciones.</p>
+
+    <h2>1. Modelo OSI</h2>
+    <p>El modelo <strong>OSI</strong> (Open Systems Interconnection) es un marco teórico de 7 capas que describe cómo se comunican los sistemas de red.</p>
+    
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Capa</th>
+                <th>Nombre</th>
+                <th>Función principal</th>
+                <th>Ejemplos</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>7</td><td>Aplicación</td><td>Interacción directa con el usuario; servicios de red</td><td>HTTP, FTP, SMTP</td></tr>
+            <tr><td>6</td><td>Presentación</td><td>Formato de datos, cifrado, compresión</td><td>TLS/SSL, codificación Base64</td></tr>
+            <tr><td>5</td><td>Sesión</td><td>Control de sesiones; apertura y cierre</td><td>RPC, NetBIOS</td></tr>
+            <tr><td>4</td><td>Transporte</td><td>Segmentación, control de flujo y errores</td><td>TCP, UDP</td></tr>
+            <tr><td>3</td><td>Red</td><td>Direccionamiento lógico, enrutamiento</td><td>IP, routers</td></tr>
+            <tr><td>2</td><td>Enlace de datos</td><td>Tramas, control de acceso al medio</td><td>Ethernet, Wi‑Fi, MAC</td></tr>
+            <tr><td>1</td><td>Física</td><td>Transmisión eléctrica/óptica</td><td>Cables, señales</td></tr>
+        </tbody>
+    </table>
+
+    <h2>2. Modelo TCP/IP</h2>
+    <p>Modelo práctico usado en Internet. Tiene 4 capas:</p>
+    
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Capa TCP/IP</th>
+                <th>Equivalencia OSI</th>
+                <th>Funciones</th>
+                <th>Protocolos</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>Acceso a la red</td><td>1–2</td><td>Acceso físico, tramas</td><td>Ethernet, Wi‑Fi</td></tr>
+            <tr><td>Internet</td><td>3</td><td>Direccionamiento y enrutamiento</td><td>IP, ICMP, ARP, NAT</td></tr>
+            <tr><td>Transporte</td><td>4</td><td>Comunicación extremo a extremo</td><td>TCP, UDP</td></tr>
+            <tr><td>Aplicación</td><td>5–7</td><td>Protocolos orientados al usuario</td><td>HTTP, DNS, SMTP, FTP</td></tr>
+        </tbody>
+    </table>
+
+    <h2>3. TCP y UDP (Capa de transporte)</h2>
+    
+    <h3>TCP (Transmission Control Protocol)</h3>
+    <p>Protocolo orientado a conexión:</p>
+    <ul>
+        <li>Establece conexión: <code>Three‑Way Handshake</code> (SYN → SYN/ACK → ACK)</li>
+        <li>Fiable: retransmisiones y acuses de recibo (<code>ACK</code>)</li>
+        <li>Control de flujo (ventana) y control de congestión</li>
+        <li>Segmentación ordenada</li>
+    </ul>
+
+    <h3>UDP (User Datagram Protocol)</h3>
+    <p>Protocolo no orientado a conexión:</p>
+    <ul>
+        <li>Más rápido que TCP, sin garantías de entrega ni orden</li>
+        <li>Sin control de flujo ni retransmisiones</li>
+        <li>Ideal para streaming, videojuegos, DNS</li>
+    </ul>
+
+    <div class="alert alert-info">
+        <strong>¿Cuándo usar cada uno?</strong>
+        <ul class="mb-0">
+            <li><strong>TCP:</strong> Cuando necesitas fiabilidad (HTTP, email, transferencia de archivos)</li>
+            <li><strong>UDP:</strong> Cuando necesitas velocidad y puedes tolerar pérdidas (streaming, VoIP, gaming)</li>
+        </ul>
+    </div>
+
+    <h2>4. IP (Internet Protocol)</h2>
+    
+    <h3>IPv4</h3>
+    <ul>
+        <li>Direcciones de 32 bits (ej.: <code>192.168.1.10</code>)</li>
+        <li>Notación decimal con puntos</li>
+        <li>Clases históricas: A (0–127), B (128–191), C (192–223)</li>
+        <li>CIDR: máscara en formato <code>/n</code> (ej.: <code>192.168.1.0/24</code>)</li>
+    </ul>
+
+    <h4>Rangos de IP privadas</h4>
+    <ul>
+        <li>Clase A: <code>10.0.0.0 – 10.255.255.255</code> (<code>10.0.0.0/8</code>)</li>
+        <li>Clase B: <code>172.16.0.0 – 172.31.255.255</code> (<code>172.16.0.0/12</code>)</li>
+        <li>Clase C: <code>192.168.0.0 – 192.168.255.255</code> (<code>192.168.0.0/16</code>)</li>
+    </ul>
+
+    <h3>IPv6</h3>
+    <ul>
+        <li>Direcciones de 128 bits (ej.: <code>2001:db8::1</code>)</li>
+        <li>Mucho mayor espacio de direcciones; elimina la necesidad de NAT en muchos casos</li>
+        <li>Soporta características de seguridad y autoconfiguración</li>
+    </ul>
+
+    <h2>5. DNS (Domain Name System)</h2>
+    <p>Sistema que traduce nombres de dominio en direcciones IP.</p>
+
+    <h3>Proceso de resolución DNS</h3>
+    <ol>
+        <li>El cliente pregunta a un <em>resolver</em> (normalmente del ISP)</li>
+        <li>Si no está en caché, el resolver pregunta a un <em>servidor raíz</em></li>
+        <li>El servidor raíz responde con servidores <em>TLD</em> (ej.: <code>.com</code>, <code>.es</code>)</li>
+        <li>El TLD remite al servidor autoritativo del dominio</li>
+        <li>El autoritativo devuelve la dirección IP</li>
+        <li>La respuesta se guarda en caché</li>
+    </ol>
+
+    <h3>Registros DNS importantes</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Registro</th>
+                <th>Función</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>A</td><td>Nombre → IPv4</td></tr>
+            <tr><td>AAAA</td><td>Nombre → IPv6</td></tr>
+            <tr><td>CNAME</td><td>Alias a otro dominio</td></tr>
+            <tr><td>MX</td><td>Servidor de correo</td></tr>
+            <tr><td>NS</td><td>Servidores autoritativos</td></tr>
+            <tr><td>TXT</td><td>Información adicional (SPF, verificación, etc.)</td></tr>
+        </tbody>
+    </table>
+
+    <h2>6. HTTP y HTTPS</h2>
+    <p>Protocolo de aplicación usado para la web. El cliente hace peticiones y el servidor responde.</p>
+
+    <h3>Métodos HTTP principales</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Método</th>
+                <th>Función</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>GET</td><td>Obtener recursos</td></tr>
+            <tr><td>POST</td><td>Enviar datos</td></tr>
+            <tr><td>PUT</td><td>Actualizar</td></tr>
+            <tr><td>DELETE</td><td>Eliminar</td></tr>
+            <tr><td>HEAD</td><td>Como GET pero sin cuerpo</td></tr>
+            <tr><td>PATCH</td><td>Actualización parcial</td></tr>
+            <tr><td>OPTIONS</td><td>Opciones de comunicación</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Códigos de estado HTTP</h3>
+    <ul>
+        <li><strong>1xx</strong> — Información</li>
+        <li><strong>2xx</strong> — Éxito (200 OK, 201 Created)</li>
+        <li><strong>3xx</strong> — Redirecciones (301 Moved Permanently, 302 Found)</li>
+        <li><strong>4xx</strong> — Error del cliente (400 Bad Request, 404 Not Found, 403 Forbidden)</li>
+        <li><strong>5xx</strong> — Error del servidor (500 Internal Server Error, 503 Service Unavailable)</li>
+    </ul>
+
+    <h3>HTTPS</h3>
+    <p>HTTP sobre <strong>TLS/SSL</strong>. Proporciona:</p>
+    <ul>
+        <li>Cifrado de datos en tránsito</li>
+        <li>Autenticación del servidor mediante certificados</li>
+        <li>Protección contra ataques de intermediario (MITM)</li>
+        <li>Integridad de los datos</li>
+    </ul>
+
+    <h2>7. Puertos más importantes</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Protocolo / Servicio</th>
+                <th>Puerto TCP/UDP</th>
+                <th>Versión segura</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>HTTP</td><td>80 TCP</td><td>HTTPS 443 TCP</td></tr>
+            <tr><td>FTP</td><td>21 TCP (control), 20 TCP (datos)</td><td>FTPS 990/989 TCP</td></tr>
+            <tr><td>SSH</td><td>22 TCP</td><td>—</td></tr>
+            <tr><td>SMTP</td><td>25 TCP</td><td>SMTPS 465 TCP</td></tr>
+            <tr><td>IMAP</td><td>143 TCP</td><td>IMAPS 993 TCP</td></tr>
+            <tr><td>POP3</td><td>110 TCP</td><td>POP3S 995 TCP</td></tr>
+            <tr><td>DNS</td><td>53 TCP/UDP</td><td>DNS sobre TLS 853 TCP</td></tr>
+            <tr><td>DHCP</td><td>67/68 UDP</td><td>—</td></tr>
+            <tr><td>NTP</td><td>123 UDP</td><td>—</td></tr>
+            <tr><td>SNMP</td><td>161/162 UDP</td><td>SNMPv3 (seguridad integrada)</td></tr>
+            <tr><td>MySQL</td><td>3306 TCP</td><td>—</td></tr>
+            <tr><td>PostgreSQL</td><td>5432 TCP</td><td>—</td></tr>
+            <tr><td>RDP</td><td>3389 TCP</td><td>—</td></tr>
+        </tbody>
+    </table>
+
+    <h2>8. Otros conceptos fundamentales</h2>
+    
+    <h3>ARP (Address Resolution Protocol)</h3>
+    <p>Traduce direcciones IP a direcciones MAC en redes LAN. Permite que los dispositivos se comuniquen en la capa de enlace de datos.</p>
+
+    <h3>ICMP (Internet Control Message Protocol)</h3>
+    <p>Protocolo de diagnóstico usado por herramientas como:</p>
+    <ul>
+        <li><code>ping</code> — verifica conectividad</li>
+        <li><code>traceroute</code> — muestra la ruta de los paquetes</li>
+    </ul>
+
+    <h3>NAT (Network Address Translation)</h3>
+    <p>Traduce direcciones IP privadas a públicas para salida a Internet. Permite que múltiples dispositivos compartan una única IP pública.</p>
+
+    <h3>DHCP (Dynamic Host Configuration Protocol)</h3>
+    <p>Asigna automáticamente direcciones IP y configuración de red a dispositivos en una red local.</p>
+
+    <h3>Subnetting</h3>
+    <p>División de una red en subredes más pequeñas para mejor organización y seguridad. Usa máscaras de subred para definir el rango de direcciones.</p>
+
+    <div class="alert alert-warning">
+        <h5>💡 Consejos para el examen</h5>
+        <ul class="mb-0">
+            <li>Memoriza los puertos más comunes (80, 443, 22, 21, 25, 53)</li>
+            <li>Entiende la diferencia entre TCP y UDP</li>
+            <li>Conoce los rangos de IP privadas</li>
+            <li>Comprende el proceso de resolución DNS</li>
+            <li>Diferencia entre las capas del modelo OSI</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}
