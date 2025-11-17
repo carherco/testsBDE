@@ -245,6 +245,7 @@ F: C,E</textarea>
         .dijkstra-node.visited{fill:#dbeafe;stroke:#0b5cff}
         .dijkstra-node.current{fill:#fde68a;stroke:#d97706}
         .dijkstra-node.queued{fill:#f1f5f9;stroke:#64748b}
+        .dijkstra-node.path{fill:#16a34a;stroke:#15803d}
         .dijkstra-edge{stroke:#cbd5e1;stroke-width:2}
         .dijkstra-edge.relaxed{stroke:#f59e0b;stroke-width:3}
         .dijkstra-edge.shortest{stroke:#16a34a;stroke-width:4}
@@ -1026,6 +1027,7 @@ F: C,E</textarea>
                             <span class="badge bg-light text-dark"><span style="display:inline-block;width:10px;height:10px;background:#dbeafe;border-radius:50%;margin-right:4px"></span>Visitado</span>
                             <span class="badge bg-light text-dark"><span style="display:inline-block;width:10px;height:10px;background:#fde68a;border-radius:50%;margin-right:4px"></span>Actual</span>
                             <span class="badge bg-light text-dark"><span style="display:inline-block;width:10px;height:10px;background:#f1f5f9;border-radius:50%;margin-right:4px"></span>En cola</span>
+                            <span class="badge bg-success text-white"><span style="display:inline-block;width:10px;height:10px;background:#16a34a;border-radius:50%;margin-right:4px"></span>Ruta final</span>
                             <span class="badge bg-warning text-dark">Relajación</span>
                         </div>
                         <small class="text-muted">Nodos: <span id="dijkstra_nodeCount">0</span> | Aristas: <span id="dijkstra_edgeCount">0</span></small>
@@ -1224,76 +1226,6 @@ while($a = $res->fetch_assoc()){
         </ul>
     </div>
 
-    <h3>🎯 Algoritmos de Camino Más Corto (con pesos)</h3>
-    <div class="alert alert-info">
-        <strong>Dijkstra:</strong> Encuentra las distancias mínimas desde un nodo origen a todos los demás en grafos con pesos positivos.
-    </div>
-
-    <div class="row mb-3">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="d-flex gap-3 align-items-center">
-                            <div>
-                                <label for="dijkstra_start" class="form-label mb-0">Nodo origen</label>
-                                <select id="dijkstra_start" class="form-select form-select-sm"></select>
-                            </div>
-                            <div>
-                                <label for="dijkstra_delay" class="form-label mb-0">Velocidad</label>
-                                <input id="dijkstra_delay" type="number" value="800" min="100" max="3000" class="form-control form-control-sm" style="width:80px" />
-                            </div>
-                        </div>
-                        <div class="d-flex gap-2">
-                            <button id="dijkstra_play" class="btn btn-success btn-sm">Play</button>
-                            <button id="dijkstra_step" class="btn btn-primary btn-sm">Step</button>
-                            <button id="dijkstra_reset" class="btn btn-outline-secondary btn-sm">Reset</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body p-2">
-                    <div style="height:400px; display:flex; align-items:center; justify-content:center; background:linear-gradient(180deg,#fcfeff,#fbfcff); border-radius:8px;">
-                        <svg id="dijkstra_svg" viewBox="0 0 900 380" preserveAspectRatio="xMidYMid meet" style="width:100%; height:100%;"></svg>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card mb-3">
-                <div class="card-header">
-                    <h6 class="mb-0">Grafo con Pesos</h6>
-                </div>
-                <div class="card-body">
-                    <label for="dijkstra_adj" class="form-label">Lista de adyacencia con pesos</label>
-                    <textarea id="dijkstra_adj" class="form-control" rows="6" style="font-family:monospace; font-size:12px;">A: B(4),C(2)
-B: A(4),C(1),D(5)
-C: A(2),B(1),D(8),E(10)
-D: B(5),C(8),E(2)
-E: C(10),D(2)</textarea>
-                    <div class="d-flex gap-2 mt-2">
-                        <button id="dijkstra_load" class="btn btn-primary btn-sm">Cargar</button>
-                    </div>
-                </div>
-            </div>
-            <div class="card mb-3">
-                <div class="card-header">
-                    <h6 class="mb-0">Distancias</h6>
-                </div>
-                <div class="card-body">
-                    <div id="dijkstra_distances" style="font-family:monospace; font-size:12px;"></div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header">
-                    <h6 class="mb-0">Log de pasos</h6>
-                </div>
-                <div class="card-body">
-                    <div id="dijkstra_log" style="height:120px; overflow:auto; font-family:monospace; font-size:12px; background:#f8f9fa; padding:8px; border-radius:4px;"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script>
         // Dijkstra - Funcionalidad completa
         setTimeout(() => {
@@ -1445,6 +1377,651 @@ E: C(10),D(2)</textarea>
                 loadBtn.click();
             }
         }, 500);
+    </script>
+
+    <!-- Script mejorado con pathfinding y A* -->
+    <script>
+        // Agregar selector de algoritmo y nodo destino
+        setTimeout(() => {
+            const algoSelect = document.createElement('select');
+            algoSelect.id = 'dijkstra_algo_new';
+            algoSelect.className = 'form-select form-select-sm';
+            algoSelect.innerHTML = `
+                <option value="dijkstra">Dijkstra (todas las distancias)</option>
+                <option value="dijkstra_path">Dijkstra (camino más corto)</option>
+                <option value="astar">A* (camino más corto)</option>
+            `;
+            
+            const targetSelect = document.createElement('select');
+            targetSelect.id = 'dijkstra_target_new';
+            targetSelect.className = 'form-select form-select-sm';
+            targetSelect.style.display = 'none';
+            
+            // Insertar en la interfaz
+            const startDiv = document.querySelector('label[for="dijkstra_start"]').parentElement;
+            const algoDiv = document.createElement('div');
+            algoDiv.innerHTML = '<label class="form-label mb-0">Algoritmo</label>';
+            algoDiv.appendChild(algoSelect);
+            
+            const targetDiv = document.createElement('div');
+            targetDiv.innerHTML = '<label class="form-label mb-0">Destino</label>';
+            targetDiv.appendChild(targetSelect);
+            
+            startDiv.parentElement.insertBefore(algoDiv, startDiv);
+            startDiv.parentElement.insertBefore(targetDiv, startDiv.nextSibling);
+            
+            // Poblar nodos en target
+            function populateTarget() {
+                const startSel = document.getElementById('dijkstra_start');
+                targetSelect.innerHTML = '';
+                if(startSel) {
+                    Array.from(startSel.options).forEach(option => {
+                        const opt = document.createElement('option');
+                        opt.value = option.value;
+                        opt.textContent = option.textContent;
+                        targetSelect.appendChild(opt);
+                    });
+                }
+            }
+            
+            // Mostrar/ocultar selector de destino
+            algoSelect.addEventListener('change', () => {
+                if(algoSelect.value === 'dijkstra_path' || algoSelect.value === 'astar') {
+                    targetSelect.style.display = 'block';
+                    populateTarget();
+                } else {
+                    targetSelect.style.display = 'none';
+                }
+            });
+            
+            // Algoritmos mejorados
+            function runDijkstraPath(g, start, target) {
+                const distances = {};
+                const previous = {};
+                const visited = new Set();
+                const pq = [];
+                const steps = [];
+                
+                Object.keys(g).forEach(node => {
+                    distances[node] = node === start ? 0 : Infinity;
+                    previous[node] = null;
+                });
+                
+                pq.push({node: start, dist: 0});
+                steps.push({type: 'init', distances: {...distances}});
+                
+                while(pq.length > 0) {
+                    pq.sort((a, b) => a.dist - b.dist);
+                    const current = pq.shift();
+                    
+                    if(visited.has(current.node)) continue;
+                    visited.add(current.node);
+                    steps.push({type: 'visit', node: current.node, dist: current.dist, distances: {...distances}});
+                    
+                    if(current.node === target) {
+                        // Reconstruir camino
+                        const path = [];
+                        let node = target;
+                        while(node !== null) {
+                            path.unshift(node);
+                            node = previous[node];
+                        }
+                        steps.push({type: 'path_found', path, distance: distances[target], distances: {...distances}});
+                        break;
+                    }
+                    
+                    const neighbors = g[current.node] || [];
+                    for(const neighbor of neighbors) {
+                        if(!visited.has(neighbor.node)) {
+                            const newDist = distances[current.node] + neighbor.weight;
+                            if(newDist < distances[neighbor.node]) {
+                                distances[neighbor.node] = newDist;
+                                previous[neighbor.node] = current.node;
+                                pq.push({node: neighbor.node, dist: newDist});
+                                steps.push({type: 'relax', from: current.node, to: neighbor.node, newDist, distances: {...distances}});
+                            }
+                        }
+                    }
+                }
+                return steps;
+            }
+            
+            function runAStar(g, start, target) {
+                // Heurística simple: distancia euclidiana basada en posición de nodos
+                function heuristic(node1, node2) {
+                    const nodes = dijkstra_nodes;
+                    const n1 = nodes.find(n => n.id === node1);
+                    const n2 = nodes.find(n => n.id === node2);
+                    if(!n1 || !n2) return 0;
+                    return Math.sqrt(Math.pow(n1.x - n2.x, 2) + Math.pow(n1.y - n2.y, 2)) / 50; // Escalar
+                }
+                
+                const gScore = {};
+                const fScore = {};
+                const previous = {};
+                const visited = new Set();
+                const openSet = [];
+                const steps = [];
+                
+                Object.keys(g).forEach(node => {
+                    gScore[node] = node === start ? 0 : Infinity;
+                    fScore[node] = node === start ? heuristic(start, target) : Infinity;
+                    previous[node] = null;
+                });
+                
+                openSet.push({node: start, f: fScore[start]});
+                steps.push({type: 'init', gScore: {...gScore}, fScore: {...fScore}});
+                
+                while(openSet.length > 0) {
+                    openSet.sort((a, b) => a.f - b.f);
+                    const current = openSet.shift();
+                    
+                    if(visited.has(current.node)) continue;
+                    visited.add(current.node);
+                    steps.push({type: 'visit', node: current.node, g: gScore[current.node], f: fScore[current.node], gScore: {...gScore}});
+                    
+                    if(current.node === target) {
+                        const path = [];
+                        let node = target;
+                        while(node !== null) {
+                            path.unshift(node);
+                            node = previous[node];
+                        }
+                        steps.push({type: 'path_found', path, distance: gScore[target], gScore: {...gScore}});
+                        break;
+                    }
+                    
+                    const neighbors = g[current.node] || [];
+                    for(const neighbor of neighbors) {
+                        if(!visited.has(neighbor.node)) {
+                            const tentativeG = gScore[current.node] + neighbor.weight;
+                            if(tentativeG < gScore[neighbor.node]) {
+                                gScore[neighbor.node] = tentativeG;
+                                fScore[neighbor.node] = tentativeG + heuristic(neighbor.node, target);
+                                previous[neighbor.node] = current.node;
+                                openSet.push({node: neighbor.node, f: fScore[neighbor.node]});
+                                steps.push({type: 'relax', from: current.node, to: neighbor.node, newG: tentativeG, newF: fScore[neighbor.node], gScore: {...gScore}});
+                            }
+                        }
+                    }
+                }
+                return steps;
+            }
+            
+            // Sobrescribir executeStep para usar nuevos algoritmos
+            const originalExecuteStep = window.executeStep;
+            window.executeStep = function() {
+                const algo = algoSelect.value;
+                const start = document.getElementById('dijkstra_start').value;
+                const target = targetSelect.value;
+                
+                if(!window.dijkstra_steps || window.dijkstra_steps.length === 0) {
+                    if(!start) return;
+                    
+                    if(algo === 'dijkstra') {
+                        window.dijkstra_steps = runDijkstra(dijkstra_graph, start);
+                    } else if(algo === 'dijkstra_path') {
+                        if(!target || target === start) return;
+                        window.dijkstra_steps = runDijkstraPath(dijkstra_graph, start, target);
+                    } else if(algo === 'astar') {
+                        if(!target || target === start) return;
+                        window.dijkstra_steps = runAStar(dijkstra_graph, start, target);
+                    }
+                    
+                    window.dijkstra_stepIndex = 0;
+                    const logDiv = document.getElementById('dijkstra_log');
+                    if(logDiv) logDiv.textContent = '';
+                }
+                
+                if(window.dijkstra_stepIndex < window.dijkstra_steps.length) {
+                    const step = window.dijkstra_steps[window.dijkstra_stepIndex];
+                    const logDiv = document.getElementById('dijkstra_log');
+                    const distDiv = document.getElementById('dijkstra_distances');
+                    
+                    if(logDiv) {
+                        const line = document.createElement('div');
+                        line.textContent = formatStepNew(step);
+                        logDiv.appendChild(line);
+                        logDiv.scrollTop = logDiv.scrollHeight;
+                    }
+                    
+                    const distances = step.distances || step.gScore;
+                    if(distances && distDiv) {
+                        distDiv.innerHTML = '';
+                        Object.entries(distances).forEach(([node, dist]) => {
+                            const div = document.createElement('div');
+                            div.textContent = `${node}: ${dist === Infinity ? '∞' : Math.round(dist * 10) / 10}`;
+                            distDiv.appendChild(div);
+                        });
+                    }
+                    
+                    // Actualizar visualización del grafo
+                    updateGraphVisualization(step);
+                    
+                    window.dijkstra_stepIndex++;
+                    
+                    if(window.dijkstra_stepIndex >= window.dijkstra_steps.length && window.dijkstra_playing) {
+                        stopPlay();
+                    }
+                }
+            };
+            
+            function updateGraphVisualization(step) {
+                console.log('Actualizando visualización:', step.type, step.node || step.from);
+                const svg = document.getElementById('dijkstra_svg');
+                if(!svg) {
+                    console.error('SVG no encontrado');
+                    return;
+                }
+                
+                if(step.type === 'visit') {
+                    // Marcar nodo como visitado y actual
+                    const circles = svg.querySelectorAll('circle');
+                    circles.forEach(circle => {
+                        if(circle.dataset.id === step.node) {
+                            circle.style.fill = '#fde68a'; // Amarillo para actual
+                            circle.style.stroke = '#d97706';
+                            console.log('Nodo marcado como actual:', step.node);
+                        }
+                    });
+                } else if(step.type === 'relax') {
+                    // Resaltar arista relajada
+                    const lines = svg.querySelectorAll('line');
+                    lines.forEach(line => {
+                        if((line.dataset.u === step.from && line.dataset.v === step.to) || 
+                           (line.dataset.u === step.to && line.dataset.v === step.from)) {
+                            line.style.stroke = '#f59e0b'; // Naranja para relajación
+                            line.style.strokeWidth = '3';
+                            console.log('Arista marcada como relajada:', step.from, '->', step.to);
+                        }
+                    });
+                } else if(step.type === 'path_found') {
+                    // Resaltar camino final
+                    console.log('Marcando camino final:', step.path);
+                    
+                    // Marcar aristas del camino
+                    for(let i = 0; i < step.path.length - 1; i++) {
+                        const from = step.path[i];
+                        const to = step.path[i + 1];
+                        const lines = svg.querySelectorAll('line');
+                        lines.forEach(line => {
+                            if((line.dataset.u === from && line.dataset.v === to) || 
+                               (line.dataset.u === to && line.dataset.v === from)) {
+                                line.style.stroke = '#16a34a'; // Verde para camino final
+                                line.style.strokeWidth = '4';
+                            }
+                        });
+                    }
+                    
+                    // Marcar nodos del camino
+                    const circles = svg.querySelectorAll('circle');
+                    circles.forEach(circle => {
+                        if(step.path.includes(circle.dataset.id)) {
+                            circle.style.fill = '#16a34a'; // Verde para camino final
+                            circle.style.stroke = '#15803d';
+                        }
+                    });
+                }
+            }
+            
+            // Función para resetear visualización
+            function resetGraphVisualization() {
+                const svg = document.getElementById('dijkstra_svg');
+                if(!svg) return;
+                
+                svg.querySelectorAll('.dijkstra-node').forEach(node => {
+                    node.classList.remove('visited', 'current', 'queued', 'path');
+                });
+                svg.querySelectorAll('.dijkstra-edge').forEach(edge => {
+                    edge.classList.remove('relaxed', 'shortest');
+                });
+            }
+            
+            // Sobrescribir resetAlgorithm para incluir reset visual
+            const originalReset = window.resetAlgorithm;
+            window.resetAlgorithm = function() {
+                if(originalReset) originalReset();
+                resetGraphVisualization();
+                window.dijkstra_steps = [];
+                window.dijkstra_stepIndex = 0;
+            };
+            
+            function formatStepNew(step) {
+                switch(step.type) {
+                    case 'init': return 'INICIALIZAR distancias';
+                    case 'visit': 
+                        if(step.f !== undefined) return `VISITAR ${step.node} (g:${Math.round(step.g*10)/10}, f:${Math.round(step.f*10)/10})`;
+                        return `VISITAR ${step.node} (distancia: ${step.dist})`;
+                    case 'relax': 
+                        if(step.newF !== undefined) return `RELAJAR ${step.from}→${step.to}: g=${Math.round(step.newG*10)/10}, f=${Math.round(step.newF*10)/10}`;
+                        return `RELAJAR ${step.from}→${step.to}: nueva distancia ${step.newDist}`;
+                    case 'path_found': return `🎯 CAMINO ENCONTRADO: ${step.path.join('→')} (distancia: ${Math.round(step.distance*10)/10})`;
+                    default: return JSON.stringify(step);
+                }
+            }
+            
+            // Inicializar
+            populateTarget();
+        }, 1000);
+    </script>
+
+    <!-- Script simple y funcional -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const stepBtn = document.getElementById('dijkstra_step');
+            if(!stepBtn) return;
+            
+            let currentStep = 0;
+            let steps = [];
+            let playing = false;
+            let timer = null;
+            
+            // Botón Play
+            const playBtn = document.getElementById('dijkstra_play');
+            if(playBtn) {
+                playBtn.addEventListener('click', function() {
+                    if(playing) {
+                        // Pausar
+                        playing = false;
+                        playBtn.textContent = 'Play';
+                        if(timer) {
+                            clearInterval(timer);
+                            timer = null;
+                        }
+                    } else {
+                        // Iniciar play
+                        if(steps.length === 0) {
+                            const startSel = document.getElementById('dijkstra_start');
+                            if(!startSel || !startSel.value) return;
+                            
+                            const start = startSel.value;
+                            steps = window.runAStarReal(dijkstra_graph, start, 'E');
+                            currentStep = 0;
+                            
+                            const logDiv = document.getElementById('dijkstra_log');
+                            if(logDiv) logDiv.textContent = '';
+                        }
+                        
+                        playing = true;
+                        playBtn.textContent = 'Pause';
+                        
+                        timer = setInterval(() => {
+                            if(currentStep < steps.length) {
+                                const step = steps[currentStep];
+                                
+                                const logDiv = document.getElementById('dijkstra_log');
+                                if(logDiv) {
+                                    const line = document.createElement('div');
+                                    line.textContent = formatStepSimple(step);
+                                    logDiv.appendChild(line);
+                                    logDiv.scrollTop = logDiv.scrollHeight;
+                                }
+                                
+                                if(step.gScore) {
+                                    const distDiv = document.getElementById('dijkstra_distances');
+                                    if(distDiv) {
+                                        distDiv.innerHTML = '';
+                                        Object.entries(step.gScore).forEach(([node, dist]) => {
+                                            const div = document.createElement('div');
+                                            div.textContent = `${node}: ${dist === Infinity ? '∞' : Math.round(dist * 10) / 10}`;
+                                            distDiv.appendChild(div);
+                                        });
+                                    }
+                                }
+                                
+                                updateColors(step);
+                                currentStep++;
+                            } else {
+                                // Terminar play
+                                playing = false;
+                                playBtn.textContent = 'Play';
+                                if(timer) {
+                                    clearInterval(timer);
+                                    timer = null;
+                                }
+                            }
+                        }, 1000); // 1 segundo entre pasos
+                    }
+                });
+            }
+            
+            stepBtn.addEventListener('click', function() {
+                console.log('Step clicked, currentStep:', currentStep);
+                
+                if(steps.length === 0) {
+                    console.log('Inicializando A*...');
+                    const startSel = document.getElementById('dijkstra_start');
+                    if(!startSel || !startSel.value) return;
+                    
+                    const start = startSel.value;
+                    steps = window.runAStarReal(dijkstra_graph, start, 'E');
+                    console.log('A* generó', steps.length, 'pasos');
+                    currentStep = 0;
+                    
+                    // Limpiar log
+                    const logDiv = document.getElementById('dijkstra_log');
+                    if(logDiv) logDiv.textContent = '';
+                }
+                
+                if(currentStep < steps.length) {
+                    const step = steps[currentStep];
+                    console.log('Mostrando paso', currentStep, ':', step);
+                    
+                    // Mostrar en log
+                    const logDiv = document.getElementById('dijkstra_log');
+                    if(logDiv) {
+                        const line = document.createElement('div');
+                        line.textContent = formatStepSimple(step);
+                        logDiv.appendChild(line);
+                        logDiv.scrollTop = logDiv.scrollHeight;
+                    }
+                    
+                    // Actualizar distancias
+                    if(step.gScore) {
+                        const distDiv = document.getElementById('dijkstra_distances');
+                        if(distDiv) {
+                            distDiv.innerHTML = '';
+                            Object.entries(step.gScore).forEach(([node, dist]) => {
+                                const div = document.createElement('div');
+                                div.textContent = `${node}: ${dist === Infinity ? '∞' : Math.round(dist * 10) / 10}`;
+                                distDiv.appendChild(div);
+                            });
+                        }
+                    }
+                    
+                    // Actualizar colores
+                    updateColors(step);
+                    
+                    currentStep++;
+                } else {
+                    console.log('Todos los pasos A* completados');
+                }
+            });
+            
+            // Reset button
+            const resetBtn = document.getElementById('dijkstra_reset');
+            if(resetBtn) {
+                resetBtn.addEventListener('click', function() {
+                    // Detener play si está corriendo
+                    if(playing) {
+                        playing = false;
+                        if(playBtn) playBtn.textContent = 'Play';
+                        if(timer) {
+                            clearInterval(timer);
+                            timer = null;
+                        }
+                    }
+                    
+                    currentStep = 0;
+                    steps = [];
+                    
+                    const logDiv = document.getElementById('dijkstra_log');
+                    if(logDiv) logDiv.textContent = '';
+                    
+                    const distDiv = document.getElementById('dijkstra_distances');
+                    if(distDiv) distDiv.textContent = '';
+                    
+                    const svg = document.getElementById('dijkstra_svg');
+                    if(svg) {
+                        svg.querySelectorAll('circle').forEach(circle => {
+                            circle.style.fill = '#fff';
+                            circle.style.stroke = '#0b5cff';
+                        });
+                        svg.querySelectorAll('line').forEach(line => {
+                            line.style.stroke = '#cbd5e1';
+                            line.style.strokeWidth = '2';
+                        });
+                    }
+                    
+                    console.log('Reset completado');
+                });
+            }
+            
+            // Función para formatear pasos con valores g y f
+            function formatStepSimple(step) {
+                console.log('Formateando paso:', step); // Debug
+                switch(step.type) {
+                    case 'init': return 'INICIALIZAR distancias';
+                    case 'visit': 
+                        if(step.g !== undefined && step.f !== undefined) {
+                            return `VISITAR ${step.node} (g:${step.g}, f:${step.f})`;
+                        } else if(step.dist !== undefined) {
+                            return `VISITAR ${step.node} (distancia: ${step.dist})`;
+                        } else {
+                            return `VISITAR ${step.node}`;
+                        }
+                    case 'relax': 
+                        if(step.newG !== undefined && step.newF !== undefined) {
+                            return `RELAJAR ${step.from}→${step.to}: g=${step.newG}, f=${step.newF}`;
+                        } else if(step.newDist !== undefined) {
+                            return `RELAJAR ${step.from}→${step.to}: nueva distancia ${step.newDist}`;
+                        } else {
+                            return `RELAJAR ${step.from}→${step.to}`;
+                        }
+                    case 'path_found': return `🎯 CAMINO ENCONTRADO: ${step.path.join('→')} (distancia: ${step.distance})`;
+                    default: return JSON.stringify(step);
+                }
+            }
+            
+            // Función para actualizar colores
+            function updateColors(step) {
+                const svg = document.getElementById('dijkstra_svg');
+                if(!svg) return;
+                
+                if(step.type === 'visit') {
+                    const circles = svg.querySelectorAll('circle');
+                    circles.forEach(circle => {
+                        if(circle.dataset && circle.dataset.id === step.node) {
+                            circle.style.fill = '#fde68a';
+                            circle.style.stroke = '#d97706';
+                        }
+                    });
+                } else if(step.type === 'relax') {
+                    const lines = svg.querySelectorAll('line');
+                    lines.forEach(line => {
+                        if(line.dataset && 
+                           ((line.dataset.u === step.from && line.dataset.v === step.to) ||
+                            (line.dataset.u === step.to && line.dataset.v === step.from))) {
+                            line.style.stroke = '#f59e0b';
+                            line.style.strokeWidth = '3';
+                        }
+                    });
+                } else if(step.type === 'path_found') {
+                    // Colorear camino final
+                    for(let i = 0; i < step.path.length - 1; i++) {
+                        const from = step.path[i];
+                        const to = step.path[i + 1];
+                        const lines = svg.querySelectorAll('line');
+                        lines.forEach(line => {
+                            if(line.dataset &&
+                               ((line.dataset.u === from && line.dataset.v === to) ||
+                                (line.dataset.u === to && line.dataset.v === from))) {
+                                line.style.stroke = '#16a34a';
+                                line.style.strokeWidth = '4';
+                            }
+                        });
+                    }
+                    
+                    const circles = svg.querySelectorAll('circle');
+                    circles.forEach(circle => {
+                        if(circle.dataset && step.path.includes(circle.dataset.id)) {
+                            circle.style.fill = '#16a34a';
+                            circle.style.stroke = '#15803d';
+                        }
+                    });
+                }
+            }
+            
+            // Función A* global
+            window.runAStarReal = function(g, start, target) {
+                function heuristic(node1, node2) {
+                    const nodes = dijkstra_nodes;
+                    const n1 = nodes.find(n => n.id === node1);
+                    const n2 = nodes.find(n => n.id === node2);
+                    if(!n1 || !n2) return 0;
+                    return Math.sqrt(Math.pow(n1.x - n2.x, 2) + Math.pow(n1.y - n2.y, 2)) / 50;
+                }
+                
+                const gScore = {}, fScore = {}, previous = {}, visited = new Set(), openSet = [], steps = [];
+                
+                Object.keys(g).forEach(node => {
+                    gScore[node] = node === start ? 0 : Infinity;
+                    fScore[node] = node === start ? heuristic(start, target) : Infinity;
+                    previous[node] = null;
+                });
+                
+                openSet.push({node: start, f: fScore[start]});
+                steps.push({type: 'init', gScore: {...gScore}});
+                
+                while(openSet.length > 0) {
+                    openSet.sort((a, b) => a.f - b.f);
+                    const current = openSet.shift();
+                    
+                    if(visited.has(current.node)) continue;
+                    visited.add(current.node);
+                    steps.push({
+                        type: 'visit', 
+                        node: current.node, 
+                        g: Math.round(gScore[current.node] * 10) / 10, 
+                        f: Math.round(fScore[current.node] * 10) / 10,
+                        gScore: {...gScore}
+                    });
+                    
+                    if(current.node === target) {
+                        const path = [];
+                        let node = target;
+                        while(node !== null) {
+                            path.unshift(node);
+                            node = previous[node];
+                        }
+                        steps.push({type: 'path_found', path, distance: gScore[target], gScore: {...gScore}});
+                        break;
+                    }
+                    
+                    const neighbors = g[current.node] || [];
+                    for(const neighbor of neighbors) {
+                        if(!visited.has(neighbor.node)) {
+                            const tentativeG = gScore[current.node] + neighbor.weight;
+                            if(tentativeG < gScore[neighbor.node]) {
+                                gScore[neighbor.node] = tentativeG;
+                                fScore[neighbor.node] = tentativeG + heuristic(neighbor.node, target);
+                                previous[neighbor.node] = current.node;
+                                openSet.push({node: neighbor.node, f: fScore[neighbor.node]});
+                                steps.push({
+                                    type: 'relax', 
+                                    from: current.node, 
+                                    to: neighbor.node, 
+                                    newG: Math.round(tentativeG * 10) / 10,
+                                    newF: Math.round(fScore[neighbor.node] * 10) / 10,
+                                    gScore: {...gScore}
+                                });
+                            }
+                        }
+                    }
+                }
+                return steps;
+            };
+        });
     </script>
 </div>
 {% endblock %}
