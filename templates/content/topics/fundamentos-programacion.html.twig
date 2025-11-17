@@ -670,7 +670,6 @@ F: C,E</textarea>
 
 <script>
     // Visualización de Dijkstra - Script movido al final
-    console.log('Definiendo variables de Dijkstra...');
     const dijkstra_svg = document.getElementById('dijkstra_svg');
     const dijkstra_startSel = document.getElementById('dijkstra_start');
     const dijkstra_delayInput = document.getElementById('dijkstra_delay');
@@ -686,10 +685,6 @@ F: C,E</textarea>
     const dijkstra_nodeCountSpan = document.getElementById('dijkstra_nodeCount');
     const dijkstra_edgeCountSpan = document.getElementById('dijkstra_edgeCount');
 
-    console.log('Elementos encontrados:');
-    console.log('dijkstra_svg:', dijkstra_svg);
-    console.log('dijkstra_adjTA:', dijkstra_adjTA);
-    console.log('dijkstra_startSel:', dijkstra_startSel);
 
         let dijkstra_graph = {};
         let dijkstra_nodes = [];
@@ -734,7 +729,6 @@ F: C,E</textarea>
                     dijkstra_edges.push({u, v: conn.node, weight: conn.weight});
                 });
             });
-            console.log('Layout creado:', dijkstra_nodes.length, 'nodos');
         }
 
         function renderDijkstra(){
@@ -787,7 +781,6 @@ F: C,E</textarea>
                 g.appendChild(c); g.appendChild(t);
                 svg.appendChild(g);
             });
-            console.log('Grafo renderizado:', dijkstra_nodes.length, 'nodos,', dijkstra_edges.length, 'aristas');
         }
 
         function runDijkstraSteps(g, start){
@@ -950,7 +943,6 @@ F: C,E</textarea>
                 o.textContent = n.id;
                 startSel.appendChild(o);
             });
-            console.log('Opciones agregadas:', startSel.children.length);
         }
 
         function formatDijkstraStep(s){
@@ -968,20 +960,14 @@ F: C,E</textarea>
 
         // Inicialización
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM cargado, inicializando Dijkstra...');
             const adjTA = document.getElementById('dijkstra_adj');
-            console.log('Elemento dijkstra_adj:', adjTA);
             
             if(adjTA) {
-                console.log('Textarea encontrado:', adjTA.value);
                 try {
                     const g = parseWeightedAdj(adjTA.value);
-                    console.log('Grafo parseado:', g);
                     buildDijkstraLayout(g);
-                    console.log('Nodos creados:', dijkstra_nodes);
                     renderDijkstra();
                     populateDijkstraStart();
-                    console.log('Inicialización completa');
                 } catch(e) {
                     console.error('Error en inicialización:', e);
                 }
@@ -1607,7 +1593,6 @@ while($a = $res->fetch_assoc()){
             };
             
             function updateGraphVisualization(step) {
-                console.log('Actualizando visualización:', step.type, step.node || step.from);
                 const svg = document.getElementById('dijkstra_svg');
                 if(!svg) {
                     console.error('SVG no encontrado');
@@ -1621,7 +1606,6 @@ while($a = $res->fetch_assoc()){
                         if(circle.dataset.id === step.node) {
                             circle.style.fill = '#fde68a'; // Amarillo para actual
                             circle.style.stroke = '#d97706';
-                            console.log('Nodo marcado como actual:', step.node);
                         }
                     });
                 } else if(step.type === 'relax') {
@@ -1632,12 +1616,10 @@ while($a = $res->fetch_assoc()){
                            (line.dataset.u === step.to && line.dataset.v === step.from)) {
                             line.style.stroke = '#f59e0b'; // Naranja para relajación
                             line.style.strokeWidth = '3';
-                            console.log('Arista marcada como relajada:', step.from, '->', step.to);
                         }
                     });
                 } else if(step.type === 'path_found') {
                     // Resaltar camino final
-                    console.log('Marcando camino final:', step.path);
                     
                     // Marcar aristas del camino
                     for(let i = 0; i < step.path.length - 1; i++) {
@@ -1786,28 +1768,21 @@ while($a = $res->fetch_assoc()){
             }
             
             stepBtn.addEventListener('click', function() {
-                console.log('Step clicked, currentStep:', currentStep);
-                
                 if(steps.length === 0) {
-                    console.log('Inicializando A*...');
                     const startSel = document.getElementById('dijkstra_start');
                     if(!startSel || !startSel.value) return;
                     
                     const start = startSel.value;
                     steps = window.runAStarReal(dijkstra_graph, start, 'E');
-                    console.log('A* generó', steps.length, 'pasos');
                     currentStep = 0;
                     
-                    // Limpiar log
                     const logDiv = document.getElementById('dijkstra_log');
                     if(logDiv) logDiv.textContent = '';
                 }
                 
                 if(currentStep < steps.length) {
                     const step = steps[currentStep];
-                    console.log('Mostrando paso', currentStep, ':', step);
                     
-                    // Mostrar en log
                     const logDiv = document.getElementById('dijkstra_log');
                     if(logDiv) {
                         const line = document.createElement('div');
@@ -1816,7 +1791,6 @@ while($a = $res->fetch_assoc()){
                         logDiv.scrollTop = logDiv.scrollHeight;
                     }
                     
-                    // Actualizar distancias
                     if(step.gScore) {
                         const distDiv = document.getElementById('dijkstra_distances');
                         if(distDiv) {
@@ -1829,12 +1803,8 @@ while($a = $res->fetch_assoc()){
                         }
                     }
                     
-                    // Actualizar colores
                     updateColors(step);
-                    
                     currentStep++;
-                } else {
-                    console.log('Todos los pasos A* completados');
                 }
             });
             
@@ -1873,13 +1843,11 @@ while($a = $res->fetch_assoc()){
                         });
                     }
                     
-                    console.log('Reset completado');
                 });
             }
             
             // Función para formatear pasos con valores g y f
             function formatStepSimple(step) {
-                console.log('Formateando paso:', step); // Debug
                 switch(step.type) {
                     case 'init': return 'INICIALIZAR distancias';
                     case 'visit': 
