@@ -1,0 +1,1450 @@
+{% extends 'content/base.html.twig' %}
+
+{% block content_title %}Tema 3: Fundamentos de Programación{% endblock %}
+
+{% block content_body %}
+<div class="content-section">
+    <h1>Fundamentos de Programación</h1>
+    <p class="lead">Estructuras de datos fundamentales: listas, pilas, colas, árboles, grafos y algoritmos esenciales con ejemplos prácticos.</p>
+
+    <h2>1. Listas</h2>
+    <p>Una <strong>lista</strong> es una colección ordenada de elementos. Cada elemento tiene una posición (índice). Puede ser estática (array) o dinámica (lista enlazada).</p>
+    
+    <h3>Propiedades</h3>
+    <ul>
+        <li>Ordenadas por posición</li>
+        <li>Tamaño variable (según implementación)</li>
+        <li>Acceso por índice (O(1) en arrays, O(n) en listas enlazadas)</li>
+    </ul>
+
+    <h3>Ejemplo en Python</h3>
+    <pre><code>lista = [10, 20, 30]
+lista.append(40)
+valor = lista[2]  # 30</code></pre>
+
+    <h3>Lista enlazada (concepto)</h3>
+    <p>Cada nodo contiene un valor y referencia al siguiente. Insertar al principio O(1), búsqueda O(n).</p>
+
+    <h2>2. Pilas (Stack)</h2>
+    <p>Una <strong>pila</strong> sigue la política <em>LIFO</em> (Last In, First Out): el último elemento en entrar es el primero en salir.</p>
+
+    <h3>Operaciones principales</h3>
+    <ul>
+        <li><code>push(x)</code> — insertar elemento</li>
+        <li><code>pop()</code> — extraer elemento superior</li>
+        <li><code>peek()</code> — ver elemento superior sin quitar</li>
+    </ul>
+
+    <h3>Ejemplo en Python</h3>
+    <pre><code>pila = []
+pila.append(10)   # push
+pila.append(20)
+print(pila.pop()) # 20</code></pre>
+
+    <div class="alert alert-info">
+        <strong>Usos comunes:</strong> manejo de llamadas (call stack), deshacer/rehacer, sintaxis de expresiones, DFS iterativo.
+    </div>
+
+    <h3>Ejemplos prácticos LIFO</h3>
+    <ul>
+        <li><strong>Pila de llamadas:</strong> Cada función que se llama se apila y se desapila al terminar</li>
+        <li><strong>Git:</strong> <code>git stash</code> guarda un estado al final de la pila y <code>git stash pop</code> saca el último</li>
+        <li><strong>Sistemas de "undo/redo":</strong> Photoshop, Word, VSCode</li>
+        <li><strong>Algoritmo DFS:</strong> Usa una pila para explorar en profundidad</li>
+        <li><strong>Parsers y compiladores:</strong> Manejo de paréntesis y operadores con pilas</li>
+        <li><strong>Navegador web:</strong> Historial - el último sitio visitado es el primero en "volver atrás"</li>
+    </ul>
+
+    <h2>3. Colas (Queue)</h2>
+    <p>Una <strong>cola</strong> sigue <em>FIFO</em> (First In, First Out): el primero en entrar es el primero en salir.</p>
+
+    <h3>Operaciones principales</h3>
+    <ul>
+        <li><code>enqueue(x)</code> — insertar al final</li>
+        <li><code>dequeue()</code> — extraer del frente</li>
+    </ul>
+
+    <h3>Ejemplo en Python</h3>
+    <pre><code>from collections import deque
+cola = deque()
+cola.append(1)    # enqueue
+cola.append(2)
+print(cola.popleft())  # dequeue -> 1</code></pre>
+
+    <div class="alert alert-info">
+        <strong>Usos comunes:</strong> colas de impresión, procesamiento por lotes, BFS (búsqueda en anchura).
+    </div>
+
+    <h3>Ejemplos prácticos FIFO</h3>
+    <ul>
+        <li><strong>Colas de procesos (SO):</strong> Planificación Round Robin</li>
+        <li><strong>Amazon SQS FIFO:</strong> Mensajes procesados en el orden exacto de llegada</li>
+        <li><strong>Servidores web:</strong> Peticiones HTTP en cola</li>
+        <li><strong>Impresoras:</strong> Los documentos se imprimen en el orden enviado</li>
+        <li><strong>Buffers de red:</strong> Paquetes procesados según llegada</li>
+        <li><strong>Algoritmo BFS:</strong> Usa una cola para recorrer niveles</li>
+    </ul>
+
+    <h2>4. Árboles</h2>
+    <p>Un <strong>árbol</strong> es una estructura jerárquica de nodos: raíz, hijos y hojas. Es un grafo acíclico orientado hacia abajo (sin ciclos) y normalmente conectado.</p>
+
+    <h3>Términos clave</h3>
+    <ul>
+        <li><strong>Raíz:</strong> nodo principal</li>
+        <li><strong>Hijo, padre, hoja:</strong> relaciones entre nodos</li>
+        <li><strong>Altura, profundidad:</strong> medidas del árbol</li>
+    </ul>
+
+    <h3>Ejemplo: árbol binario en Python</h3>
+    <pre><code>class Nodo:
+    def __init__(self, val):
+        self.val = val
+        self.izq = None
+        self.der = None
+
+raiz = Nodo('A')
+raiz.izq = Nodo('B')
+raiz.der = Nodo('C')</code></pre>
+
+    <div class="alert alert-info">
+        <strong>Usos comunes:</strong> árboles de búsqueda (BST), sistemas de archivos, índices (B-tree), parsers (AST).
+    </div>
+
+    <h2>5. Grafos</h2>
+    <p>Un <strong>grafo</strong> es un conjunto de <em>nodos</em> y <em>aristas</em> que conectan pares de nodos. Es muy flexible para modelar relaciones.</p>
+
+    <h3>Tipos de grafos</h3>
+    <ul>
+        <li><strong>No dirigido:</strong> aristas sin dirección</li>
+        <li><strong>Dirigido (digrafo):</strong> aristas con dirección</li>
+        <li><strong>Ponderado:</strong> aristas con peso</li>
+        <li><strong>Cíclico / Acíclico</strong></li>
+        <li><strong>Conexo / No conexo</strong></li>
+    </ul>
+
+    <h3>Representaciones</h3>
+    <ol>
+        <li><strong>Lista de adyacencia</strong> — mapa nodo → lista de vecinos (eficiente en memoria)</li>
+        <li><strong>Matriz de adyacencia</strong> — matriz NxN (acceso rápido, costoso en memoria)</li>
+        <li><strong>Lista de aristas</strong> — lista de pares (útil para algoritmos que iteran aristas)</li>
+    </ol>
+
+    <h3>Ejemplo: lista de adyacencia en Python</h3>
+    <pre><code>g = {
+  'A': ['B','C'],
+  'B': ['A','C','D'],
+  'C': ['A','B','D'],
+  'D': ['B','C']
+}</code></pre>
+
+    <h3>🎮 Visualización Interactiva de Grafos</h3>
+    <div class="alert alert-success">
+        <strong>Experimenta con BFS y DFS:</strong> Edita el grafo, elige algoritmo y nodo inicial, y usa Step/Play para ver el recorrido paso a paso.
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex gap-3 align-items-center">
+                            <div>
+                                <label for="algo" class="form-label mb-0">Algoritmo</label>
+                                <select id="algo" class="form-select form-select-sm">
+                                    <option value="bfs">BFS (cola)</option>
+                                    <option value="dfs">DFS (pila)</option>
+                                    <option value="pathfind">BFS Pathfinding</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="start" class="form-label mb-0">Inicio</label>
+                                <select id="start" class="form-select form-select-sm"></select>
+                            </div>
+                            <div id="targetDiv" style="display:none;">
+                                <label for="target" class="form-label mb-0">Destino</label>
+                                <select id="target" class="form-select form-select-sm"></select>
+                            </div>
+                            <div>
+                                <label for="delay" class="form-label mb-0">Velocidad</label>
+                                <input id="delay" type="number" value="600" min="50" max="2000" class="form-control form-control-sm" style="width:80px" />
+                            </div>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button id="play" class="btn btn-success btn-sm">Play</button>
+                            <button id="step" class="btn btn-outline-primary btn-sm">Step</button>
+                            <button id="reset" class="btn btn-outline-secondary btn-sm">Reset</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-2">
+                    <div style="height:400px; display:flex; align-items:center; justify-content:center; background:linear-gradient(180deg,#fcfeff,#fbfcff); border-radius:8px;">
+                        <svg id="svg" viewBox="0 0 900 380" preserveAspectRatio="xMidYMid meet" style="width:100%; height:100%;"></svg>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mt-2">
+                        <div class="d-flex gap-2">
+                            <span class="badge bg-light text-dark"><span style="display:inline-block;width:10px;height:10px;background:#dbeafe;border-radius:50%;margin-right:4px"></span>Visitado</span>
+                            <span class="badge bg-light text-dark"><span style="display:inline-block;width:10px;height:10px;background:#fde68a;border-radius:50%;margin-right:4px"></span>Actual</span>
+                            <span class="badge bg-light text-dark"><span style="display:inline-block;width:10px;height:10px;background:#f1f5f9;border-radius:50%;margin-right:4px"></span>En cola/pila</span>
+                            <span class="badge bg-success text-white"><span style="display:inline-block;width:10px;height:10px;background:#16a34a;border-radius:50%;margin-right:4px"></span>Ruta final</span>
+                        </div>
+                        <small class="text-muted">Nodos: <span id="nodeCount">0</span> | Aristas: <span id="edgeCount">0</span></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h6 class="mb-0">Editar Grafo</h6>
+                </div>
+                <div class="card-body">
+                    <label for="adj" class="form-label">Lista de adyacencia</label>
+                    <textarea id="adj" class="form-control" rows="6" style="font-family:monospace; font-size:12px;">A: B,C
+B: A,D,E
+C: A,F
+D: B
+E: B,F
+F: C,E</textarea>
+                    <div class="d-flex gap-2 mt-2">
+                        <button id="load" class="btn btn-primary btn-sm">Cargar</button>
+                        <button id="example" class="btn btn-outline-secondary btn-sm">Ejemplo</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h6 class="mb-0">Cola / Pila</h6>
+                </div>
+                <div class="card-body">
+                    <div id="structureList" style="min-height:40px; font-family:monospace; font-size:13px;"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">Log de pasos</h6>
+                </div>
+                <div class="card-body">
+                    <div id="log" style="height:120px; overflow:auto; font-family:monospace; font-size:12px; background:#f8f9fa; padding:8px; border-radius:4px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .node{fill:#fff;stroke:#0b5cff;stroke-width:2px}
+        .node.visited{fill:#dbeafe;stroke:#0b5cff}
+        .node.current{fill:#fde68a;stroke:#d97706}
+        .node.queued{fill:#f1f5f9;stroke:#64748b}
+        .node.path{fill:#16a34a;stroke:#15803d}
+        .edge{stroke:#cbd5e1;stroke-width:2}
+        .edge.active{stroke:#0b5cff;stroke-width:3}
+        .edge.path{stroke:#16a34a;stroke-width:4}
+        
+        /* Estilos para Dijkstra */
+        .dijkstra-node{fill:#fff;stroke:#0b5cff;stroke-width:2px}
+        .dijkstra-node.visited{fill:#dbeafe;stroke:#0b5cff}
+        .dijkstra-node.current{fill:#fde68a;stroke:#d97706}
+        .dijkstra-node.queued{fill:#f1f5f9;stroke:#64748b}
+        .dijkstra-edge{stroke:#cbd5e1;stroke-width:2}
+        .dijkstra-edge.relaxed{stroke:#f59e0b;stroke-width:3}
+        .dijkstra-edge.shortest{stroke:#16a34a;stroke-width:4}
+        .edge-weight{font-size:12px;font-weight:600;fill:#374151}
+    </style>
+
+    <script>
+        // Visualización interactiva de grafos
+        const svg = document.getElementById('svg');
+        const startSel = document.getElementById('start');
+        const targetSel = document.getElementById('target');
+        const targetDiv = document.getElementById('targetDiv');
+        const algoSel = document.getElementById('algo');
+        const delayInput = document.getElementById('delay');
+        const playBtn = document.getElementById('play');
+        const stepBtn = document.getElementById('step');
+        const resetBtn = document.getElementById('reset');
+        const loadBtn = document.getElementById('load');
+        const exampleBtn = document.getElementById('example');
+        const adjTA = document.getElementById('adj');
+        const structureList = document.getElementById('structureList');
+        const logDiv = document.getElementById('log');
+        const nodeCountSpan = document.getElementById('nodeCount');
+        const edgeCountSpan = document.getElementById('edgeCount');
+
+        let graph = {};
+        let nodes = [];
+        let edges = [];
+        let steps = [];
+        let stepIndex = 0;
+        let timer = null;
+        let playing = false;
+
+        function parseAdj(text){
+            const map = {};
+            text.split('\n').map(l=>l.trim()).filter(Boolean).forEach(line=>{
+                const parts = line.split(':');
+                if(parts.length<2) return;
+                const node = parts[0].trim();
+                const neigh = parts[1].split(',').map(x=>x.trim()).filter(Boolean);
+                if(!map[node]) map[node]=new Set();
+                neigh.forEach(n=>map[node].add(n));
+                neigh.forEach(n=>{ if(!map[n]) map[n]=new Set(); });
+            });
+            const out = {};
+            Object.keys(map).sort().forEach(k=> out[k] = Array.from(map[k]));
+            return out;
+        }
+
+        function buildLayout(g){
+            graph = g;
+            nodes = Object.keys(graph).sort().map((id,i,arr)=>{
+                const theta = (i / arr.length) * Math.PI*2 - Math.PI/2;
+                const r = Math.min(150,120);
+                return {id, x:450 + r*Math.cos(theta), y:190 + r*Math.sin(theta)};
+            });
+            edges = [];
+            Object.entries(graph).forEach(([u,neis])=>{
+                neis.forEach(v=>{
+                    edges.push({u,v});
+                });
+            });
+            nodeCountSpan.textContent = nodes.length;
+            edgeCountSpan.textContent = edges.length;
+        }
+
+        function render(){
+            while(svg.firstChild) svg.removeChild(svg.firstChild);
+            edges.forEach((e,i)=>{
+                const u = nodes.find(n=>n.id===e.u);
+                const v = nodes.find(n=>n.id===e.v);
+                const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+                line.setAttribute('x1',u.x); line.setAttribute('y1',u.y);
+                line.setAttribute('x2',v.x); line.setAttribute('y2',v.y);
+                line.setAttribute('class','edge');
+                line.dataset.u=e.u; line.dataset.v=e.v;
+                svg.appendChild(line);
+            });
+            nodes.forEach(n=>{
+                const g = document.createElementNS('http://www.w3.org/2000/svg','g');
+                g.setAttribute('transform',`translate(${n.x},${n.y})`);
+                const c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+                c.setAttribute('r',20);
+                c.setAttribute('class','node');
+                c.dataset.id = n.id;
+                const t = document.createElementNS('http://www.w3.org/2000/svg','text');
+                t.setAttribute('x',0); t.setAttribute('y',5); t.setAttribute('text-anchor','middle');
+                t.style.fontSize='12px'; t.style.fontWeight='600'; t.textContent = n.id;
+                g.appendChild(c); g.appendChild(t);
+                svg.appendChild(g);
+            });
+        }
+
+        function runBFSSteps(g, start){
+            const visited = new Set();
+            const q = [];
+            const steps = [];
+            q.push(start); steps.push({type:'enqueue',node:start});
+            while(q.length){
+                const u = q.shift(); steps.push({type:'dequeue',node:u});
+                if(visited.has(u)) continue;
+                steps.push({type:'visit',node:u}); visited.add(u);
+                for(const v of (g[u]||[])){
+                    if(!visited.has(v) && !q.includes(v)){
+                        q.push(v); steps.push({type:'enqueue',node:v,from:u});
+                    }
+                }
+                steps.push({type:'snapshot',structure:'queue',value: q.slice()});
+            }
+            return steps;
+        }
+
+        function runDFSSteps(g, start){
+            const visited = new Set();
+            const stack = [];
+            const steps = [];
+            
+            stack.push(start); 
+            steps.push({type:'push',node:start});
+            steps.push({type:'snapshot',structure:'stack',value: stack.slice()});
+            
+            while(stack.length > 0){
+                const u = stack.pop(); 
+                steps.push({type:'pop',node:u});
+                
+                if(visited.has(u)) {
+                    steps.push({type:'skip',node:u,reason:'ya visitado'});
+                    steps.push({type:'snapshot',structure:'stack',value: stack.slice()});
+                    continue;
+                }
+                
+                steps.push({type:'visit',node:u}); 
+                visited.add(u);
+                
+                // Agregar vecinos a la pila (en orden reverso para mantener orden alfabético)
+                const neighbors = (g[u] || []).slice().reverse();
+                for(const v of neighbors){
+                    if(!visited.has(v)){
+                        if(!stack.includes(v)){
+                            stack.push(v);
+                            steps.push({type:'push',node:v,from:u});
+                        } else {
+                            steps.push({type:'skip',node:v,reason:'ya en pila'});
+                        }
+                    } else {
+                        steps.push({type:'skip',node:v,reason:'ya visitado'});
+                    }
+                }
+                steps.push({type:'snapshot',structure:'stack',value: stack.slice()});
+            }
+            return steps;
+        }
+
+        function runPathfindingSteps(g, start, target){
+            const visited = new Set();
+            const parent = {};
+            const distance = {};
+            const q = [];
+            const steps = [];
+            
+            q.push(start); 
+            steps.push({type:'enqueue',node:start});
+            parent[start] = null;
+            distance[start] = 0;
+            
+            while(q.length){
+                const u = q.shift(); 
+                steps.push({type:'dequeue',node:u});
+                
+                if(visited.has(u)) {
+                    steps.push({type:'skip',node:u,reason:'ya visitado'});
+                    continue;
+                }
+                
+                steps.push({type:'visit',node:u,distance:distance[u]}); 
+                visited.add(u);
+                
+                if(u === target){
+                    steps.push({type:'found',node:u,distance:distance[u]});
+                    // Reconstruir ruta
+                    const path = [];
+                    let current = target;
+                    while(current !== null){
+                        path.unshift(current);
+                        current = parent[current];
+                    }
+                    steps.push({type:'showpath',path:path,distance:distance[target]});
+                    break;
+                }
+                
+                for(const v of (g[u]||[])){
+                    if(!visited.has(v)){
+                        if(!q.includes(v)){
+                            q.push(v); 
+                            parent[v] = u;
+                            distance[v] = distance[u] + 1;
+                            steps.push({type:'enqueue',node:v,from:u,distance:distance[v]});
+                        } else {
+                            steps.push({type:'skip',node:v,reason:'ya en cola'});
+                        }
+                    } else {
+                        steps.push({type:'skip',node:v,reason:'ya visitado'});
+                    }
+                }
+                steps.push({type:'snapshot',structure:'queue',value: q.slice()});
+            }
+            return steps;
+        }
+
+        function prepareSteps(){
+            const start = startSel.value;
+            if(!start) return;
+            const algo = algoSel.value;
+            
+            if(algo === 'pathfind'){
+                const target = targetSel.value;
+                if(!target || target === start) {
+                    alert('Selecciona un nodo destino diferente al origen');
+                    return;
+                }
+                steps = runPathfindingSteps(graph, start, target);
+            } else {
+                steps = (algo==='bfs')? runBFSSteps(graph,start) : runDFSSteps(graph,start);
+            }
+            
+            stepIndex = 0; logDiv.textContent=''; updateStructureView([]);
+            highlightReset(); renderEdgesReset();
+        }
+
+        function replayStep(i){
+            if(i<0 || i>=steps.length) return;
+            const s = steps[i];
+            appendLog(s);
+            if(s.type==='visit'){
+                setNodeState(s.node,'visited'); setNodeState(s.node,'current');
+            } else if(s.type==='enqueue'){
+                setNodeState(s.node,'queued');
+                if(s.from) highlightEdge(s.from, s.node);
+            } else if(s.type==='dequeue'){
+                setNodeState(s.node,'current');
+            } else if(s.type==='push'){
+                setNodeState(s.node,'queued');
+                if(s.from) highlightEdge(s.from, s.node);
+            } else if(s.type==='pop'){
+                setNodeState(s.node,'current');
+            } else if(s.type==='found'){
+                setNodeState(s.node,'current');
+            } else if(s.type==='showpath'){
+                showFinalPath(s.path);
+            } else if(s.type==='snapshot'){
+                updateStructureView(s.value);
+            }
+        }
+
+        function appendLog(s){
+            const line = document.createElement('div');
+            line.textContent = formatStep(s);
+            logDiv.appendChild(line);
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        function formatStep(s){
+            switch(s.type){
+                case 'visit': 
+                    if(s.distance !== undefined) return `VISITAR ${s.node} (distancia: ${s.distance})`;
+                    return `VISITAR ${s.node}`;
+                case 'enqueue': 
+                    if(s.distance !== undefined) return `ENQUEUE ${s.node} (distancia: ${s.distance})`;
+                    return `ENQUEUE ${s.node}`;
+                case 'dequeue': return `DEQUEUE ${s.node}`;
+                case 'push': return `PUSH ${s.node}`;
+                case 'pop': return `POP ${s.node}`;
+                case 'skip': return `SKIP ${s.node} — ${s.reason}`;
+                case 'found': 
+                    if(s.distance !== undefined) return `¡DESTINO ENCONTRADO! ${s.node} (distancia: ${s.distance})`;
+                    return `¡DESTINO ENCONTRADO! ${s.node}`;
+                case 'showpath': 
+                    if(s.distance !== undefined) return `RUTA MÁS CORTA: ${s.path.join(' → ')} (${s.distance} saltos)`;
+                    return `RUTA FINAL: ${s.path.join(' → ')}`;
+                case 'snapshot': return `${s.structure.toUpperCase()} = [${s.value.join(', ')}]`;
+                default: return JSON.stringify(s);
+            }
+        }
+
+        function showFinalPath(path){
+            // Resaltar nodos de la ruta
+            path.forEach(nodeId => {
+                setNodeState(nodeId, 'path');
+            });
+            
+            // Resaltar aristas de la ruta
+            for(let i = 0; i < path.length - 1; i++){
+                highlightPathEdge(path[i], path[i + 1]);
+            }
+        }
+
+        function highlightPathEdge(u, v){
+            const lines = Array.from(svg.querySelectorAll('line'));
+            const found = lines.find(l=> (l.dataset.u===u && l.dataset.v===v) || (l.dataset.u===v && l.dataset.v===u));
+            if(found) found.classList.add('path');
+        }
+
+        function setNodeState(id, state){
+            const circles = svg.querySelectorAll('circle');
+            circles.forEach(c=>{
+                if(c.dataset.id===id){
+                    if(state !== 'path') c.classList.remove('current','visited','queued');
+                    if(state) c.classList.add(state);
+                }
+            });
+        }
+
+        function highlightEdge(u,v){
+            const lines = Array.from(svg.querySelectorAll('line'));
+            lines.forEach(l=> l.classList.remove('active'));
+            const found = lines.find(l=> (l.dataset.u===u && l.dataset.v===v) || (l.dataset.u===v && l.dataset.v===u));
+            if(found) found.classList.add('active');
+        }
+
+        function renderEdgesReset(){
+            svg.querySelectorAll('line').forEach(l=> {
+                l.classList.remove('active');
+                l.classList.remove('path');
+            });
+        }
+
+        function highlightReset(){
+            svg.querySelectorAll('circle').forEach(c=> c.classList.remove('visited','current','queued','path'));
+        }
+
+        function updateStructureView(arr){
+            structureList.innerHTML = '';
+            if(!arr || !arr.length) return;
+            const title = document.createElement('div');
+            title.style.fontWeight='600';
+            const content = document.createElement('div');
+            
+            if(algoSel.value==='bfs' || algoSel.value==='pathfind'){
+                title.textContent = 'Cola (FIFO - front → back):';
+                content.textContent = arr.join(' ← ');
+            } else {
+                title.textContent = 'Pila (LIFO - bottom → top):';
+                content.textContent = arr.join(' | ');
+            }
+            
+            structureList.appendChild(title);
+            structureList.appendChild(content);
+        }
+
+        playBtn.addEventListener('click', ()=>{
+            if(playing){ stop(); return; }
+            if(!steps || !steps.length) prepareSteps();
+            play();
+        });
+
+        stepBtn.addEventListener('click', ()=>{
+            if(!steps || !steps.length) prepareSteps();
+            if(stepIndex < steps.length){ replayStep(stepIndex); stepIndex++; }
+        });
+
+        resetBtn.addEventListener('click', ()=>{
+            stop(); stepIndex=0; logDiv.textContent=''; updateStructureView([]);
+            highlightReset(); renderEdgesReset();
+        });
+
+        function play(){
+            playing = true; playBtn.textContent='Pause';
+            timer = setInterval(()=>{
+                if(stepIndex>=steps.length){ stop(); return; }
+                replayStep(stepIndex); stepIndex++;
+            }, Number(delayInput.value)||600);
+        }
+
+        function stop(){
+            playing=false; playBtn.textContent='Play';
+            if(timer) clearInterval(timer); timer=null;
+        }
+
+        loadBtn.addEventListener('click', ()=>{
+            try{
+                const g = parseAdj(adjTA.value);
+                buildLayout(g); render(); populateStart(); resetBtn.click();
+            }catch(e){ alert('Error parsing grafo'); }
+        });
+
+        exampleBtn.addEventListener('click', ()=>{
+            adjTA.value = 'A: B,C\nB: A,D,E\nC: A,F\nD: B\nE: B,F\nF: C,E';
+            loadBtn.click();
+        });
+
+        algoSel.addEventListener('change', ()=>{ 
+            resetBtn.click(); 
+            if(algoSel.value === 'pathfind'){
+                targetDiv.style.display = 'block';
+            } else {
+                targetDiv.style.display = 'none';
+            }
+        });
+
+        function populateStart(){
+            startSel.innerHTML = '';
+            targetSel.innerHTML = '';
+            nodes.forEach(n=>{
+                const o1 = document.createElement('option');
+                o1.value=n.id; o1.textContent=n.id;
+                startSel.appendChild(o1);
+                
+                const o2 = document.createElement('option');
+                o2.value=n.id; o2.textContent=n.id;
+                targetSel.appendChild(o2);
+            });
+        }
+
+        // Inicialización
+        setTimeout(()=>{
+            loadBtn.click();
+            render();
+            populateStart();
+        }, 100);
+    </script>
+</div>
+
+<script>
+    // Visualización de Dijkstra - Script movido al final
+    console.log('Definiendo variables de Dijkstra...');
+    const dijkstra_svg = document.getElementById('dijkstra_svg');
+    const dijkstra_startSel = document.getElementById('dijkstra_start');
+    const dijkstra_delayInput = document.getElementById('dijkstra_delay');
+    const dijkstra_playBtn = document.getElementById('dijkstra_play');
+    const dijkstra_stepBtn = document.getElementById('dijkstra_step');
+    const dijkstra_resetBtn = document.getElementById('dijkstra_reset');
+    const dijkstra_loadBtn = document.getElementById('dijkstra_load');
+    const dijkstra_exampleBtn = document.getElementById('dijkstra_example');
+    const dijkstra_adjTA = document.getElementById('dijkstra_adj');
+    const dijkstra_queueDiv = document.getElementById('dijkstra_queue');
+    const dijkstra_distancesDiv = document.getElementById('dijkstra_distances');
+    const dijkstra_logDiv = document.getElementById('dijkstra_log');
+    const dijkstra_nodeCountSpan = document.getElementById('dijkstra_nodeCount');
+    const dijkstra_edgeCountSpan = document.getElementById('dijkstra_edgeCount');
+
+    console.log('Elementos encontrados:');
+    console.log('dijkstra_svg:', dijkstra_svg);
+    console.log('dijkstra_adjTA:', dijkstra_adjTA);
+    console.log('dijkstra_startSel:', dijkstra_startSel);
+
+        let dijkstra_graph = {};
+        let dijkstra_nodes = [];
+        let dijkstra_edges = [];
+        let dijkstra_steps = [];
+        let dijkstra_stepIndex = 0;
+        let dijkstra_timer = null;
+        let dijkstra_playing = false;
+
+        function parseWeightedAdj(text){
+            const map = {};
+            text.split('\n').map(l=>l.trim()).filter(Boolean).forEach(line=>{
+                const parts = line.split(':');
+                if(parts.length<2) return;
+                const node = parts[0].trim();
+                const connections = parts[1].split(',').map(x=>x.trim()).filter(Boolean);
+                if(!map[node]) map[node] = [];
+                connections.forEach(conn=>{
+                    const match = conn.match(/^(.+)\((\d+)\)$/);
+                    if(match){
+                        const neighbor = match[1].trim();
+                        const weight = parseInt(match[2]);
+                        map[node].push({node: neighbor, weight: weight});
+                        // Asegurar que el vecino existe
+                        if(!map[neighbor]) map[neighbor] = [];
+                    }
+                });
+            });
+            return map;
+        }
+
+        function buildDijkstraLayout(g){
+            dijkstra_graph = g;
+            dijkstra_nodes = Object.keys(dijkstra_graph).sort().map((id,i,arr)=>{
+                const theta = (i / arr.length) * Math.PI*2 - Math.PI/2;
+                const r = Math.min(150,120);
+                return {id, x:450 + r*Math.cos(theta), y:190 + r*Math.sin(theta)};
+            });
+            dijkstra_edges = [];
+            Object.entries(dijkstra_graph).forEach(([u,connections])=>{
+                connections.forEach(conn=>{
+                    dijkstra_edges.push({u, v: conn.node, weight: conn.weight});
+                });
+            });
+            console.log('Layout creado:', dijkstra_nodes.length, 'nodos');
+        }
+
+        function renderDijkstra(){
+            const svg = document.getElementById('dijkstra_svg');
+            if(!svg) {
+                console.error('dijkstra_svg no encontrado');
+                return;
+            }
+            
+            while(svg.firstChild) svg.removeChild(svg.firstChild);
+            
+            // Renderizar aristas con pesos
+            dijkstra_edges.forEach((e,i)=>{
+                const u = dijkstra_nodes.find(n=>n.id===e.u);
+                const v = dijkstra_nodes.find(n=>n.id===e.v);
+                
+                const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+                line.setAttribute('x1',u.x); line.setAttribute('y1',u.y);
+                line.setAttribute('x2',v.x); line.setAttribute('y2',v.y);
+                line.setAttribute('class','dijkstra-edge');
+                line.dataset.u=e.u; line.dataset.v=e.v;
+                svg.appendChild(line);
+                
+                // Texto del peso
+                const midX = (u.x + v.x) / 2;
+                const midY = (u.y + v.y) / 2;
+                const text = document.createElementNS('http://www.w3.org/2000/svg','text');
+                text.setAttribute('x', midX);
+                text.setAttribute('y', midY - 5);
+                text.setAttribute('text-anchor','middle');
+                text.setAttribute('class','edge-weight');
+                text.textContent = e.weight;
+                svg.appendChild(text);
+            });
+            
+            // Renderizar nodos
+            dijkstra_nodes.forEach(n=>{
+                const g = document.createElementNS('http://www.w3.org/2000/svg','g');
+                g.setAttribute('transform',`translate(${n.x},${n.y})`);
+                
+                const c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+                c.setAttribute('r',20);
+                c.setAttribute('class','dijkstra-node');
+                c.dataset.id = n.id;
+                
+                const t = document.createElementNS('http://www.w3.org/2000/svg','text');
+                t.setAttribute('x',0); t.setAttribute('y',5); t.setAttribute('text-anchor','middle');
+                t.style.fontSize='12px'; t.style.fontWeight='600'; t.textContent = n.id;
+                
+                g.appendChild(c); g.appendChild(t);
+                svg.appendChild(g);
+            });
+            console.log('Grafo renderizado:', dijkstra_nodes.length, 'nodos,', dijkstra_edges.length, 'aristas');
+        }
+
+        function runDijkstraSteps(g, start){
+            const distances = {};
+            const visited = new Set();
+            const previous = {};
+            const pq = []; // Priority queue: [{node, dist}]
+            const steps = [];
+            
+            // Inicializar distancias
+            Object.keys(g).forEach(node => {
+                distances[node] = node === start ? 0 : Infinity;
+                previous[node] = null;
+            });
+            
+            pq.push({node: start, dist: 0});
+            steps.push({type: 'init', distances: {...distances}});
+            steps.push({type: 'enqueue', node: start, dist: 0});
+            
+            while(pq.length > 0){
+                // Encontrar nodo con menor distancia
+                pq.sort((a, b) => a.dist - b.dist);
+                const current = pq.shift();
+                steps.push({type: 'dequeue', node: current.node, dist: current.dist});
+                
+                if(visited.has(current.node)){
+                    steps.push({type: 'skip', node: current.node, reason: 'ya visitado'});
+                    continue;
+                }
+                
+                visited.add(current.node);
+                steps.push({type: 'visit', node: current.node, dist: current.dist});
+                
+                // Examinar vecinos
+                const neighbors = g[current.node] || [];
+                for(const neighbor of neighbors){
+                    if(!visited.has(neighbor.node)){
+                        const newDist = distances[current.node] + neighbor.weight;
+                        if(newDist < distances[neighbor.node]){
+                            distances[neighbor.node] = newDist;
+                            previous[neighbor.node] = current.node;
+                            pq.push({node: neighbor.node, dist: newDist});
+                            steps.push({
+                                type: 'relax', 
+                                from: current.node, 
+                                to: neighbor.node, 
+                                oldDist: distances[neighbor.node] === newDist ? Infinity : distances[neighbor.node],
+                                newDist: newDist,
+                                weight: neighbor.weight
+                            });
+                        } else {
+                            steps.push({
+                                type: 'no_relax',
+                                from: current.node,
+                                to: neighbor.node,
+                                currentDist: distances[neighbor.node],
+                                proposedDist: newDist
+                            });
+                        }
+                    }
+                }
+                steps.push({type: 'snapshot', distances: {...distances}, queue: pq.slice()});
+            }
+            
+            return steps;
+        }
+
+        // Event listeners y funciones de control para Dijkstra
+        if(dijkstra_loadBtn) {
+            dijkstra_loadBtn.addEventListener('click', () => {
+                try {
+                    const g = parseWeightedAdj(dijkstra_adjTA.value);
+                    buildDijkstraLayout(g);
+                    renderDijkstra();
+                    populateDijkstraStart();
+                } catch(e) {
+                    alert('Error parsing weighted graph');
+                }
+            });
+        }
+
+        if(dijkstra_exampleBtn) {
+            dijkstra_exampleBtn.addEventListener('click', () => {
+                dijkstra_adjTA.value = 'A: B(4),C(2)\nB: A(4),C(1),D(5)\nC: A(2),B(1),D(8),E(10)\nD: B(5),C(8),E(2)\nE: C(10),D(2)';
+                if(dijkstra_loadBtn) dijkstra_loadBtn.click();
+            });
+        }
+
+        if(dijkstra_stepBtn) {
+            dijkstra_stepBtn.addEventListener('click', () => {
+                if(!dijkstra_steps || !dijkstra_steps.length) {
+                    const start = dijkstra_startSel.value;
+                    if(!start) return;
+                    dijkstra_steps = runDijkstraSteps(dijkstra_graph, start);
+                    dijkstra_stepIndex = 0;
+                    dijkstra_logDiv.textContent = '';
+                }
+                if(dijkstra_stepIndex < dijkstra_steps.length) {
+                    const s = dijkstra_steps[dijkstra_stepIndex];
+                    const line = document.createElement('div');
+                    line.textContent = formatDijkstraStep(s);
+                    dijkstra_logDiv.appendChild(line);
+                    dijkstra_logDiv.scrollTop = dijkstra_logDiv.scrollHeight;
+                    
+                    if(s.type === 'snapshot') {
+                        updateDijkstraViews(s.distances, s.queue);
+                    }
+                    dijkstra_stepIndex++;
+                }
+            });
+        }
+
+        if(dijkstra_resetBtn) {
+            dijkstra_resetBtn.addEventListener('click', () => {
+                dijkstra_stepIndex = 0;
+                if(dijkstra_logDiv) dijkstra_logDiv.textContent = '';
+                updateDijkstraViews();
+            });
+        }
+
+        function updateDijkstraViews(distances = {}, queue = []){
+            if(dijkstra_distancesDiv) {
+                dijkstra_distancesDiv.innerHTML = '';
+                Object.entries(distances).forEach(([node, dist]) => {
+                    const div = document.createElement('div');
+                    div.textContent = `${node}: ${dist === Infinity ? '∞' : dist}`;
+                    dijkstra_distancesDiv.appendChild(div);
+                });
+            }
+            
+            if(dijkstra_queueDiv) {
+                dijkstra_queueDiv.innerHTML = '';
+                if(queue.length > 0){
+                    const title = document.createElement('div');
+                    title.style.fontWeight = '600';
+                    title.textContent = 'Cola de prioridad:';
+                    dijkstra_queueDiv.appendChild(title);
+                    
+                    queue.sort((a, b) => a.dist - b.dist);
+                    queue.forEach(item => {
+                        const div = document.createElement('div');
+                        div.textContent = `${item.node}(${item.dist})`;
+                        dijkstra_queueDiv.appendChild(div);
+                    });
+                }
+            }
+        }
+
+        function populateDijkstraStart(){
+            const startSel = document.getElementById('dijkstra_start');
+            if(!startSel) {
+                console.error('dijkstra_start no encontrado');
+                return;
+            }
+            
+            startSel.innerHTML = '';
+            dijkstra_nodes.forEach(n => {
+                const o = document.createElement('option');
+                o.value = n.id;
+                o.textContent = n.id;
+                startSel.appendChild(o);
+            });
+            console.log('Opciones agregadas:', startSel.children.length);
+        }
+
+        function formatDijkstraStep(s){
+            switch(s.type){
+                case 'init': return 'INICIALIZAR distancias';
+                case 'enqueue': return `ENQUEUE ${s.node} (dist: ${s.dist})`;
+                case 'dequeue': return `DEQUEUE ${s.node} (dist: ${s.dist})`;
+                case 'visit': return `VISITAR ${s.node} (dist: ${s.dist})`;
+                case 'relax': return `RELAJAR ${s.from}→${s.to}: ${s.oldDist === Infinity ? '∞' : s.oldDist} → ${s.newDist}`;
+                case 'no_relax': return `NO RELAJAR ${s.from}→${s.to}: ${s.currentDist} ≤ ${s.proposedDist}`;
+                case 'skip': return `SKIP ${s.node} — ${s.reason}`;
+                default: return JSON.stringify(s);
+            }
+        }
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM cargado, inicializando Dijkstra...');
+            const adjTA = document.getElementById('dijkstra_adj');
+            console.log('Elemento dijkstra_adj:', adjTA);
+            
+            if(adjTA) {
+                console.log('Textarea encontrado:', adjTA.value);
+                try {
+                    const g = parseWeightedAdj(adjTA.value);
+                    console.log('Grafo parseado:', g);
+                    buildDijkstraLayout(g);
+                    console.log('Nodos creados:', dijkstra_nodes);
+                    renderDijkstra();
+                    populateDijkstraStart();
+                    console.log('Inicialización completa');
+                } catch(e) {
+                    console.error('Error en inicialización:', e);
+                }
+            } else {
+                console.error('No se encontró dijkstra_adj en DOMContentLoaded');
+            }
+        });
+    </script>
+
+    <h3>🎯 Algoritmos de Camino Más Corto (con pesos)</h3>
+    <div class="alert alert-info">
+        <strong>Dijkstra:</strong> Encuentra las distancias mínimas desde un nodo origen a todos los demás en grafos con pesos positivos.
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex gap-3 align-items-center">
+                            <div>
+                                <label for="dijkstra_start" class="form-label mb-0">Nodo origen</label>
+                                <select id="dijkstra_start" class="form-select form-select-sm"></select>
+                            </div>
+                            <div>
+                                <label for="dijkstra_delay" class="form-label mb-0">Velocidad</label>
+                                <input id="dijkstra_delay" type="number" value="800" min="100" max="3000" class="form-control form-control-sm" style="width:80px" />
+                            </div>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button id="dijkstra_play" class="btn btn-success btn-sm">Play</button>
+                            <button id="dijkstra_step" class="btn btn-outline-primary btn-sm">Step</button>
+                            <button id="dijkstra_reset" class="btn btn-outline-secondary btn-sm">Reset</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-2">
+                    <div style="height:400px; display:flex; align-items:center; justify-content:center; background:linear-gradient(180deg,#fcfeff,#fbfcff); border-radius:8px;">
+                        <svg id="dijkstra_svg" viewBox="0 0 900 380" preserveAspectRatio="xMidYMid meet" style="width:100%; height:100%;"></svg>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mt-2">
+                        <div class="d-flex gap-2">
+                            <span class="badge bg-light text-dark"><span style="display:inline-block;width:10px;height:10px;background:#dbeafe;border-radius:50%;margin-right:4px"></span>Visitado</span>
+                            <span class="badge bg-light text-dark"><span style="display:inline-block;width:10px;height:10px;background:#fde68a;border-radius:50%;margin-right:4px"></span>Actual</span>
+                            <span class="badge bg-light text-dark"><span style="display:inline-block;width:10px;height:10px;background:#f1f5f9;border-radius:50%;margin-right:4px"></span>En cola</span>
+                            <span class="badge bg-warning text-dark">Relajación</span>
+                        </div>
+                        <small class="text-muted">Nodos: <span id="dijkstra_nodeCount">0</span> | Aristas: <span id="dijkstra_edgeCount">0</span></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h6 class="mb-0">Grafo con Pesos</h6>
+                </div>
+                <div class="card-body">
+                    <label for="dijkstra_adj" class="form-label">Lista de adyacencia con pesos</label>
+                    <textarea id="dijkstra_adj" class="form-control" rows="6" style="font-family:monospace; font-size:12px;">A: B(4),C(2)
+B: A(4),C(1),D(5)
+C: A(2),B(1),D(8),E(10)
+D: B(5),C(8),E(2)
+E: C(10),D(2)</textarea>
+                    <div class="d-flex gap-2 mt-2">
+                        <button id="dijkstra_load" class="btn btn-primary btn-sm">Cargar</button>
+                        <button id="dijkstra_example" class="btn btn-outline-secondary btn-sm">Ejemplo</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h6 class="mb-0">Cola de Prioridad</h6>
+                </div>
+                <div class="card-body">
+                    <div id="dijkstra_queue" style="min-height:60px; font-family:monospace; font-size:12px;"></div>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h6 class="mb-0">Distancias</h6>
+                </div>
+                <div class="card-body">
+                    <div id="dijkstra_distances" style="font-family:monospace; font-size:12px;"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">Log de pasos</h6>
+                </div>
+                <div class="card-body">
+                    <div id="dijkstra_log" style="height:120px; overflow:auto; font-family:monospace; font-size:12px; background:#f8f9fa; padding:8px; border-radius:4px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h2>6. Algoritmos de Grafos</h2>
+
+    <h3>BFS — Breadth-First Search</h3>
+    <p>Recorre por niveles. Ideal para distancia mínima en grafos <strong>no ponderados</strong>.</p>
+    <pre><code>from collections import deque
+
+def bfs(g, inicio):
+    visitados = set()
+    cola = deque([inicio])
+    orden = []
+    while cola:
+        nodo = cola.popleft()
+        if nodo in visitados:
+            continue
+        visitados.add(nodo)
+        orden.append(nodo)
+        for v in g.get(nodo, []):
+            if v not in visitados:
+                cola.append(v)
+    return orden</code></pre>
+
+    <h3>DFS — Depth-First Search</h3>
+    <p>Explora un camino hasta el final antes de retroceder. Útil para detección de ciclos y componentes.</p>
+    <pre><code>def dfs(g, inicio, visitados=None, orden=None):
+    if visitados is None:
+        visitados = set()
+        orden = []
+    if inicio in visitados:
+        return
+    visitados.add(inicio)
+    orden.append(inicio)
+    for v in g.get(inicio, []):
+        if v not in visitados:
+            dfs(g, v, visitados, orden)
+    return orden</code></pre>
+
+    <h3>Algoritmo de Dijkstra</h3>
+    <p>Encuentra distancias mínimas desde un origen en grafos con pesos positivos usando una cola de prioridad.</p>
+    <pre><code>import heapq
+
+def dijkstra(g, inicio):
+    dist = {n: float('inf') for n in g}
+    dist[inicio] = 0
+    pq = [(0, inicio)]
+    while pq:
+        d, nodo = heapq.heappop(pq)
+        if d > dist[nodo]:
+            continue
+        for vecino, peso in g[nodo]:
+            nd = d + peso
+            if nd < dist[vecino]:
+                dist[vecino] = nd
+                heapq.heappush(pq, (nd, vecino))
+    return dist</code></pre>
+
+    <h3>Algoritmo A* (A-star)</h3>
+    <p>Versión heurística de búsqueda de rutas: combina distancia recorrida + heurística estimada al objetivo. Muy usado en pathfinding.</p>
+
+    <h3>Detección de ciclos</h3>
+    <ul>
+        <li><strong>Grafos dirigidos:</strong> usar DFS con 3 colores (blanco/gris/negro)</li>
+        <li><strong>Grafos no dirigidos:</strong> usar DFS; si encuentras un vecino visitado que no es el padre, hay ciclo</li>
+    </ul>
+
+    <h2>7. Grafos en MySQL</h2>
+    <p>El modelo más flexible es <em>lista de aristas</em> con tabla de nodos y tabla de aristas.</p>
+
+    <h3>Esquema de base de datos</h3>
+    <pre><code>CREATE TABLE nodos (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nombre VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE aristas (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  origen INT NOT NULL,
+  destino INT NOT NULL,
+  peso DOUBLE NULL,
+  FOREIGN KEY (origen) REFERENCES nodos(id),
+  FOREIGN KEY (destino) REFERENCES nodos(id)
+);</code></pre>
+
+    <h3>Cargar grafo en PHP</h3>
+    <pre><code>&lt;?php
+$mysqli = new mysqli('host','user','pass','db');
+$grafo = [];
+$res = $mysqli->query("SELECT id FROM nodos");
+while($r = $res->fetch_assoc()){
+    $grafo[$r['id']] = [];
+}
+$res = $mysqli->query("SELECT origen,destino,peso FROM aristas");
+while($a = $res->fetch_assoc()){
+    $grafo[$a['origen']][] = [
+        'destino'=> (int)$a['destino'], 
+        'peso'=> (float)$a['peso']
+    ];
+}
+?></code></pre>
+
+    <h2>📌 Resumen rápido</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Estructura</th>
+                <th>Política</th>
+                <th>Uso principal</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Lista</td>
+                <td>Acceso por índice</td>
+                <td>Almacenamiento ordenado</td>
+            </tr>
+            <tr>
+                <td>Pila</td>
+                <td>LIFO</td>
+                <td>Call stack, deshacer/rehacer</td>
+            </tr>
+            <tr>
+                <td>Cola</td>
+                <td>FIFO</td>
+                <td>Procesamiento por lotes, BFS</td>
+            </tr>
+            <tr>
+                <td>Árbol</td>
+                <td>Jerárquico</td>
+                <td>Búsquedas, sistemas de archivos</td>
+            </tr>
+            <tr>
+                <td>Grafo</td>
+                <td>Relaciones</td>
+                <td>Redes, rutas, dependencias</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="alert alert-warning">
+        <h5>💡 Consejos prácticos</h5>
+        <ul class="mb-0">
+            <li>Para grafos grandes usa <strong>lista de adyacencia</strong></li>
+            <li>Extrae grafos a memoria para algoritmos complejos</li>
+            <li>Considera motores especializados (Neo4j) para consultas intensivas</li>
+        </ul>
+    </div>
+
+    <h3>🎯 Algoritmos de Camino Más Corto (con pesos)</h3>
+    <div class="alert alert-info">
+        <strong>Dijkstra:</strong> Encuentra las distancias mínimas desde un nodo origen a todos los demás en grafos con pesos positivos.
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex gap-3 align-items-center">
+                            <div>
+                                <label for="dijkstra_start" class="form-label mb-0">Nodo origen</label>
+                                <select id="dijkstra_start" class="form-select form-select-sm"></select>
+                            </div>
+                            <div>
+                                <label for="dijkstra_delay" class="form-label mb-0">Velocidad</label>
+                                <input id="dijkstra_delay" type="number" value="800" min="100" max="3000" class="form-control form-control-sm" style="width:80px" />
+                            </div>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button id="dijkstra_play" class="btn btn-success btn-sm">Play</button>
+                            <button id="dijkstra_step" class="btn btn-primary btn-sm">Step</button>
+                            <button id="dijkstra_reset" class="btn btn-outline-secondary btn-sm">Reset</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-2">
+                    <div style="height:400px; display:flex; align-items:center; justify-content:center; background:linear-gradient(180deg,#fcfeff,#fbfcff); border-radius:8px;">
+                        <svg id="dijkstra_svg" viewBox="0 0 900 380" preserveAspectRatio="xMidYMid meet" style="width:100%; height:100%;"></svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h6 class="mb-0">Grafo con Pesos</h6>
+                </div>
+                <div class="card-body">
+                    <label for="dijkstra_adj" class="form-label">Lista de adyacencia con pesos</label>
+                    <textarea id="dijkstra_adj" class="form-control" rows="6" style="font-family:monospace; font-size:12px;">A: B(4),C(2)
+B: A(4),C(1),D(5)
+C: A(2),B(1),D(8),E(10)
+D: B(5),C(8),E(2)
+E: C(10),D(2)</textarea>
+                    <div class="d-flex gap-2 mt-2">
+                        <button id="dijkstra_load" class="btn btn-primary btn-sm">Cargar</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h6 class="mb-0">Distancias</h6>
+                </div>
+                <div class="card-body">
+                    <div id="dijkstra_distances" style="font-family:monospace; font-size:12px;"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">Log de pasos</h6>
+                </div>
+                <div class="card-body">
+                    <div id="dijkstra_log" style="height:120px; overflow:auto; font-family:monospace; font-size:12px; background:#f8f9fa; padding:8px; border-radius:4px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dijkstra - Funcionalidad completa
+        setTimeout(() => {
+            const svg = document.getElementById('dijkstra_svg');
+            const startSel = document.getElementById('dijkstra_start');
+            const adjTA = document.getElementById('dijkstra_adj');
+            const logDiv = document.getElementById('dijkstra_log');
+            const distDiv = document.getElementById('dijkstra_distances');
+            const stepBtn = document.getElementById('dijkstra_step');
+            const playBtn = document.getElementById('dijkstra_play');
+            const resetBtn = document.getElementById('dijkstra_reset');
+            const loadBtn = document.getElementById('dijkstra_load');
+            
+            let steps = [];
+            let stepIndex = 0;
+            let playing = false;
+            let timer = null;
+            
+            // Botón Step
+            if(stepBtn) {
+                stepBtn.addEventListener('click', () => {
+                    executeStep();
+                });
+            }
+            
+            // Botón Play
+            if(playBtn) {
+                playBtn.addEventListener('click', () => {
+                    if(playing) {
+                        stopPlay();
+                    } else {
+                        startPlay();
+                    }
+                });
+            }
+            
+            // Botón Reset
+            if(resetBtn) {
+                resetBtn.addEventListener('click', () => {
+                    resetAlgorithm();
+                });
+            }
+            
+            function executeStep() {
+                if(steps.length === 0) {
+                    const start = startSel.value;
+                    if(!start) return;
+                    steps = runDijkstra(dijkstra_graph, start);
+                    stepIndex = 0;
+                    if(logDiv) logDiv.textContent = '';
+                }
+                
+                if(stepIndex < steps.length) {
+                    const step = steps[stepIndex];
+                    if(logDiv) {
+                        const line = document.createElement('div');
+                        line.textContent = formatStep(step);
+                        logDiv.appendChild(line);
+                        logDiv.scrollTop = logDiv.scrollHeight;
+                    }
+                    
+                    if(step.distances && distDiv) {
+                        distDiv.innerHTML = '';
+                        Object.entries(step.distances).forEach(([node, dist]) => {
+                            const div = document.createElement('div');
+                            div.textContent = `${node}: ${dist === Infinity ? '∞' : dist}`;
+                            distDiv.appendChild(div);
+                        });
+                    }
+                    stepIndex++;
+                    
+                    if(stepIndex >= steps.length && playing) {
+                        stopPlay();
+                    }
+                }
+            }
+            
+            function startPlay() {
+                playing = true;
+                if(playBtn) playBtn.textContent = 'Pause';
+                timer = setInterval(() => {
+                    executeStep();
+                }, 1000);
+            }
+            
+            function stopPlay() {
+                playing = false;
+                if(playBtn) playBtn.textContent = 'Play';
+                if(timer) {
+                    clearInterval(timer);
+                    timer = null;
+                }
+            }
+            
+            function resetAlgorithm() {
+                stopPlay();
+                steps = [];
+                stepIndex = 0;
+                if(logDiv) logDiv.textContent = '';
+                if(distDiv) distDiv.textContent = '';
+            }
+            
+            function runDijkstra(g, start) {
+                const distances = {};
+                const visited = new Set();
+                const pq = [];
+                const steps = [];
+                
+                Object.keys(g).forEach(node => {
+                    distances[node] = node === start ? 0 : Infinity;
+                });
+                
+                pq.push({node: start, dist: 0});
+                steps.push({type: 'init', distances: {...distances}});
+                
+                while(pq.length > 0) {
+                    pq.sort((a, b) => a.dist - b.dist);
+                    const current = pq.shift();
+                    
+                    if(visited.has(current.node)) continue;
+                    visited.add(current.node);
+                    steps.push({type: 'visit', node: current.node, dist: current.dist, distances: {...distances}});
+                    
+                    const neighbors = g[current.node] || [];
+                    for(const neighbor of neighbors) {
+                        if(!visited.has(neighbor.node)) {
+                            const newDist = distances[current.node] + neighbor.weight;
+                            if(newDist < distances[neighbor.node]) {
+                                distances[neighbor.node] = newDist;
+                                pq.push({node: neighbor.node, dist: newDist});
+                                steps.push({type: 'relax', from: current.node, to: neighbor.node, newDist, distances: {...distances}});
+                            }
+                        }
+                    }
+                }
+                return steps;
+            }
+            
+            function formatStep(step) {
+                switch(step.type) {
+                    case 'init': return 'INICIALIZAR distancias';
+                    case 'visit': return `VISITAR ${step.node} (distancia: ${step.dist})`;
+                    case 'relax': return `RELAJAR ${step.from}→${step.to}: nueva distancia ${step.newDist}`;
+                    default: return JSON.stringify(step);
+                }
+            }
+            
+            if(svg && startSel && adjTA && loadBtn) {
+                loadBtn.click();
+            }
+        }, 500);
+    </script>
+</div>
+{% endblock %}
