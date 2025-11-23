@@ -253,8 +253,348 @@ cat /proc/slabinfo</code></pre>
     <h3>1.5 Entrada/Salida y sistemas de ficheros</h3>
     <p>El SO expone sistemas de ficheros (EXT4, NTFS, FAT32, XFS) y gestiona dispositivos mediante drivers. Operaciones de I/O pueden ser bloqueantes o no bloqueantes, y pueden emplear buffering, caching y DMA para eficiencia.</p>
 
+    <h4>1.5.1 Algoritmos de planificación de disco</h4>
+    <p>Los algoritmos de planificación de disco determinan el orden en que se atienden las peticiones de I/O para minimizar el tiempo de búsqueda (seek time) del cabezal.</p>
+
+    <h5>FCFS (First-Come, First-Served)</h5>
+    <p>Atiende las peticiones en el orden de llegada. Simple pero puede causar mucho movimiento del cabezal.</p>
+    <pre><code>Cola de peticiones: 98, 183, 37, 122, 14, 124, 65, 67
+Posición inicial: 53
+Movimiento total: |98-53| + |183-98| + |37-183| + ... = 640 cilindros</code></pre>
+
+    <h5>SSTF (Shortest Seek Time First)</h5>
+    <p>Selecciona la petición más cercana a la posición actual del cabezal. Minimiza el movimiento total pero puede causar inanición de peticiones lejanas.</p>
+    <pre><code>Posición: 53 → 65 (más cercana) → 67 → 37 → 14 → 98 → 122 → 124 → 183
+Movimiento total: menor que FCFS, pero peticiones lejanas esperan más</code></pre>
+
+    <h5>SCAN (Algoritmo del ascensor)</h5>
+    <p>El cabezal se mueve en una dirección atendiendo peticiones hasta llegar al final, luego invierte la dirección.</p>
+    <pre><code>Posición: 53, dirección: hacia arriba
+Orden: 65, 67, 98, 122, 124, 183, luego baja: 37, 14
+Más justo que SSTF, no hay inanición</code></pre>
+
+    <h5>C-SCAN (Circular SCAN)</h5>
+    <p>Similar a SCAN pero al llegar al final, vuelve al inicio sin atender peticiones en el camino de retorno. Proporciona tiempo de espera más uniforme.</p>
+
+    <h5>LOOK y C-LOOK</h5>
+    <p>Variantes de SCAN y C-SCAN que solo van hasta la última petición en cada dirección, no hasta el final físico del disco.</p>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Algoritmo</th>
+                <th>Ventajas</th>
+                <th>Desventajas</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>FCFS</strong></td>
+                <td>Simple, justo</td>
+                <td>Mucho movimiento del cabezal</td>
+            </tr>
+            <tr>
+                <td><strong>SSTF</strong></td>
+                <td>Minimiza movimiento total</td>
+                <td>Puede causar inanición</td>
+            </tr>
+            <tr>
+                <td><strong>SCAN</strong></td>
+                <td>No hay inanición, predecible</td>
+                <td>Peticiones en extremos esperan más</td>
+            </tr>
+            <tr>
+                <td><strong>C-SCAN</strong></td>
+                <td>Tiempo de espera más uniforme</td>
+                <td>Movimiento de retorno sin servicio</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h4>1.5.2 RAID (Redundant Array of Independent Disks)</h4>
+    <p>RAID combina múltiples discos físicos para mejorar rendimiento, redundancia o ambos.</p>
+
+    <h5>RAID 0 (Striping)</h5>
+    <ul>
+        <li><strong>Descripción:</strong> datos divididos en bloques distribuidos entre discos</li>
+        <li><strong>Capacidad:</strong> N × tamaño de disco</li>
+        <li><strong>Redundancia:</strong> ninguna (fallo de un disco = pérdida total)</li>
+        <li><strong>Rendimiento:</strong> excelente lectura y escritura</li>
+    </ul>
+
+    <h5>RAID 1 (Mirroring)</h5>
+    <ul>
+        <li><strong>Descripción:</strong> duplicación completa de datos en dos o más discos</li>
+        <li><strong>Capacidad:</strong> N/2 × tamaño de disco (50% útil)</li>
+        <li><strong>Redundancia:</strong> tolera fallo de N-1 discos</li>
+        <li><strong>Rendimiento:</strong> buena lectura (puede leer de cualquier disco), escritura normal</li>
+    </ul>
+
+    <h5>RAID 5 (Striping con paridad distribuida)</h5>
+    <ul>
+        <li><strong>Descripción:</strong> datos y paridad distribuidos entre todos los discos</li>
+        <li><strong>Capacidad:</strong> (N-1) × tamaño de disco</li>
+        <li><strong>Redundancia:</strong> tolera fallo de 1 disco</li>
+        <li><strong>Rendimiento:</strong> buena lectura, escritura más lenta (cálculo de paridad)</li>
+        <li><strong>Mínimo:</strong> 3 discos</li>
+    </ul>
+
+    <div class="alert alert-success">
+        <h5>Ejemplo de cálculo RAID 5</h5>
+        <p>Sistema con 4 discos de 1TB cada uno:</p>
+        <ul class="mb-0">
+            <li>Capacidad total: 4 × 1TB = 4TB</li>
+            <li>Capacidad útil: (4-1) × 1TB = 3TB</li>
+            <li>Espacio para paridad: 1TB (distribuido entre todos los discos)</li>
+            <li>Tolerancia: puede fallar 1 disco sin pérdida de datos</li>
+        </ul>
+    </div>
+
+    <h5>RAID 6 (Doble paridad)</h5>
+    <ul>
+        <li><strong>Capacidad:</strong> (N-2) × tamaño de disco</li>
+        <li><strong>Redundancia:</strong> tolera fallo de 2 discos</li>
+        <li><strong>Mínimo:</strong> 4 discos</li>
+    </ul>
+
+    <h5>RAID 10 (1+0, mirroring + striping)</h5>
+    <ul>
+        <li><strong>Descripción:</strong> combina RAID 1 y RAID 0</li>
+        <li><strong>Capacidad:</strong> N/2 × tamaño de disco</li>
+        <li><strong>Redundancia:</strong> tolera múltiples fallos (uno por par espejo)</li>
+        <li><strong>Rendimiento:</strong> excelente lectura y escritura</li>
+    </ul>
+
+    <h4>1.5.3 Sistemas de archivos</h4>
+
+    <h5>ext4 (Fourth Extended Filesystem)</h5>
+    <p>Sistema de archivos por defecto en muchas distribuciones Linux.</p>
+    <ul>
+        <li><strong>Journaling:</strong> registra cambios antes de aplicarlos, permitiendo recuperación rápida tras fallos</li>
+        <li><strong>Extents:</strong> rangos contiguos de bloques para archivos grandes, reduce fragmentación</li>
+        <li><strong>Inodos:</strong> estructura que contiene metadatos del archivo (permisos, timestamps, punteros a bloques)</li>
+        <li><strong>Niveles de indirección:</strong> 12 punteros directos + indirecto simple + indirecto doble + indirecto triple</li>
+        <li><strong>Tamaño máximo:</strong> archivos hasta 16TB, volúmenes hasta 1EB</li>
+    </ul>
+
+    <div class="alert alert-info">
+        <h5>Estructura de inodo en ext4</h5>
+        <pre class="mb-0"><code>Inodo contiene:
+- Permisos y propietario (UID/GID)
+- Timestamps (atime, mtime, ctime)
+- Tamaño del archivo
+- Contador de enlaces (hard links)
+- 12 punteros directos a bloques de datos
+- 1 puntero indirecto simple (apunta a bloque con punteros)
+- 1 puntero indirecto doble (apunta a bloque de punteros a bloques de punteros)
+- 1 puntero indirecto triple (tres niveles de indirección)</code></pre>
+    </div>
+
+    <h5>NTFS (New Technology File System)</h5>
+    <p>Sistema de archivos de Windows.</p>
+    <ul>
+        <li><strong>MFT (Master File Table):</strong> tabla que contiene al menos una entrada por cada archivo/directorio. Cada entrada tiene atributos (nombre, datos, permisos, timestamps)</li>
+        <li><strong>Journaling:</strong> registro de transacciones para recuperación</li>
+        <li><strong>ACLs:</strong> listas de control de acceso granulares</li>
+        <li><strong>Compresión y cifrado:</strong> a nivel de archivo/carpeta (EFS - Encrypting File System)</li>
+        <li><strong>Streams alternativos:</strong> múltiples flujos de datos por archivo</li>
+        <li><strong>Tamaño máximo:</strong> archivos y volúmenes teóricamente hasta 16EB</li>
+    </ul>
+
+    <div class="alert alert-info">
+        <h5>MFT (Master File Table)</h5>
+        <p class="mb-0">La MFT es análoga a la tabla de inodos en ext4. Cada entrada MFT contiene atributos del archivo. Para archivos pequeños, los datos pueden almacenarse directamente en la entrada MFT (resident data). Para archivos grandes, la entrada contiene punteros a clusters (non-resident data).</p>
+    </div>
+
+    <h5>Journaling</h5>
+    <p>Técnica que registra cambios en un journal (diario) antes de aplicarlos al sistema de archivos principal. En caso de fallo, el sistema puede:</p>
+    <ul>
+        <li><strong>Replay:</strong> reproducir operaciones del journal para completarlas</li>
+        <li><strong>Undo:</strong> deshacer operaciones incompletas</li>
+    </ul>
+    <p>Modos de journaling en ext4:</p>
+    <ul>
+        <li><strong>Journal:</strong> registra metadatos y datos (más seguro, más lento)</li>
+        <li><strong>Ordered:</strong> registra metadatos, datos se escriben antes (por defecto)</li>
+        <li><strong>Writeback:</strong> registra solo metadatos (más rápido, menos seguro)</li>
+    </ul>
+
     <h3>1.6 Sincronización y comunicación entre procesos</h3>
     <p>Primitivas: semáforos, mutex, monitores, tuberías (pipes), colas de mensajes, sockets, memoria compartida. Importante evitar condiciones de carrera y deadlocks (evitar ciclos en el grafo de asignación de recursos).</p>
+
+    <h4>1.6.1 Operaciones atómicas</h4>
+    <p>Las operaciones atómicas son indivisibles: se ejecutan completamente o no se ejecutan. Son fundamentales para implementar mecanismos de sincronización.</p>
+
+    <h5>Test-and-Set (TAS)</h5>
+    <p>Instrucción atómica que lee un valor, lo modifica y lo escribe en una sola operación indivisible.</p>
+    <pre><code>boolean TestAndSet(boolean *target) {
+    boolean rv = *target;
+    *target = true;
+    return rv;
+}
+
+// Uso para implementar un lock
+while (TestAndSet(&lock))
+    ; // busy wait (spin)
+// Sección crítica
+lock = false;</code></pre>
+
+    <h5>Compare-and-Swap (CAS)</h5>
+    <p>Compara un valor con el esperado y solo lo actualiza si coincide. Devuelve el valor original.</p>
+    <pre><code>int CompareAndSwap(int *ptr, int expected, int new_value) {
+    int original = *ptr;
+    if (original == expected)
+        *ptr = new_value;
+    return original;
+}</code></pre>
+
+    <h5>Fetch-and-Add</h5>
+    <p>Incrementa atómicamente un valor y devuelve el valor original. Útil para contadores y tickets.</p>
+
+    <h4>1.6.2 Spinlocks</h4>
+    <p>Un spinlock es un mecanismo de sincronización donde el proceso espera activamente (busy-waiting) en un bucle hasta obtener el lock.</p>
+
+    <div class="alert alert-info">
+        <h5>Características de spinlocks</h5>
+        <ul class="mb-0">
+            <li><strong>Ventajas:</strong> no hay cambio de contexto, eficiente para secciones críticas muy cortas</li>
+            <li><strong>Desventajas:</strong> desperdicia CPU en espera activa, no adecuado para secciones críticas largas</li>
+            <li><strong>Uso típico:</strong> kernel de Linux en sistemas multiprocesador para proteger estructuras compartidas</li>
+        </ul>
+    </div>
+
+    <pre><code>// Implementación simple de spinlock
+typedef struct {
+    int locked;
+} spinlock_t;
+
+void spin_lock(spinlock_t *lock) {
+    while (TestAndSet(&lock->locked))
+        ; // spin (busy wait)
+}
+
+void spin_unlock(spinlock_t *lock) {
+    lock->locked = 0;
+}</code></pre>
+
+    <h5>Spinlocks en Linux</h5>
+    <p>El kernel de Linux usa spinlocks extensivamente para proteger estructuras de datos compartidas en sistemas multiprocesador. Tipos:</p>
+    <ul>
+        <li><strong>spin_lock():</strong> spinlock básico</li>
+        <li><strong>spin_lock_irq():</strong> deshabilita interrupciones locales antes de adquirir</li>
+        <li><strong>spin_lock_irqsave():</strong> guarda y restaura el estado de interrupciones</li>
+        <li><strong>read/write spinlocks:</strong> permiten múltiples lectores o un escritor exclusivo</li>
+    </ul>
+
+    <h4>1.6.3 Deadlocks (Interbloqueos)</h4>
+    <p>Un deadlock ocurre cuando dos o más procesos esperan indefinidamente por recursos que están siendo retenidos por otros procesos en el conjunto.</p>
+
+    <h5>Condiciones de Coffman</h5>
+    <p>Para que ocurra un deadlock, deben cumplirse simultáneamente las cuatro condiciones:</p>
+    <ol>
+        <li><strong>Exclusión mutua:</strong> al menos un recurso debe estar en modo no compartible</li>
+        <li><strong>Hold and wait:</strong> un proceso retiene al menos un recurso y espera adquirir recursos adicionales</li>
+        <li><strong>No preemption:</strong> los recursos no pueden ser arrebatados, solo liberados voluntariamente</li>
+        <li><strong>Espera circular:</strong> existe un ciclo en el grafo de asignación de recursos</li>
+    </ol>
+
+    <div class="alert alert-warning">
+        <h5>💡 Importante para examen</h5>
+        <p class="mb-0">Si se rompe cualquiera de las cuatro condiciones de Coffman, el deadlock NO puede ocurrir. Las estrategias de prevención se basan en negar al menos una de estas condiciones.</p>
+    </div>
+
+    <h5>Algoritmo del banquero (Dijkstra)</h5>
+    <p>Algoritmo de prevención de deadlocks que asegura que el sistema permanezca en un <strong>estado seguro</strong>. Un estado es seguro si existe una secuencia de ejecución que permite a todos los procesos completarse.</p>
+
+    <div class="alert alert-success">
+        <h5>Funcionamiento del algoritmo del banquero</h5>
+        <p>El sistema mantiene:</p>
+        <ul>
+            <li><strong>Available:</strong> recursos disponibles actualmente</li>
+            <li><strong>Max:</strong> máximo de recursos que cada proceso puede necesitar</li>
+            <li><strong>Allocation:</strong> recursos actualmente asignados a cada proceso</li>
+            <li><strong>Need:</strong> recursos adicionales que cada proceso puede necesitar (Max - Allocation)</li>
+        </ul>
+        <p>Antes de asignar recursos, el algoritmo verifica si el sistema permanecerá en estado seguro:</p>
+        <ol class="mb-0">
+            <li>Buscar un proceso cuyo Need ≤ Available</li>
+            <li>Simular que ese proceso completa y libera sus recursos</li>
+            <li>Repetir hasta que todos los procesos puedan completarse (estado seguro) o no se encuentre ninguno (estado inseguro)</li>
+        </ol>
+    </div>
+
+    <pre><code>// Ejemplo: 3 procesos, 3 tipos de recursos (A, B, C)
+// Recursos totales: A=10, B=5, C=7
+
+         Allocation    Max       Need      Available
+         A  B  C      A  B  C    A  B  C    A  B  C
+P0       0  1  0      7  5  3    7  4  3    3  3  2
+P1       2  0  0      3  2  2    1  2  2
+P2       3  0  2      9  0  2    6  0  0
+
+// Secuencia segura: P1 → P0 → P2
+// P1 puede completarse (Need ≤ Available)
+// Después P1 libera: Available = (5,3,2)
+// P0 puede completarse, libera: Available = (5,4,2)
+// P2 puede completarse</code></pre>
+
+    <h5>Problema de los filósofos cenando</h5>
+    <p>Problema clásico de sincronización: 5 filósofos sentados en una mesa circular, cada uno necesita dos tenedores (izquierdo y derecho) para comer.</p>
+
+    <div class="alert alert-info">
+        <h5>Soluciones al problema de los filósofos</h5>
+        <ul class="mb-0">
+            <li><strong>Numeración de recursos:</strong> cada filósofo toma primero el tenedor de menor número. Previene ciclos de espera</li>
+            <li><strong>Limitar comensales:</strong> permitir máximo N-1 filósofos intentando comer simultáneamente</li>
+            <li><strong>Asimetría:</strong> filósofos impares toman izquierdo primero, pares toman derecho primero</li>
+            <li><strong>Semáforo central:</strong> usar un semáforo para controlar acceso a la región crítica</li>
+        </ul>
+    </div>
+
+    <h4>1.6.4 Comunicación entre procesos (IPC)</h4>
+    <p>Mecanismos para que procesos intercambien datos:</p>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Mecanismo</th>
+                <th>Características</th>
+                <th>Velocidad</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Memoria compartida</strong></td>
+                <td>Región de memoria accesible por múltiples procesos. Requiere sincronización</td>
+                <td>Muy rápida</td>
+            </tr>
+            <tr>
+                <td><strong>Pipes</strong></td>
+                <td>Comunicación unidireccional FIFO entre procesos relacionados</td>
+                <td>Rápida</td>
+            </tr>
+            <tr>
+                <td><strong>Named pipes (FIFO)</strong></td>
+                <td>Pipes con nombre en el sistema de archivos, entre procesos no relacionados</td>
+                <td>Rápida</td>
+            </tr>
+            <tr>
+                <td><strong>Sockets Unix</strong></td>
+                <td>Comunicación bidireccional full-duplex en el mismo host</td>
+                <td>Rápida</td>
+            </tr>
+            <tr>
+                <td><strong>Colas de mensajes</strong></td>
+                <td>Mensajes estructurados con prioridades</td>
+                <td>Media</td>
+            </tr>
+            <tr>
+                <td><strong>Señales</strong></td>
+                <td>Notificaciones asíncronas (SIGTERM, SIGKILL, etc.)</td>
+                <td>Muy rápida</td>
+            </tr>
+        </tbody>
+    </table>
 
     <h3>1.7 Seguridad básica y gestión de usuarios</h3>
     <p>Identidad (UID/GID en Unix), permisos (rwx), listas de control de acceso (ACL), permisos basados en roles (RBAC). Mecanismos de autenticación (contraseñas, claves públicas, Kerberos) y registro/auditoría de eventos.</p>

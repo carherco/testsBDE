@@ -1,0 +1,66 @@
+ANEJO 4. PROGRAMA DE CONTENIDOS
+
+Contenidos comunes
+
+Tecnologías de la información
+
+1. Sistemas operativos:
+- Conceptos básicos: funciones de un sistema operativo, gestión de procesos.
+- Administración de sistemas: configuración y gestión de sistemas operativos (Linux, Windows).
+2. Redes y comunicaciones:
+- Fundamentos de redes: TCP/IP, DNS, HTTP, modelos OSI.
+- Configuración y gestión de redes: VLANs, VPNs, subnetting, balanceo de carga.
+3. Fundamentos de programación:
+- Programación básica: introducción a la programación (Python, Java, C++).
+- Programación orientada objetos: clases, objetos, herencia y polimorfismo.
+- Estructuras de datos: listas, pilas, colas, árboles y grafos.
+4. Bases de datos:
+- Modelado de bases de datos: diseño de bases de datos y normalización.
+- SQL y bases de datos relacionales: consultas básicas y avanzadas, gestión de bases de datos.
+- Bases de datos no relacionales: NoSQL, casos de uso, tecnologías (ejemplo Mongo DB, Cassandra).
+5. Arquitectura de sistemas:
+- Diseño y arquitectura de sistemas: principios de diseño y patrones arquitectónicos.
+- Integración de sistemas empresariales: Middleware, APIs y servicios web.
+6. Seguridad informática:
+- Fundamentos de ciberseguridad: amenazas, vulnerabilidades, principios de seguridad (CIA).
+- Criptografía: algoritmos de cifrado, firmas digitales y gestión de calves.
+- Gestión de riesgos y vulnerabilidades: evaluación de riesgos y pruebas de penetración.
+
+Contenidos específicos
+
+Soluciones de Planificación de Recursos Empresariales (ERP) y de gestión de procesos de Negocio. Soluciones de ingeniería de software aplicadas a infraestructuras de mercados financieros o monedas digitales (DLT).
+
+7. Fundamentos de ingeniería de software:
+- Ciclo de vida del desarrollo de software: planificación, análisis, diseño, implementación, pruebas.
+- Metodologías de desarrollo: Ágil, waterfall, Scrum.
+- Principios de diseño de software.
+8. Diseño e implementación de Interfaces de usuario:
+- Principios de diseño de interfaces de usuario (UI/UX).
+- Herramientas y tecnologías para el desarrollo de interfaces (HTML, CSS, JavaScript, frameworks como React o Angular).
+9. Lógica de negocio y backend:
+- Diseño de bases de datos y gestión de datos.
+- Desarrollo de APIs y servicios web.
+- Seguridad en el desarrollo de software (encriptación, autenticación, autorización).
+10. La información económico-financiera de la empresa:
+- Concepto y tipos de contabilidad.
+- Estados financieros: el balance de situación, la cuenta de resultados y tesorería.
+- El ciclo contable.
+- Introducción a la contabilidad de costes.
+11. Fundamentos de soluciones ERP:
+- Ciclo de vida de implementación de ERP y principios básicos de gestión de proyectos en implementaciones de ERP.
+- Conceptos de módulos ERP y comprensión de los módulos principales (finanzas, cadena de suministro, etc.).
+- Bases de datos relacionales y SQL para consultar y gestionar datos dentro del ERP.
+- Configuración y personalización de módulos ERP. Generación y análisis de reportes.
+- Conocimiento de lenguajes de scripting o programación específicos del ERP (e.g., ABAP para SAP, JavaScript para NetSuite).
+- Modelos de seguridad en sistemas ERP.
+12. Fundamentos de blockchain y DLT:
+- Conceptos de blockchain, DLT, criptomonedas.
+- Mecanismos de consenso (PoW, PoS).
+- Tipos de blockchains (públicas, privadas, consorcio).
+- Seguridad de wallets y exchanges.
+- Plataformas de blockchain: Ethereum e Hyperledger.
+13. Desarrollo de contratos inteligentes:
+- Smart contracts: definición, uso y desarrollo.
+- Lenguajes de programación de contratos inteligentes (Solidity).
+- Desarrollo y despliegue de contratos inteligentes.
+- Vulnerabilidades en contratos inteligentes.

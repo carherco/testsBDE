@@ -51,6 +51,19 @@
                         </div>
                     </div>
 
+                    {% if pregunta.explicacion %}
+                        <div class="alert alert-info">
+                            <h6>💡 Explicación</h6>
+                            <p class="mb-0">{{ pregunta.explicacion }}</p>
+                        </div>
+                    {% endif %}
+
+                    <div class="mb-3">
+                        <a href="{{ path('app_content_show', {id: pregunta.tema.id}) }}" class="btn btn-outline-primary btn-sm" target="_blank">
+                            📚 Ver contenido del tema: {{ pregunta.tema.nombre }}
+                        </a>
+                    </div>
+
                     <div class="d-grid">
                         {% if current < total %}
                             <a href="{{ path('app_practice_next') }}" class="btn btn-primary">➡️ Siguiente Pregunta</a>

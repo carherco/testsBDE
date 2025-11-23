@@ -35,6 +35,9 @@ class Pregunta
     #[ORM\Column(type: 'string', length: 1)]
     private ?string $correcta = null;
 
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $explicacion = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -114,6 +117,17 @@ class Pregunta
     public function setCorrecta(string $correcta): static
     {
         $this->correcta = $correcta;
+        return $this;
+    }
+
+    public function getExplicacion(): ?string
+    {
+        return $this->explicacion;
+    }
+
+    public function setExplicacion(?string $explicacion): static
+    {
+        $this->explicacion = $explicacion;
         return $this;
     }
 
