@@ -229,5 +229,286 @@
             <li>Diferencia entre las capas del modelo OSI</li>
         </ul>
     </div>
+
+    <h2>9. VLANs (Virtual LANs)</h2>
+    <p>Las VLANs permiten segmentar dominios de broadcast en una misma infraestructura física. Mejora seguridad, rendimiento y organización.</p>
+    
+    <h3>Cómo funcionan</h3>
+    <p>Una VLAN divide la red física en múltiples redes lógicas mediante <strong>etiquetado 802.1Q</strong>. Cada trama Ethernet puede llevar una etiqueta con el ID de VLAN, permitiendo que switches separen el tráfico como si cada VLAN fuera una red independiente. Los puertos access envían tráfico sin etiquetar, mientras que los puertos trunk transportan varias VLAN simultáneamente usando etiquetas. Aunque compartan el mismo hardware, los dispositivos de distintas VLAN no pueden comunicarse entre sí sin un router o un switch capa 3.</p>
+    
+    <h3>Conceptos clave</h3>
+    <ul>
+        <li><strong>Access port:</strong> pertenece a una sola VLAN (dispositivo final)</li>
+        <li><strong>Trunk port:</strong> transporta múltiples VLANs (entre switches o a routers), usa etiquetado 802.1Q</li>
+        <li><strong>Native VLAN:</strong> VLAN sin etiquetar en 802.1Q (por defecto suele ser VLAN 1)</li>
+    </ul>
+    
+    <h3>Comandos básicos (Cisco IOS)</h3>
+    <pre><code>! Crear VLAN
+Switch(config)# vlan 10
+Switch(config-vlan)# name ALUMNOS
+
+! Asignar puerto como access
+Switch(config)# interface GigabitEthernet0/1
+Switch(config-if)# switchport mode access
+Switch(config-if)# switchport access vlan 10
+
+! Configurar trunk
+Switch(config)# interface GigabitEthernet0/24
+Switch(config-if)# switchport mode trunk
+Switch(config-if)# switchport trunk allowed vlan 10,20,30
+Switch(config-if)# switchport trunk native vlan 99</code></pre>
+    
+    <h3>Ejemplo Linux (bridge + VLANs)</h3>
+    <pre><code># Crear bridge
+ip link add name br0 type bridge
+ip link set dev br0 up
+
+# Añadir VLAN sobre interfaz física
+ip link add link eth0 name eth0.10 type vlan id 10
+ip link set dev eth0.10 up
+ip link set eth0.10 master br0</code></pre>
+    
+    <div class="alert alert-info">
+        <h5>Buenas prácticas</h5>
+        <ul class="mb-0">
+            <li>No usar VLAN 1 para gestión</li>
+            <li>Limitar puertos en modo trunk y definir VLANs permitidas</li>
+            <li>Separar tráfico de gestión, voz y datos en VLANs distintas</li>
+        </ul>
+    </div>
+    
+    <h3>Routing entre VLANs (Inter‑VLAN Routing)</h3>
+    <p>Para que dispositivos en distintas VLANs se comuniquen, es necesario un router o un switch capa 3.</p>
+    <pre><code>+----------+     VLAN 10     +----------+
+|  PC A    |-----------------|          |
++----------+                 | SWITCH L3|---- Internet
++----------+     VLAN 20     | (SVIs)   |
+|  PC B    |-----------------|          |
++----------+                 +----------+
+
+SVI = interfaz virtual por VLAN</code></pre>
+    
+    <h4>Ejemplo Cisco (SVIs)</h4>
+    <pre><code>interface vlan 10
+ ip address 192.168.10.1 255.255.255.0
+interface vlan 20
+ ip address 192.168.20.1 255.255.255.0
+ip routing   ! habilitar capa 3</code></pre>
+
+    <h2>10. VPNs (Virtual Private Networks)</h2>
+    <p>Conexiones seguras sobre redes inseguras (Internet). Tipos principales: <em>site-to-site</em> y <em>remote-access</em>.</p>
+    
+    <h3>Cómo funcionan</h3>
+    <p>Una VPN crea un <strong>túnel cifrado</strong> entre dos puntos a través de Internet. Antes de transmitir datos, ambos extremos negocian claves y métodos de cifrado (IPsec, SSL/TLS, WireGuard). El tráfico original se <strong>encapsula</strong> dentro de otro paquete cifrado y se envía a través del túnel. Cuando llega al destino, se descifra y se entrega como si fuera tráfico local. En una VPN <em>site‑to‑site</em>, dos redes completas quedan unidas como si estuvieran en la misma LAN; en una VPN <em>remote‑access</em>, un usuario externo accede de forma segura a la red corporativa.</p>
+    
+    <h3>Protocolos y tecnologías</h3>
+    <ul>
+        <li><strong>IPsec:</strong> estándar para site-to-site y remote access (túneles robustos, IKEv2)</li>
+        <li><strong>OpenVPN:</strong> SSL/TLS, flexible, configurable en TCP/UDP</li>
+        <li><strong>WireGuard:</strong> moderno, más simple, alto rendimiento, utiliza claves públicas</li>
+        <li><strong>SSL VPNs:</strong> accesos por navegador o cliente (p. ej. AnyConnect)</li>
+    </ul>
+    
+    <h3>Ejemplo: configuración mínima WireGuard (servidor)</h3>
+    <pre><code># Instalar wg y generar claves (resumido)
+[Interface]
+Address = 10.0.0.1/24
+ListenPort = 51820
+PrivateKey = &lt;server_private_key&gt;
+
+[Peer]
+PublicKey = &lt;client_public_key&gt;
+AllowedIPs = 10.0.0.2/32</code></pre>
+    
+    <h3>Ejemplo: configuración mínima OpenVPN (server.conf)</h3>
+    <pre><code>port 1194
+proto udp
+dev tun
+server 10.8.0.0 255.255.255.0
+; certificados y opciones TLS</code></pre>
+    
+    <div class="alert alert-warning">
+        <h5>Consideraciones</h5>
+        <ul class="mb-0">
+            <li>Elegir MTU correcto para evitar fragmentación (ej.: 1400 para VPN sobre Internet)</li>
+            <li>Usar autenticación fuerte (certificados o claves) y cifrados modernos (AES‑GCM, ChaCha20-Poly1305)</li>
+            <li>Políticas de acceso: sólo permitir lo necesario (principio del menor privilegio)</li>
+        </ul>
+    </div>
+    
+    <h3>Diagrama básico de túnel VPN</h3>
+    <pre><code>+---------+        Internet        +---------+
+| Cliente |========================| Servidor|
++---------+   (túnel cifrado)     +---------+</code></pre>
+
+    <h2>11. Subnetting (segmentación de redes)</h2>
+    <p>Dividir una red en subredes más pequeñas usando máscaras de red (CIDR). Fundamental para direccionamiento eficiente.</p>
+    
+    <h3>Conceptos</h3>
+    <ul>
+        <li><strong>Dirección de red:</strong> identifica subred (host bits = 0)</li>
+        <li><strong>Broadcast:</strong> dirección con host bits = 1 (no asignable a hosts)</li>
+        <li><strong>Hosts asignables:</strong> total - 2 (red + broadcast), excepto en redes /31 y /32 con usos especiales</li>
+    </ul>
+    
+    <h3>Máscaras y ejemplos comunes</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>CIDR</th>
+                <th>Máscara</th>
+                <th>Hosts</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>/24</td><td>255.255.255.0</td><td>254</td></tr>
+            <tr><td>/25</td><td>255.255.255.128</td><td>126</td></tr>
+            <tr><td>/26</td><td>255.255.255.192</td><td>62</td></tr>
+            <tr><td>/30</td><td>255.255.255.252</td><td>2</td></tr>
+        </tbody>
+    </table>
+    
+    <h3>Cómo subdividir (procedimiento rápido)</h3>
+    <ol>
+        <li>Determinar número de subredes o hosts necesarios</li>
+        <li>Elegir máscara que permita al menos esa cantidad de hosts por subred</li>
+        <li>Calcular tamaño de bloque (2^(32-mask))</li>
+        <li>Listar subredes incrementando por tamaño de bloque desde la dirección de red base</li>
+    </ol>
+    
+    <h3>Ejemplo práctico</h3>
+    <p>Partir de 192.168.0.0/24 y crear 4 subredes iguales:</p>
+    <pre><code>/24 -> dividir en /26 (cada subred con 64 direcciones, 62 hosts):
+Subred 1: 192.168.0.0/26   (hosts: 192.168.0.1 - 192.168.0.62)
+Subred 2: 192.168.0.64/26  (hosts: 192.168.0.65 - 192.168.0.126)
+Subred 3: 192.168.0.128/26 (hosts: 192.168.0.129 - 192.168.0.190)
+Subred 4: 192.168.0.192/26 (hosts: 192.168.0.193 - 192.168.0.254)</code></pre>
+    
+    <h3>Comandos útiles</h3>
+    <pre><code>! Ver tablas en Linux
+ip addr show
+ip route show
+
+! Ver máscara en Windows
+ipconfig /all
+
+! Calcular subredes (ej. con ipcalc en Linux)
+ipcalc 192.168.0.0/24 -s 26</code></pre>
+
+    <h2>12. Balanceo de carga (Load Balancing)</h2>
+    <p>Distribuir peticiones entre múltiples servidores para mejorar disponibilidad y escalabilidad.</p>
+    
+    <h3>Tipos</h3>
+    <ul>
+        <li><strong>Layer 4 (L4):</strong> balanceo por IP/puerto (rápido, menos flexible)</li>
+        <li><strong>Layer 7 (L7):</strong> balanceo por contenido (URL, headers, cookies)</li>
+    </ul>
+    
+    <h3>Algoritmos comunes</h3>
+    <ul>
+        <li><strong>Round-Robin:</strong> rotación simple</li>
+        <li><strong>Least Connections:</strong> asigna al servidor con menos conexiones activas</li>
+        <li><strong>IP Hash / Sticky sessions:</strong> mantiene afinidad de usuario a servidor</li>
+    </ul>
+    
+    <h3>Ejemplo: configuración simple HAProxy (L7)</h3>
+    <pre><code>global
+    log /dev/log local0
+    maxconn 2000
+
+defaults
+    mode http
+    timeout connect 5000ms
+    timeout client  50000ms
+    timeout server  50000ms
+
+frontend http-in
+    bind *:80
+    default_backend servers
+
+backend servers
+    balance roundrobin
+    server web1 10.0.0.11:80 check
+    server web2 10.0.0.12:80 check</code></pre>
+    
+    <h3>Ejemplo: NGINX como balanceador (L7)</h3>
+    <pre><code>http {
+  upstream backend {
+    server 10.0.0.11;
+    server 10.0.0.12;
+  }
+  server {
+    listen 80;
+    location / {
+      proxy_pass http://backend;
+    }
+  }
+}</code></pre>
+    
+    <div class="alert alert-info">
+        <h5>Consideraciones</h5>
+        <ul class="mb-0">
+            <li>Monitorización de estado de los servidores (health checks)</li>
+            <li>Manejo de sesiones y afinidad cuando la aplicación no es stateless</li>
+            <li>SSL/TLS termination vs passthrough: decidir dónde se descifra el tráfico</li>
+        </ul>
+    </div>
+
+    <h2>13. NAT (Network Address Translation)</h2>
+    <p>Traduce direcciones privadas a públicas para permitir acceso a Internet o segmentación avanzada.</p>
+    
+    <h3>Tipos de NAT</h3>
+    <ul>
+        <li><strong>NAT estático:</strong> 1:1 entre IP interna y pública</li>
+        <li><strong>NAT dinámico:</strong> pool de direcciones públicas</li>
+        <li><strong>PAT</strong> (NAT overload): muchos hosts comparten una IP pública usando puertos</li>
+    </ul>
+    
+    <h3>Diagrama PAT</h3>
+    <pre><code>PC1: 192.168.1.10:5000 ---->
+PC2: 192.168.1.11:5001 ---->   Router NAT ----> Internet
+                                80.80.80.5:40000+</code></pre>
+    
+    <h3>Ejemplo Cisco (PAT)</h3>
+    <pre><code>interface g0/0
+ ip address 192.168.1.1 255.255.255.0
+interface g0/1
+ ip address 80.80.80.5 255.255.255.0
+ip nat inside source list 1 interface g0/1 overload
+access-list 1 permit 192.168.1.0 0.0.0.255</code></pre>
+
+    <h2>14. Gestión y operativa</h2>
+    
+    <h3>Monitorización</h3>
+    <ul>
+        <li><strong>SNMP:</strong> métricas básicas de dispositivos</li>
+        <li><strong>Syslog:</strong> centralizar logs</li>
+        <li><strong>Netflow/IPFIX:</strong> analítica de tráfico</li>
+        <li>Herramientas comunes: Prometheus, Grafana, Zabbix, Nagios</li>
+    </ul>
+    
+    <h3>Automatización y backup</h3>
+    <ul>
+        <li>Usar <strong>Ansible</strong> para desplegar configuraciones repetibles</li>
+        <li>Versionar configuraciones (git) y mantener backups automatizados</li>
+    </ul>
+    
+    <h3>Seguridad y hardening</h3>
+    <ul>
+        <li>Control de acceso a dispositivos (AAA, TACACS+, RADIUS)</li>
+        <li>Deshabilitar servicios innecesarios, usar ACLs y listas de control</li>
+        <li>Segmentación (VLANs, firewalls internos) y políticas de filtrado</li>
+    </ul>
+    
+    <h3>Procedimientos operativos</h3>
+    <ul>
+        <li>Plan de cambios (change management) y ventanas de mantenimiento</li>
+        <li>Playbooks para recuperación ante incidentes</li>
+        <li>Pruebas de DR (disaster recovery) y conmutación por error</li>
+    </ul>
 </div>
 {% endblock %}
+
+
+

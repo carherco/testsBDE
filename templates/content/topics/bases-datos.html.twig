@@ -1,0 +1,390 @@
+{% extends 'content/base.html.twig' %}
+
+{% block content_title %}Tema 4: Bases de Datos{% endblock %}
+
+{% block content_body %}
+<div class="content-section">
+    <h1>Bases de Datos</h1>
+    <p class="lead">Modelado, normalización, SQL relacional y bases de datos NoSQL.</p>
+
+    <h2>1. Modelado de bases de datos: diseño y normalización</h2>
+
+    <h3>1.1. Conceptos fundamentales</h3>
+    <ul>
+        <li><strong>Entidad:</strong> Objeto del mundo real (p.ej. Cliente, Producto)</li>
+        <li><strong>Atributo:</strong> Propiedad de una entidad (p.ej. nombre, fecha_nacimiento)</li>
+        <li><strong>Relación:</strong> Asociación entre entidades (p.ej. Cliente realiza Pedido)</li>
+        <li><strong>Clave primaria (PK):</strong> Identificador único de una entidad (p.ej. cliente_id)</li>
+        <li><strong>Clave foránea (FK):</strong> Atributo que referencia la PK de otra entidad para establecer relaciones</li>
+        <li><strong>Cardinalidad:</strong> Indica multiplicidad (1:1, 1:N, N:M)</li>
+    </ul>
+
+    <h3>1.2. Proceso de modelado</h3>
+    <ol>
+        <li><strong>Recopilación de requisitos:</strong> identificar objetos y reglas de negocio</li>
+        <li><strong>Modelo conceptual (ER):</strong> crear diagrama Entidad-Relación con entidades, atributos y relaciones</li>
+        <li><strong>Modelo lógico:</strong> transformar ER en tablas normalizadas; elegir tipos de datos y claves</li>
+        <li><strong>Modelo físico:</strong> definir esquemas concretos en el SGBD (índices, particionado, motores de almacenamiento)</li>
+        <li><strong>Revisión y optimización:</strong> balancear normalización y rendimiento según casos de uso</li>
+    </ol>
+
+    <div class="alert alert-info">
+        <h5>Ejemplo: Tienda online (simplificado)</h5>
+        <p>Entidades: <code>Cliente</code>, <code>Producto</code>, <code>Pedido</code>, <code>LineaPedido</code>.</p>
+        <pre><code>Cliente(cliente_id PK, nombre, email, fecha_alta)
+Producto(producto_id PK, nombre, precio, stock)
+Pedido(pedido_id PK, cliente_id FK->Cliente, fecha_pedido, total)
+LineaPedido(linea_id PK, pedido_id FK->Pedido, producto_id FK->Producto, cantidad, precio_unitario)</code></pre>
+    </div>
+
+    <h3>1.3. Normalización</h3>
+    <p>La normalización organiza datos para reducir redundancia y anomalías. Se compone de formas normales (FN). Las más relevantes:</p>
+
+    <h4>Primera forma normal (1FN)</h4>
+    <p>Los valores de cada atributo deben ser atómicos (no listas/arrays en una columna). Ejemplo: separar varios teléfonos en filas distintas o tabla relacionada.</p>
+    
+    <div class="alert alert-success">
+        <h5>Ejemplo 1FN</h5>
+        <p><strong>Sin normalizar:</strong> Tabla <em>Pedidos</em> con campo <code>Productos</code> con valores múltiples.</p>
+        <pre>1 | Ana | "Lapiz, Cuaderno, Goma"</pre>
+        <p><strong>En 1FN:</strong> Atributos atómicos.</p>
+        <pre>1 | Ana | Lápiz
+1 | Ana | Cuaderno
+1 | Ana | Goma</pre>
+    </div>
+
+    <h4>Segunda forma normal (2FN)</h4>
+    <p>Estar en 1FN y que todos los atributos no clave dependan completamente de la clave primaria (evitar dependencias parciales). Aplica cuando la PK es compuesta.</p>
+    
+    <div class="alert alert-success">
+        <h5>Ejemplo 2FN</h5>
+        <p><strong>No 2FN:</strong> Tabla con clave compuesta y atributo dependiente parcialmente de la clave.</p>
+        <pre>PedidoID | ProductoID | Cliente | Precio</pre>
+        <p><strong>En 2FN:</strong></p>
+        <pre><strong>Pedidos</strong>: PedidoID | Cliente
+<strong>DetallePedido</strong>: PedidoID | ProductoID | Precio</pre>
+    </div>
+
+    <h4>Tercera forma normal (3FN)</h4>
+    <p>Estar en 2FN y eliminar dependencias transitivas (atributos que dependen de otros atributos no clave). En 3FN todo atributo no clave depende sólo de la PK.</p>
+    
+    <div class="alert alert-success">
+        <h5>Ejemplo 3FN</h5>
+        <p><strong>No 3FN:</strong> Dependencia transitiva Cliente → Ciudad → CódigoPostal.</p>
+        <p><strong>En 3FN:</strong></p>
+        <pre><strong>Clientes</strong>: ClienteID | Cliente | CiudadID
+<strong>Ciudades</strong>: CiudadID | Ciudad | CódigoPostal</pre>
+    </div>
+
+    <h4>Forma normal de Boyce-Codd (BCNF)</h4>
+    <p>Versión más estricta que 3FN; para cualquier dependencia funcional <code>A → B</code>, A debe ser una superclave.</p>
+    
+    <p><strong>Explicación clara:</strong> BCNF es una versión más estricta que 3FN. Se aplica cuando una dependencia funcional tiene como determinante un atributo que <em>no</em> es clave. En BCNF, para <strong>toda</strong> dependencia funcional A → B, el atributo A debe ser una <strong>superclave</strong> (es decir, identificar unívocamente cada fila).</p>
+    
+    <div class="alert alert-success">
+        <h5>Ejemplo BCNF</h5>
+        <p><strong>Ejemplo no BCNF:</strong></p>
+        <p>Tabla <em>Asignaciones</em>:</p>
+        <pre>Asignatura | Profesor | Aula</pre>
+        <p>Donde se cumple la regla: <code>Profesor → Aula</code> (cada profesor siempre imparte en la misma aula).</p>
+        <p>Pero la clave primaria es (Asignatura, Profesor).</p>
+        <p>Como <strong>Profesor no es clave</strong>, la dependencia funcional viola BCNF.</p>
+        <p><strong>En BCNF:</strong></p>
+        <pre><strong>Profesores</strong>: Profesor | Aula
+<strong>Asignaturas</strong>: Asignatura | Profesor</pre>
+        <p>Así, cada dependencia queda con determinantes que sí son claves.</p>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Criterio</th>
+                <th>3FN</th>
+                <th>BCNF</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>Objetivo</td><td>Eliminar dependencias transitivas</td><td>Eliminar dependencias donde el determinante no es superclave</td></tr>
+            <tr><td>Relación entre ellas</td><td>Más permisiva</td><td>Más estricta</td></tr>
+            <tr><td>Dependencias permitidas</td><td>A → B, aunque A no sea superclave, si B es clave</td><td>Solo si A es superclave</td></tr>
+            <tr><td>Consecuencia práctica</td><td>Pueden existir algunas anomalías</td><td>Evita prácticamente todas las anomalías</td></tr>
+        </tbody>
+    </table>
+
+    <h4>Formas normales superiores</h4>
+    <p>Existen 4FN, 5FN, etc., que abordan dependencias multivaluadas y unión-dependencias; son menos habituales en prácticas simples.</p>
+
+    <h3>1.4. Desnormalización</h3>
+    <p>En sistemas de alto rendimiento, a veces se desnormaliza para reducir JOINs y mejorar lecturas. Esto implica duplicar datos y requiere mecanismos de coherencia (actualizaciones, triggers, procesos ETL).</p>
+
+    <div class="alert alert-warning">
+        <h5>Buenas prácticas de modelado</h5>
+        <ul class="mb-0">
+            <li>Normalizar hasta 3FN o BCNF salvo motivos de rendimiento justificables</li>
+            <li>Elegir tipos de datos adecuados y longitudes mínimas</li>
+            <li>Usar claves surrogate (p.ej. enteros autoincrementales o UUID) cuando convenga</li>
+            <li>Definir índices en columnas usadas en WHERE, JOIN, ORDER BY</li>
+            <li>Documentar restricciones de integridad y reglas de negocio</li>
+        </ul>
+    </div>
+
+    <h2>2. SQL y bases de datos relacionales</h2>
+
+    <h3>2.1. Introducción a SQL</h3>
+    <p>SQL (Structured Query Language) es el lenguaje estándar para interactuar con bases de datos relacionales. Se divide en:</p>
+    <ul>
+        <li><strong>DDL</strong> (Data Definition Language): <code>CREATE</code>, <code>ALTER</code>, <code>DROP</code></li>
+        <li><strong>DML</strong> (Data Manipulation Language): <code>SELECT</code>, <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code></li>
+        <li><strong>DCL</strong> (Data Control Language): <code>GRANT</code>, <code>REVOKE</code></li>
+        <li><strong>TCL</strong> (Transaction Control Language): <code>BEGIN/START TRANSACTION</code>, <code>COMMIT</code>, <code>ROLLBACK</code></li>
+    </ul>
+
+    <h3>2.2. Consultas básicas</h3>
+    <pre><code>-- Seleccionar todas las columnas
+SELECT * FROM Cliente;
+
+-- Seleccionar columnas concretas con filtro
+SELECT nombre, email FROM Cliente WHERE fecha_alta >= '2024-01-01';
+
+-- Insertar
+INSERT INTO Producto(nombre, precio, stock) VALUES('Camiseta', 19.9, 100);
+
+-- Actualizar
+UPDATE Producto SET stock = stock - 1 WHERE producto_id = 42;
+
+-- Borrar
+DELETE FROM Pedido WHERE fecha_pedido < '2020-01-01';</code></pre>
+
+    <h3>2.3. JOINs y consultas relacionales</h3>
+    <p>Operaciones para combinar tablas:</p>
+    <pre><code>-- INNER JOIN: filas que cumplen en ambas tablas
+SELECT p.pedido_id, c.nombre, p.fecha_pedido
+FROM Pedido p
+INNER JOIN Cliente c ON p.cliente_id = c.cliente_id
+WHERE p.fecha_pedido > '2025-01-01';
+
+-- LEFT JOIN: todas las filas de la izquierda
+SELECT c.nombre, p.pedido_id
+FROM Cliente c
+LEFT JOIN Pedido p ON c.cliente_id = p.cliente_id;</code></pre>
+
+    <h3>2.4. Agregación y GROUP BY</h3>
+    <pre><code>-- Total de ventas por cliente
+SELECT c.cliente_id, c.nombre, SUM(lp.cantidad * lp.precio_unitario) AS total_vendido
+FROM Cliente c
+JOIN Pedido p ON c.cliente_id = p.cliente_id
+JOIN LineaPedido lp ON p.pedido_id = lp.pedido_id
+GROUP BY c.cliente_id, c.nombre
+HAVING SUM(lp.cantidad * lp.precio_unitario) > 1000;
+
+-- Contar productos por categoría
+SELECT categoria, COUNT(*) AS num_productos
+FROM Producto
+GROUP BY categoria;</code></pre>
+
+    <h3>2.5. Subconsultas y consultas correlacionadas</h3>
+    <pre><code>-- Subconsulta simple
+SELECT nombre FROM Producto WHERE precio > (SELECT AVG(precio) FROM Producto);
+
+-- Subconsulta correlacionada: para cada cliente obtener su último pedido
+SELECT c.cliente_id, c.nombre,
+       (SELECT p.fecha_pedido FROM Pedido p 
+        WHERE p.cliente_id = c.cliente_id 
+        ORDER BY p.fecha_pedido DESC LIMIT 1) AS ultimo_pedido
+FROM Cliente c;</code></pre>
+
+    <h3>2.6. Funciones ventana (window functions)</h3>
+    <p>Permiten cálculos por partición sin colapsar filas:</p>
+    <pre><code>-- Ranking de clientes por ventas (por año)
+SELECT c.cliente_id, c.nombre, year, total_vendido,
+       RANK() OVER (PARTITION BY year ORDER BY total_vendido DESC) AS puesto
+FROM (
+  SELECT c.cliente_id, c.nombre, EXTRACT(YEAR FROM p.fecha_pedido) AS year,
+         SUM(lp.cantidad * lp.precio_unitario) AS total_vendido
+  FROM Cliente c
+  JOIN Pedido p ON c.cliente_id = p.cliente_id
+  JOIN LineaPedido lp ON p.pedido_id = lp.pedido_id
+  GROUP BY c.cliente_id, c.nombre, EXTRACT(YEAR FROM p.fecha_pedido)
+) t;</code></pre>
+
+    <h3>2.7. Índices</h3>
+    <p>Los índices aceleran lecturas a costa de espacio y coste en escrituras. Tipos comunes:</p>
+    <ul>
+        <li><strong>B-tree:</strong> índice por defecto para rangos y búsquedas exactas</li>
+        <li><strong>Hash:</strong> búsquedas exactas rápidas (no soporta rango)</li>
+        <li><strong>Índices compuestos:</strong> varios campos en un índice (orden importa)</li>
+        <li><strong>Índices únicos:</strong> garantizan unicidad</li>
+        <li><strong>Índices full-text:</strong> búsqueda textual</li>
+    </ul>
+    <pre><code>-- Crear índice simple
+CREATE INDEX idx_pedidos_fecha ON Pedido(fecha_pedido);
+
+-- Índice compuesto
+CREATE INDEX idx_cliente_email ON Cliente(email, fecha_alta);
+
+-- Índice único
+CREATE UNIQUE INDEX uq_producto_codigo ON Producto(codigo);</code></pre>
+
+    <h3>2.8. Transacciones y concurrencia</h3>
+    <p>Una transacción agrupa operaciones que deben cumplirse juntas (ACID):</p>
+    <ul>
+        <li><strong>Atomicidad:</strong> todo o nada</li>
+        <li><strong>Consistencia:</strong> la BD pasa de un estado válido a otro válido</li>
+        <li><strong>Aislamiento:</strong> transacciones concurrentes no interfieren indebidamente</li>
+        <li><strong>Durabilidad:</strong> una vez confirmada, la transacción persiste</li>
+    </ul>
+    <p>Niveles de aislamiento típicos (con trade-offs): <code>READ UNCOMMITTED</code>, <code>READ COMMITTED</code>, <code>REPEATABLE READ</code>, <code>SERIALIZABLE</code>. Mayor aislamiento reduce anomalías pero penaliza concurrencia.</p>
+
+    <pre><code>BEGIN TRANSACTION;
+UPDATE Cuenta SET saldo = saldo - 100 WHERE cuenta_id = 1;
+UPDATE Cuenta SET saldo = saldo + 100 WHERE cuenta_id = 2;
+COMMIT;
+-- Si ocurre error: ROLLBACK;</code></pre>
+
+    <h3>2.9. Gestión de bases de datos (administración)</h3>
+    
+    <h4>Backups y recuperación</h4>
+    <ul>
+        <li>Backups completos, diferenciales y logs de transacciones</li>
+        <li>Planear RTO (Recovery Time Objective) y RPO (Recovery Point Objective)</li>
+        <li>Probar restauraciones periódicamente</li>
+    </ul>
+    
+    <h4>Monitorización</h4>
+    <ul>
+        <li>Uso de CPU, memoria, I/O, latencia de consultas</li>
+        <li>Identificar consultas lentas (slow query log) y optimizarlas</li>
+    </ul>
+    
+    <h4>Escalado</h4>
+    <ul>
+        <li><strong>Vertical:</strong> aumentar recursos del servidor</li>
+        <li><strong>Horizontal:</strong> replicación (lecturas) y particionado/sharding (escrituras y almacenamiento)</li>
+    </ul>
+    
+    <h4>Seguridad</h4>
+    <ul>
+        <li>Control de accesos (principio de privilegio mínimo), cifrado en tránsito y en reposo, auditoría</li>
+        <li>Gestión de usuarios y roles, políticas de contraseñas y autenticación integrada (LDAP/AD)</li>
+    </ul>
+
+    <h2>3. Bases de datos no relacionales (NoSQL)</h2>
+    <p>NoSQL engloba varias familias de bases de datos diseñadas para necesidades fuera del patrón relacional clásico: escalabilidad horizontal, esquemas flexibles, y altos volúmenes de datos/throughput. No significa "sin SQL" — muchas tienen lenguajes propios o soportan SQL-like queries.</p>
+
+    <h3>3.1. Clasificación y ejemplos</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Tipo</th>
+                <th>Descripción</th>
+                <th>Ejemplos</th>
+                <th>Casos de uso típicos</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>Key-Value</td><td>Almacenan pares clave-valor. Muy rápidos y simples.</td><td>Redis, Riak</td><td>Caches, sesiones, contadores, colas simples</td></tr>
+            <tr><td>Document</td><td>Documentos JSON/BSON con esquema flexible.</td><td>MongoDB, CouchDB</td><td>APIs, catálogos de producto, contenido semiestructurado</td></tr>
+            <tr><td>Column-Family</td><td>Optimizado para grandes volúmenes, columnas por fila organizadas en familias.</td><td>Cassandra, HBase</td><td>Telemetría, almacenamiento de series temporales, datos analíticos</td></tr>
+            <tr><td>Graph</td><td>Modelan nodos y aristas; optimizados para relaciones complejas.</td><td>Neo4j, JanusGraph</td><td>Redes sociales, recomendaciones, rutas</td></tr>
+        </tbody>
+    </table>
+
+    <h3>3.2. CAP theorem</h3>
+    <p>En sistemas distribuidos, CAP establece que no se puede garantizar simultáneamente Consistencia (C), Disponibilidad (A) y Tolerancia a particiones (P). Generalmente hay que elegir dos de tres:</p>
+    <ul>
+        <li><strong>CP:</strong> Consistencia y Tolerancia a particiones (p. ej. MongoDB en ciertos modos)</li>
+        <li><strong>AP:</strong> Alta disponibilidad y tolerancia a particiones (p. ej. Cassandra)</li>
+        <li><strong>CA:</strong> Consistencia y disponibilidad cuando no hay particiones (menos relevante en distribuidos)</li>
+    </ul>
+
+    <h3>3.3. Consistencia y modelos de consistencia</h3>
+    <p>Modelos de consistencia comunes:</p>
+    <ul>
+        <li><strong>Consistencia fuerte:</strong> lecturas ven la última escritura confirmada</li>
+        <li><strong>Consistencia eventual:</strong> tras un tiempo, los nodos convergen al mismo estado</li>
+        <li><strong>Consistencia causal, monotónica, read-your-writes:</strong> modelos intermedios para casos específicos</li>
+    </ul>
+
+    <h3>3.4. Casos de uso típicos</h3>
+    <ul>
+        <li>Altos volúmenes de datos con escalado horizontal (telemetría, logs)</li>
+        <li>Datos semiestructurados o con esquema cambiante (document DB)</li>
+        <li>Requisitos de latencia baja y caché (key-value)</li>
+        <li>Relaciones complejas y consultas de grafos (graph DB)</li>
+    </ul>
+
+    <h3>3.5. Tecnologías y ejemplos prácticos</h3>
+
+    <h4>MongoDB (document store)</h4>
+    <p>Documentos BSON (similar a JSON). Buen equilibrio entre flexibilidad y consultas ricas.</p>
+    <pre><code>// Ejemplo de documento en MongoDB (sintaxis JSON-like)
+{
+  _id: ObjectId("656f..."),
+  nombre: "Camiseta",
+  precio: 19.9,
+  tallas: ["S","M","L"],
+  categorias: ["ropa", "verano"],
+  stock: {
+    tienda_a: 10,
+    tienda_b: 5
+  }
+}
+
+-- Consulta (Mongo shell)
+db.productos.find({ precio: { $gt: 20 } }).sort({ precio: -1 }).limit(10);</code></pre>
+
+    <h4>Cassandra (column-family)</h4>
+    <p>Diseñada para escalado horizontal masivo y alta disponibilidad. Modelado orientado a consultas: se diseña la tabla según las consultas que se harán.</p>
+    <pre><code>-- Ejemplo CQL (Cassandra Query Language)
+CREATE TABLE ventas_por_dia (
+  tienda_id uuid,
+  fecha date,
+  producto_id uuid,
+  cantidad int,
+  PRIMARY KEY ((tienda_id), fecha, producto_id)
+) WITH CLUSTERING ORDER BY (fecha DESC);
+
+-- Consulta optimizada por la PK/clustering
+SELECT * FROM ventas_por_dia WHERE tienda_id = ... AND fecha = '2025-11-20';</code></pre>
+
+    <h4>Redis (key-value, in-memory)</h4>
+    <p>Muy rápido, usado para cache, colas y estructuras en memoria (listas, sets, sorted sets).</p>
+    <pre><code>-- Ejemplo: incrementar contador en Redis
+INCR page:visits:homepage
+
+-- Guardar objeto JSON (con módulos)
+SET user:1001 '{"nombre":"Ana","email":"a@example.com"}'</code></pre>
+
+    <h4>Neo4j (graph)</h4>
+    <p>Modelo basado en nodos y relaciones; consultas con Cypher.</p>
+    <pre><code>-- Ejemplo Cypher: encontrar amigos de segundo grado
+MATCH (a:Persona {nombre: 'Luis'})-[:AMIGO]->(x)-[:AMIGO]->(y)
+RETURN DISTINCT y.nombre;</code></pre>
+
+    <h3>3.6. Comparación relacional vs NoSQL</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Aspecto</th>
+                <th>Relacional</th>
+                <th>NoSQL</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>Esquema</td><td>Estructura fija (esquema rígido)</td><td>Flexible / sin esquema</td></tr>
+            <tr><td>Transacciones</td><td>ACID (fuerte)</td><td>Varía; muchas ofrecen transacciones a nivel de documento o eventual</td></tr>
+            <tr><td>Escalado</td><td>Escalado vertical más común</td><td>Escalado horizontal nativo</td></tr>
+            <tr><td>Consultas complejas</td><td>JOINs y SQL potente</td><td>Limitadas o implementadas con denormalización</td></tr>
+        </tbody>
+    </table>
+
+    <h3>3.7. Migración y coexistencia</h3>
+    <p>En proyectos reales es habitual coexistencia híbrida (políglota): por ejemplo, usar una base relacional para datos transaccionales y una base NoSQL para análisis o caching. Al migrar:</p>
+    <ul>
+        <li>Analizar patrones de acceso y consultas</li>
+        <li>Diseñar esquema o claves de particionado según consultas</li>
+        <li>Preparar ETLs y pipelines de datos</li>
+        <li>Plan de rollback y pruebas de integridad</li>
+    </ul>
+</div>
+{% endblock %}

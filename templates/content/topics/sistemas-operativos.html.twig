@@ -1,0 +1,584 @@
+{% extends 'content/base.html.twig' %}
+
+{% block content_title %}Tema 1: Sistemas Operativos{% endblock %}
+
+{% block content_body %}
+<div class="content-section">
+    <h1>Sistemas Operativos</h1>
+    <p class="lead">Conceptos básicos, gestión de procesos, memoria y administración en Linux y Windows.</p>
+
+    <h2>1. Conceptos básicos</h2>
+
+    <h3>1.1 ¿Qué es un sistema operativo (SO)?</h3>
+    <p>Un sistema operativo es el software que controla el hardware y proporciona servicios a las aplicaciones. Actúa como intermediario entre el usuario/programas y la máquina física, gestionando recursos, aislando procesos y ofreciendo interfaces (shell, GUI, API de sistema).</p>
+
+    <h3>1.2 Funciones principales de un SO</h3>
+    <ul>
+        <li><strong>Gestión de procesos:</strong> creación, planificación, comunicación y terminación de procesos</li>
+        <li><strong>Gestión de memoria:</strong> asignación de memoria física y virtual, paginación y swapping</li>
+        <li><strong>Gestión de almacenamiento:</strong> abstracción de dispositivos mediante sistemas de ficheros, gestión de I/O y controladores</li>
+        <li><strong>Gestión de dispositivos:</strong> drivers, colas de I/O y buffering</li>
+        <li><strong>Gestión de usuarios y seguridad:</strong> autenticación, autorizaciones, control de accesos y auditoría</li>
+        <li><strong>Interfaz de usuario:</strong> líneas de comando (CLI) y entorno gráfico (GUI)</li>
+        <li><strong>Servicios de propósito general:</strong> administración de red, sistemas de ficheros, APIs y llamadas al sistema</li>
+    </ul>
+
+    <h3>1.3 Gestión de procesos</h3>
+    <p>Un <em>proceso</em> es una instancia en ejecución de un programa. El sistema operativo mantiene información por proceso en una estructura llamada PCB (Process Control Block).</p>
+
+    <h4>Estado de un proceso</h4>
+    <p>Estados típicos: <code>New</code>, <code>Ready</code>, <code>Running</code>, <code>Blocked/Waiting</code>, <code>Terminated</code>. El planificador (scheduler) decide qué proceso en estado Ready pasa a Running.</p>
+
+    Con swapping: se añaden dos estados: Bloked/Waiting-suspended y ready-suspended
+
+    <h4>Planificación (scheduling)</h4>
+    <p>Algoritmos comunes:</p>
+
+    <h5>Clasificación: algoritmos apropiativos vs no apropiativos</h5>
+    <ul>
+        <li><strong>No apropiativos (non‑preemptive):</strong> una vez que un proceso entra en ejecución, no se interrumpe hasta que termina o se bloquea
+            <ul>
+                <li>FCFS / FIFO</li>
+                <li>SJF (no expropiativo)</li>
+                <li>Prioridades (modo no expropiativo)</li>
+            </ul>
+        </li>
+        <li><strong>Apropiativos (preemptive):</strong> el sistema operativo puede interrumpir al proceso en ejecución
+            <ul>
+                <li>Round Robin (RR)</li>
+                <li>SRTF</li>
+                <li>Prioridades (modo expropiativo)</li>
+            </ul>
+        </li>
+    </ul>
+
+    <div class="alert alert-info">
+        <h5>FIFO / FCFS (First Come, First Served)</h5>
+        <p>Planifica los procesos según el orden de llegada. No interrumpe procesos. Adecuado para sistemas por lotes, pero puede producir el problema de <em>convoy effect</em> si un proceso muy largo bloquea a los demás.</p>
+        <pre><code>Cola de llegada: P1(20ms), P2(4ms), P3(2ms)
+Ejecución: P1 → P2 → P3
+Tiempo medio de espera: alto por culpa de P1.</code></pre>
+    </div>
+
+    <div class="alert alert-info">
+        <h5>Round Robin (RR)</h5>
+        <p>Cada proceso recibe un quantum fijo (ej. 50 ms). Si no termina, vuelve al final de la cola. Adecuado para sistemas interactivos porque garantiza respuesta periódica.</p>
+        <pre><code>Quantum = 50 ms
+Procesos: P1(120ms), P2(60ms), P3(30ms)
+Ejecución por rondas: P1(50) → P2(50) → P3(30) → P1(50) → P2(10) → P1(20)</code></pre>
+    </div>
+
+    <div class="alert alert-info">
+        <h5>Planificación por Prioridades</h5>
+        <p>Cada proceso tiene una prioridad. El scheduler elige el de prioridad más alta. Puede ser <strong>no expropiativo</strong> o <strong>expropiativo</strong>. Riesgo: inanición de procesos de baja prioridad; solución: <em>aging</em> (incremento progresivo de prioridad).</p>
+        <pre><code>P1(prio 3), P2(prio 1), P3(prio 5)
+Orden: P3 → P1 → P2
+(Aging aumenta prioridad de P2 si espera demasiado).</code></pre>
+    </div>
+
+    <div class="alert alert-info">
+        <h5>SJF (Shortest Job First) / SRTF (Shortest Remaining Time First)</h5>
+        <p><strong>SJF:</strong> ejecuta primero el proceso de menor duración estimada. No expropiativo.</p>
+        <p><strong>SRTF:</strong> versión expropiativa: si llega un proceso más corto, interrumpe al actual.</p>
+        <p>Es el algoritmo óptimo para minimizar el tiempo medio de espera, pero necesita conocer (o estimar) la duración.</p>
+        <pre><code>SJF:
+P1(8), P2(4), P3(2)
+Orden: P3 → P2 → P1
+
+SRTF:
+P1(8) ejecutando… llega P2(4) → se interrumpe → ejecuta P2.</code></pre>
+    </div>
+
+    <div class="alert alert-success">
+        <strong>📺 Video explicativo:</strong> <a href="https://www.youtube.com/watch?v=SJ4SnE9Mc58" target="_blank">Ver en YouTube</a>
+    </div>
+
+    <h4>Procesos vs Hilos (threads)</h4>
+    <p>Los hilos son unidades más ligeras que comparten el mismo espacio de direcciones dentro de un proceso. El uso de hilos mejora concurrencia pero complica sincronización (mutex, semáforos, variables de condición).</p>
+
+    <div class="alert alert-success">
+        <h5>Ejemplo: creación y finalización de procesos (Linux)</h5>
+        <pre><code>// En C (esquema simplificado)
+pid_t pid = fork();
+if (pid == 0) {
+  // proceso hijo
+  execl("/bin/ls", "ls", "-l", (char*)NULL);
+  _exit(1);
+} else {
+  // padre espera al hijo
+  waitpid(pid, &status, 0);
+}</code></pre>
+    </div>
+
+    <h3>1.4 Gestión de memoria</h3>
+    <p>Objetivos: protección, compartición y uso eficiente de la memoria física y virtual.</p>
+
+    <h4>1.4.1 Técnicas básicas</h4>
+    <ul>
+        <li><strong>Memoria contigua:</strong> simple pero sufre fragmentación</li>
+        <li><strong>Particionamiento fijo:</strong> particiones de tamaño predefinido</li>
+        <li><strong>Particionamiento dinámico:</strong> particiones de tamaño variable, asignadas bajo demanda</li>
+    </ul>
+
+    <h4>1.4.2 Compactación</h4>
+    <p>Mover procesos en memoria para juntar huecos libres y eliminar fragmentación externa. Coste elevado: implica copiar memoria y actualizar tablas de páginas/segmentos.</p>
+
+    <h4>1.4.3 Buddy allocator</h4>
+    <p>Método para particiones dinámicas eficiente en tiempo: la memoria se organiza en potencias de dos; al solicitar un bloque, se busca la mínima potencia de dos que lo cubra y se divide (split) hasta obtener el tamaño; al liberar, se intenta fusionar con el "buddy" si está libre.</p>
+    <div class="alert alert-success">
+        <strong>Ejemplo:</strong> memoria total 1024KB. Solicitud 200KB → se elige bloque 256KB (2^8) y se devuelve. Al liberar, intentar merge con buddy contiguo.
+    </div>
+
+    <h4>1.4.4 Paginación y segmentación</h4>
+    <p>Modelos no contiguos que permiten más flexibilidad:</p>
+    <ul>
+        <li><strong>Paginación:</strong> memoria dividida en páginas (p.ej. 4KB). El espacio de direcciones virtuales se divide en páginas; la memoria física en marcos (frames). Traducción mediante tabla de páginas</li>
+        <li><strong>Segmentación:</strong> memoria dividida en segmentos lógicos (código, datos, pila). Tamaños variables; cada segmento tiene base y límite</li>
+    </ul>
+
+    <h4>1.4.5 Paginación por demanda</h4>
+    <p>Solo se cargan páginas en memoria cuando son referenciadas (page fault = fallo de página). Requiere manejo de excepciones y reemplazo de página si la memoria física está llena.</p>
+
+    <h4>1.4.6 Tablas de páginas</h4>
+    <p>Implementaciones:</p>
+    <ul>
+        <li><strong>Tabla de páginas simple:</strong> una entrada por página virtual (coste alto para espacios grandes)</li>
+        <li><strong>Multinivel:</strong> reduce memoria usada por tablas (p. ej. 2 o 3 niveles), traduciendo con índices jerárquicos</li>
+        <li><strong>Tabla invertida:</strong> una entrada por marco físico, contiene la información del proceso/página que lo ocupa (útil en sistemas con grandes espacios virtuales)</li>
+    </ul>
+
+    <h4>1.4.7 TLB (Translation Lookaside Buffer)</h4>
+    <p>Cache de traducciones VA→PA; reduce coste de traducción. TLB misses requieren consultar la tabla de páginas (costo alto). Importante: manejar coherencia TLB al cambiar tablas (flush) o al implementar ASIDs (Address Space IDs) para evitar flushes totales.</p>
+
+    <h4>1.4.8 Algoritmos de reemplazo de página</h4>
+    <p>Cuando se produce un page fault y no hay marcos libres, hay que elegir qué página expulsar:</p>
+    
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Algoritmo</th>
+                <th>Descripción</th>
+                <th>Ventajas</th>
+                <th>Desventajas</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>FIFO</strong></td>
+                <td>Expulsa la página más antigua en memoria</td>
+                <td>Sencillo de implementar con una cola</td>
+                <td>Sufre anomalías (Belady)</td>
+            </tr>
+            <tr>
+                <td><strong>Óptimo</strong></td>
+                <td>Expulsa la página cuya próxima referencia esté más lejana</td>
+                <td>Mejor rendimiento teórico</td>
+                <td>Impracticable (requiere conocer el futuro)</td>
+            </tr>
+            <tr>
+                <td><strong>LRU</strong></td>
+                <td>Expulsa la página menos recientemente usada</td>
+                <td>Buen aproximado al óptimo</td>
+                <td>Coste de implementación (hardware/software)</td>
+            </tr>
+            <tr>
+                <td><strong>Second Chance / Clock</strong></td>
+                <td>Mejora de FIFO con bit de referencia (R)</td>
+                <td>Buen compromiso coste/efectividad</td>
+                <td>No tan preciso como LRU</td>
+            </tr>
+            <tr>
+                <td><strong>NFU</strong></td>
+                <td>Mantiene contadores actualizados según bit R</td>
+                <td>Aproximación práctica</td>
+                <td>Variantes incluyen Aging para ponderar referencias recientes</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h4>1.4.9 Fragmentación</h4>
+    <ul>
+        <li><strong>Fragmentación interna:</strong> espacio desperdiciado dentro de un bloque asignado (p. ej. al usar paginación con página de 4KB y proceso usa 6KB)</li>
+        <li><strong>Fragmentación externa:</strong> múltiples huecos libres no contiguos que impiden asignar un bloque grande a pesar de suficiente memoria total libre</li>
+    </ul>
+    <p>Soluciones: compactación (mover procesos), usar gestión basada en páginas, buddy allocator, segregated lists.</p>
+
+    <h4>1.4.10 Swapping y memoria virtual</h4>
+    <p><strong>Swapping:</strong> mover procesos completos o páginas a disco (swap space) para liberar memoria física. Coste alto (I/O) y debe usarse con políticas que minimicen thrashing.</p>
+    
+    <div class="alert alert-warning">
+        <h5>Thrashing</h5>
+        <p class="mb-0">Sucede cuando el sistema pasa más tiempo en swapping que en ejecución; suele ocurrir cuando la suma de working sets excede la memoria física.</p>
+    </div>
+
+    <h5>Working set model</h5>
+    <p>Modelo que estima el conjunto de páginas activas de un proceso en una ventana de tiempo. Basado en working set, el SO decide cuánta memoria reservar y cuándo expulsar procesos para evitar thrashing.</p>
+
+    <h4>1.4.11 Técnicas avanzadas</h4>
+    
+    <h5>Slab allocator</h5>
+    <p>Usado en kernels (Linux) para asignar objetos de tamaño fijo (inodes, estructuras internas) eficientemente. Mantiene caches por tipo de objeto: objetos libres en listas, reduce fragmentación y coste de inicialización.</p>
+
+    <h5>Pools y memory arenas</h5>
+    <p>Reservas de memoria para tipos concretos o para threads, evitando contención y reduciendo overhead de asignación dinámica general.</p>
+
+    <h5>Copy-On-Write (COW)</h5>
+    <p>Técnica usada en fork() y en gestión de snapshots: al crear copia, compartir páginas en modo lectura hasta que un proceso escriba (se hace copia en ese momento). Reduce coste de copia inicial y uso de memoria.</p>
+
+    <h5>Garbage Collection</h5>
+    <p>En entornos con GC (máquinas virtuales como JVM), el recolector gestiona memoria automática: técnicas incluyen reference counting, mark-and-sweep, generational GC. Importante en diseño de runtimes pero fuera del núcleo del SO.</p>
+
+    <h4>1.4.12 Herramientas y comandos útiles (Linux)</h4>
+    <pre><code># Ver uso de memoria
+top
+free -h
+vmstat 1
+
+# Ver paginación y swap
+swapon --show
+cat /proc/meminfo
+
+# Ver caches y slab
+cat /proc/slabinfo</code></pre>
+
+    <div class="alert alert-info">
+        <h5>Ejemplos y ejercicios tipo examen</h5>
+        <ol class="mb-0">
+            <li>Simular algoritmo FIFO y LRU para la secuencia de referencias: 1,2,3,4,1,2,5,1,2,3,4,5 con 3 marcos; calcular fallos de página</li>
+            <li>Explicar cómo el buddy allocator reduce la fragmentación y dar pasos de split/merge para solicitudes 200KB, 128KB, 64KB en un área de 1024KB</li>
+            <li>Describir cómo funciona el TLB y por qué los TLB misses son costosos</li>
+        </ol>
+    </div>
+
+    <h3>1.5 Entrada/Salida y sistemas de ficheros</h3>
+    <p>El SO expone sistemas de ficheros (EXT4, NTFS, FAT32, XFS) y gestiona dispositivos mediante drivers. Operaciones de I/O pueden ser bloqueantes o no bloqueantes, y pueden emplear buffering, caching y DMA para eficiencia.</p>
+
+    <h3>1.6 Sincronización y comunicación entre procesos</h3>
+    <p>Primitivas: semáforos, mutex, monitores, tuberías (pipes), colas de mensajes, sockets, memoria compartida. Importante evitar condiciones de carrera y deadlocks (evitar ciclos en el grafo de asignación de recursos).</p>
+
+    <h3>1.7 Seguridad básica y gestión de usuarios</h3>
+    <p>Identidad (UID/GID en Unix), permisos (rwx), listas de control de acceso (ACL), permisos basados en roles (RBAC). Mecanismos de autenticación (contraseñas, claves públicas, Kerberos) y registro/auditoría de eventos.</p>
+
+    <h2>2. Administración de sistemas: Linux y Windows</h2>
+
+    <h3>2.1 Tareas comunes de administración</h3>
+    <ul>
+        <li>Instalación y configuración del SO</li>
+        <li>Gestión de usuarios y permisos</li>
+        <li>Gestión de servicios y demonios</li>
+        <li>Actualizaciones y parches</li>
+        <li>Monitorización y logs</li>
+        <li>Backups y recuperación</li>
+        <li>Seguridad y hardening</li>
+    </ul>
+
+    <h3>2.2 Administración en Linux</h3>
+    
+    <h4>Distribuciones y particionado</h4>
+    <p>Distribuciones populares: Debian/Ubuntu, CentOS/RHEL/AlmaLinux, Fedora, Arch. Particionado recomendado: separar <code>/</code>, <code>/home</code>, <code>/var</code>, <code>/boot</code> y swap según necesidades.</p>
+
+    <h4>Gestión de paquetes</h4>
+    <p>Herramientas:</p>
+    <ul>
+        <li><strong>Debian/Ubuntu:</strong> <code>apt</code>, <code>dpkg</code></li>
+        <li><strong>RHEL/CentOS/Fedora:</strong> <code>yum</code>, <code>dnf</code>, <code>rpm</code></li>
+        <li><strong>Arch:</strong> <code>pacman</code></li>
+    </ul>
+    <pre><code># Actualizar repos y paquetes (Debian/Ubuntu)
+sudo apt update && sudo apt upgrade -y
+
+# Instalar paquete
+sudo apt install nginx
+
+# Ver historial y estado de un paquete
+dpkg -l | grep nginx</code></pre>
+
+    <h4>Gestión de usuarios y permisos</h4>
+    <pre><code># Añadir usuario
+sudo adduser juan
+# Añadir a grupo sudo
+sudo usermod -aG sudo juan
+
+# Cambiar permisos
+chmod 640 archivo.txt
+chown juan:grupo archivo.txt</code></pre>
+
+    <h4>Servicios y systemd</h4>
+    <p>systemd es el init moderno en la mayoría de distros. Comandos:</p>
+    <pre><code># Ver estado de un servicio
+sudo systemctl status nginx
+# Iniciar/parar/activar servicio al arranque
+sudo systemctl start nginx
+sudo systemctl stop nginx
+sudo systemctl enable nginx
+sudo systemctl disable nginx</code></pre>
+
+    <h4>Logs y monitorización</h4>
+    <pre><code># Ver logs con journalctl (systemd)
+journalctl -u nginx.service --since "1 hour ago"
+# Ver logs tradicionales
+tail -n 100 /var/log/syslog
+
+# Monitorizar procesos y recursos
+top
+htop (si está instalado)
+vmstat 1
+iostat 1</code></pre>
+
+    <h4>Backups y recuperación</h4>
+    <p>Métodos: snapshots (LVM, ZFS), copias con <code>rsync</code>, backups a la nube. Ejemplo rápido:</p>
+    <pre><code># Copiar directorio excluyendo archivos temporales
+rsync -av --exclude='*.tmp' /home/ /backup/home/</code></pre>
+
+    <div class="alert alert-warning">
+        <h5>Seguridad y hardening</h5>
+        <ul class="mb-0">
+            <li>Actualizar regularmente y aplicar parches</li>
+            <li>Configurar firewall (ufw, iptables/nftables)</li>
+            <li>Deshabilitar servicios innecesarios</li>
+            <li>Usar SSH con claves (deshabilitar autenticación por contraseña si procede)</li>
+            <li>Auditoría: <code>auditd</code>, revisión de logs y acceso</li>
+        </ul>
+    </div>
+
+    <pre><code># Habilitar UFW y permitir SSH
+sudo ufw enable
+sudo ufw allow 22/tcp
+
+# Policy: deshabilitar password auth en sshd_config
+# Editar /etc/ssh/sshd_config -> PasswordAuthentication no
+sudo systemctl restart sshd</code></pre>
+
+    <h3>2.3 Administración en Windows</h3>
+    
+    <h4>Ediciones y rol del SO</h4>
+    <p>Windows Server vs Windows Client. Windows Server incluye roles como Active Directory, DNS, DHCP, IIS y herramientas de gestión centralizada.</p>
+
+    <h4>Gestión de usuarios y Active Directory (AD)</h4>
+    <p>AD centraliza usuarios, equipos y políticas de grupo (GPO). Herramientas: <em>Active Directory Users and Computers</em>, <em>Group Policy Management</em>.</p>
+
+    <h4>Servicios y administración</h4>
+    <p>Servicios gestionados con <em>Services.msc</em> o PowerShell (Get-Service, Start-Service). Ejemplo PowerShell:</p>
+    <pre><code># Ver servicios
+Get-Service | Where-Object {$_.Status -eq 'Running'}
+# Iniciar servicio
+Start-Service -Name w32time</code></pre>
+
+    <h4>Registro (Registry) y políticas</h4>
+    <p>El Registro de Windows almacena configuraciones. Las GPO permiten aplicar políticas a usuarios/equipos de forma centralizada. Para hardening, configurar políticas de contraseñas, bloqueo de cuentas, auditar eventos y limitar privilegios.</p>
+
+    <h4>Actualizaciones y parches</h4>
+    <p>Windows Update, WSUS y sistemas de gestión (SCCM / Microsoft Endpoint Configuration Manager) para desplegar actualizaciones en grandes entornos.</p>
+
+    <h4>Monitorización y logs</h4>
+    <p>Event Viewer (visor de eventos) muestra Application, Security y System logs. Herramientas: Performance Monitor (perfmon), Resource Monitor y Windows Admin Center para administración moderna.</p>
+
+    <h4>Backups y recuperación</h4>
+    <p>Herramientas integradas: Windows Server Backup, System Restore para clientes, y soluciones de terceros. Importante planificar RTO/RPO y probar restauraciones.</p>
+
+    <h3>2.4 Automatización y scripting</h3>
+    <p>Habilidad clave para administradores: automatizar tareas repetitivas.</p>
+    
+    <h4>Bash (Linux)</h4>
+    <pre><code># Script ejemplo: limpiar /tmp
+echo "Limpiando /tmp"
+find /tmp -type f -mtime +7 -exec rm -f {} \;</code></pre>
+
+    <h4>PowerShell (Windows)</h4>
+    <pre><code># Script ejemplo: listar usuarios del grupo Administradores
+Get-LocalGroupMember -Group 'Administrators' | Select-Object Name, ObjectClass</code></pre>
+
+    <h3>2.5 Monitorización avanzada y métricas</h3>
+    <p>Herramientas comunes: Prometheus + Grafana, Nagios/Icinga, Zabbix, ELK (Elasticsearch, Logstash, Kibana) para logs. Métricas a vigilar: uso de CPU, memoria, I/O, latencia de disco, conexiones de red.</p>
+
+    <div class="alert alert-warning">
+        <h5>Buenas prácticas y checklist para examen</h5>
+        <ol class="mb-0">
+            <li>Conocer comandos básicos de Linux y Windows (gestión de usuarios, servicios, logs)</li>
+            <li>Saber explicar diferencias entre procesos e hilos, y algoritmos de planificación</li>
+            <li>Explicar memoria virtual, paginación y swapping con ejemplos</li>
+            <li>Tener ejemplos prácticos de hardening: SSH keys, firewall, actualizaciones</li>
+            <li>Conocer tipos de backups, RTO y RPO y cómo probar restauraciones</li>
+        </ol>
+    </div>
+
+    <h2>3. Cuadro comparativo: diferencias entre Linux y Windows</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Aspecto</th>
+                <th>Linux</th>
+                <th>Windows</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Juego de caracteres</strong></td>
+                <td>UTF-8 es el estándar por defecto en la mayoría de distribuciones</td>
+                <td>UTF-16 (Unicode) se usa internamente en el sistema; herramientas antiguas usan codepages (Windows-1252, CP850)</td>
+            </tr>
+            <tr>
+                <td><strong>Sistema de ficheros</strong></td>
+                <td>EXT4, XFS, Btrfs, ZFS. Case-sensitive</td>
+                <td>NTFS principal; FAT32/exFAT para dispositivos externos. No es case-sensitive por defecto</td>
+            </tr>
+            <tr>
+                <td><strong>Interpretación de bytes en ruta</strong></td>
+                <td>Rutas codificadas en UTF-8; barras "/"</td>
+                <td>Internamente UTF-16; rutas con "\"</td>
+            </tr>
+            <tr>
+                <td><strong>Estructura del sistema</strong></td>
+                <td>Árbol único "/"; todo es un fichero</td>
+                <td>Unidades con letra (C:, D:, E:)</td>
+            </tr>
+            <tr>
+                <td><strong>Permisos</strong></td>
+                <td>Modelo UNIX (rwx), UID/GID, ACL opcionales</td>
+                <td>ACL avanzadas en NTFS; más granularidad</td>
+            </tr>
+            <tr>
+                <td><strong>Terminal / Shell</strong></td>
+                <td>bash, zsh, fish. Altamente scriptable</td>
+                <td>cmd.exe y PowerShell; PowerShell muy potente</td>
+            </tr>
+            <tr>
+                <td><strong>Gestión de procesos</strong></td>
+                <td>/proc, signals (SIGTERM, SIGKILL), systemd</td>
+                <td>Task Manager, servicios vía SCM y PowerShell</td>
+            </tr>
+            <tr>
+                <td><strong>Drivers</strong></td>
+                <td>Kernel modular; muchos drivers integrados</td>
+                <td>Drivers específicos del fabricante; Windows Update distribuye muchos</td>
+            </tr>
+            <tr>
+                <td><strong>Licencia</strong></td>
+                <td>Libre (GPL, MIT). Muchas distros gratuitas</td>
+                <td>Comercial; licencias por dispositivo/usuario</td>
+            </tr>
+            <tr>
+                <td><strong>Uso típico</strong></td>
+                <td>Servidores, desarrollo, contenedores, supercomputación</td>
+                <td>Entornos empresariales, escritorio, aplicaciones corporativas</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>4. Cuadro comparativo técnico: Linux vs Windows</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Aspecto técnico</th>
+                <th>Linux</th>
+                <th>Windows</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Arquitectura del kernel</strong></td>
+                <td>Monolítico modular. Drivers y servicios ejecutan en modo núcleo, pero pueden cargarse como módulos</td>
+                <td>Híbrido (NT Kernel). Combina elementos de microkernel y monolítico</td>
+            </tr>
+            <tr>
+                <td><strong>Gestión de memoria</strong></td>
+                <td>Paginación por demanda, overcommit, hugepages. Soporte cgroups para limitar memoria</td>
+                <td>Memory Manager integrado; paginación; asignación estricta (no overcommit por defecto)</td>
+            </tr>
+            <tr>
+                <td><strong>Planificador (scheduler)</strong></td>
+                <td>CFS (Completely Fair Scheduler) orientado a equidad; prioridades + cgroups</td>
+                <td>Scheduler por prioridades basado en Quantum y clases de prioridad (Realtime, High, Normal, Low)</td>
+            </tr>
+            <tr>
+                <td><strong>Aislamiento de procesos</strong></td>
+                <td>Namespaces + cgroups → base de contenedores (Docker, LXC)</td>
+                <td>Job Objects y silos; Windows Containers para aislamiento más reciente</td>
+            </tr>
+            <tr>
+                <td><strong>Gestión de permisos del kernel</strong></td>
+                <td>Modelo POSIX + capacidades (capabilities) para granularidad fina</td>
+                <td>Security Reference Monitor + Access Tokens y SID; permisos muy granulares</td>
+            </tr>
+            <tr>
+                <td><strong>Sistemas de logs</strong></td>
+                <td>Syslog, JournalD, archivos planos en /var/log</td>
+                <td>Event Tracing for Windows (ETW); Visor de Eventos</td>
+            </tr>
+            <tr>
+                <td><strong>Manejo de hilos</strong></td>
+                <td>Hilos como entidades del kernel (pthread). Ligados a procesos mediante clone()</td>
+                <td>Hilos nativos del Kernel NT; cada hilo tiene su propio token de seguridad</td>
+            </tr>
+            <tr>
+                <td><strong>Comunicación entre procesos (IPC)</strong></td>
+                <td>Pipes, FIFOs, colas SysV, sockets UNIX, memoria compartida POSIX</td>
+                <td>Named Pipes, mailslots, COM, memoria compartida, RPC</td>
+            </tr>
+            <tr>
+                <td><strong>Seguridad del sistema</strong></td>
+                <td>Mandatory Access Control (AppArmor/SELinux). Control granular por procesos</td>
+                <td>Integración con Active Directory, Credential Guard, Secure Boot reforzado</td>
+            </tr>
+            <tr>
+                <td><strong>Mecanismos de arranque</strong></td>
+                <td>GRUB2/EFI; initramfs para montaje inicial</td>
+                <td>Windows Boot Manager + BCD (Boot Configuration Data)</td>
+            </tr>
+            <tr>
+                <td><strong>Virtualización</strong></td>
+                <td>KVM integrado en el kernel; muy eficiente</td>
+                <td>Hyper‑V integrado en versiones Pro/Server</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>5. Gestión de Memoria</h2>
+<p>La gestión de memoria en un sistema operativo busca asignar espacio de memoria a procesos de forma eficiente, proteger espacios entre procesos, permitir compartición controlada y maximizar el rendimiento (latencia y throughput). Dos problemas básicos: <strong>fragmentación</strong> (interna/externa) y <strong>coherencia/seguridad</strong> entre espacios de proceso.</p>
+
+<h2 id="admin-libremem">2. Administración de memoria libre</h2>
+<p>El SO mantiene estructuras para controlar bloques de memoria libre y asignada. Opciones comunes:</p>
+<ul>
+    <li><strong>Lista libre encadenada</strong>: lista de bloques libres con metadatos (dirección, tamaño, next).</li>
+    <li><strong>Bitmap</strong>: un bit por unidad mínima (página/word) que indica libre/ocupada.</li>
+    <li><strong>Árboles / segregated lists</strong>: listas separadas por tamaños (bins) o árboles balanceados para acceso eficiente a bloques de cierto tamaño.</li>
+</ul>
+
+<p>Buenas prácticas: mantener listas por tamaños para evitar búsquedas largas; coalescing (fusionar bloques adyacentes al liberar) para reducir fragmentación externa; mantener límites mínimos y alineamientos.</p>
+
+<h3>2.1 Coalescing y split</h3>
+<p>Al liberar un bloque, intentar <em>coalescer</em> con bloques adyacentes libres. Al asignar, si el bloque libre es más grande que la solicitud, se puede <em>split</em> (dividir) y dejar el resto como bloque libre.</p>
+
+<h3>2.2 Estrategias para elegir bloque libre</h3>
+<p>Se usan algoritmos para seleccionar qué bloque libre cubrirá una petición (ver sección 4). A continuación se describen los algoritmos clásicos de asignación contigua: <h4>Algoritmos de asignación de memoria contigua</h4><ul><li><strong>First Fit (Primer ajuste):</strong> recorre la lista libre y asigna el primer bloque suficientemente grande. Rápido y sencillo, pero puede generar fragmentación al principio de la memoria.</li><li><strong>Next Fit (Siguiente ajuste):</strong> similar a First Fit pero continúa la búsqueda desde la última posición usada. Tiende a distribuir la fragmentación más uniformemente.</li><li><strong>Best Fit (Mejor ajuste):</strong> selecciona el bloque libre más pequeño que pueda satisfacer la solicitud. Minimiza desperdicio inmediato, pero genera mucha fragmentación externa.</li><li><strong>Worst Fit (Peor ajuste):</strong> asigna el bloque libre más grande disponible. Intenta mantener huecos grandes, pero suele desperdiciar grandes áreas y fragmentar más.</li><li><strong>Quick Fit (Ajuste rápido):</strong> mantiene listas de bloques libres por tamaños frecuentes, permitiendo asignación contigua muy rápida.</li></ul> Para sistemas con granularidad de página, la estructura se simplifica usando bitmap y listas por páginas libres.</p>
+
+<h3>2.3 Cuadro comparativo de algoritmos de asignación</h3>
+<table>
+    <thead><tr><th>Algoritmo</th><th>Ventajas</th><th>Desventajas</th></tr></thead>
+    <tbody>
+    <tr><td>First Fit</td><td>Rápido; poca sobrecarga</td><td>Fragmentación al inicio</td></tr>
+    <tr><td>Next Fit</td><td>Distribuye fragmentación</td><td>Peor rendimiento que First Fit en algunos casos</td></tr>
+    <tr><td>Best Fit</td><td>Minimiza residuos inmediatos</td><td>Genera mucha fragmentación externa</td></tr>
+    <tr><td>Worst Fit</td><td>Mantiene huecos grandes</td><td>Puede degradar la memoria rápidamente</td></tr>
+    <tr><td>Quick Fit</td><td>Muy rápido; adecuado para tamaños repetitivos</td><td>Gestión compleja del coalescing</td></tr>
+    </tbody>
+</table>
+
+<h3>2.4 Ejemplos numéricos</h3>
+<div class="example"><pre><code>Bloques libres: [20, 15, 40, 10] KB
+Solicitud: 12 KB
+
+First Fit → usa bloque de 20 KB (resto: 8 KB)
+Next Fit → depende del último punto de búsqueda
+Best Fit → usa bloque de 15 KB (resto: 3 KB)
+Worst Fit → usa bloque de 40 KB (resto: 28 KB)
+Quick Fit → usa lista del tamaño más cercano predefinido (si existe)
+</code></pre></div>
+
+<h3>2.5 Ventajas y uso en sistemas reales</h3>
+<ul>
+    <li><strong>First/Next Fit:</strong> usados en sistemas sencillos o embebidos donde la disciplina de memoria es predecible</li>
+    <li><strong>Best Fit:</strong> poco usado en kernels reales por la fragmentación que produce</li>
+</ul>
+</div>
+{% endblock %}

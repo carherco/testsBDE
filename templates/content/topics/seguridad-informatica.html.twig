@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Apuntes: Seguridad Informática — Fundamentos de ciberseguridad</title>
+    <style>
+        body{font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;margin:24px;color:#111;line-height:1.6}
+        h1,h2,h3{color:#0b3d91}
+        pre{background:#f6f8fb;padding:12px;border-radius:6px;overflow:auto}
+        code{background:#eef2ff;padding:2px 4px;border-radius:4px}
+        table{border-collapse:collapse;width:100%;margin:12px 0}
+        th,td{border:1px solid #ddd;padding:8px;text-align:left}
+        .note{background:#fff8e1;padding:10px;border-left:4px solid #f0a000}
+        .example{border-left:4px solid #0b3d91;padding:12px;margin:12px 0;background:#fbfdff}
+        ul{margin-left:1.2rem}
+    </style>
+</head>
+<body>
+<h1>Seguridad Informática — Apuntes para examen de oposiciones</h1>
+<p>Estos apuntes cubren los fundamentos de la ciberseguridad: amenazas, vulnerabilidades, principios básicos (confidencialidad, integridad, disponibilidad), modelos de control de acceso, gestión de riesgos, criptografía básica, vectores de ataque y medidas defensivas. Está pensado para oposiciones: definiciones claras, ejemplos y recomendaciones para responder preguntas de examen.</p>
+
+<hr />
+
+<h2 id="fundamentos">1. Fundamentos: amenazas, vulnerabilidades y riesgos</h2>
+
+<h3>1.1 Terminología esencial</h3>
+<ul>
+    <li><strong>Amenaza (Threat):</strong> cualquier circunstancia o evento con potencial para causar daño a un activo (p. ej. atacante, malware, fallo natural).</li>
+    <li><strong>Vulnerabilidad:</strong> debilidad de un activo o control que puede ser explotada por una amenaza (p. ej. software desactualizado, configuración débil).</li>
+    <li><strong>Riesgo:</strong> posibilidad de que una amenaza explote una vulnerabilidad y cause impacto. Riesgo = Probabilidad × Impacto.</li>
+    <li><strong>Exploit:</strong> técnica o código que aprovecha una vulnerabilidad.</li>
+    <li><strong>Control / Contramedida:</strong> mecanismo para mitigar riesgos (preventivo, detector, correctivo).</li>
+</ul>
+
+<h3>1.2 Taxonomía de amenazas</h3>
+<ul>
+    <li><strong>Humanas:</strong> atacantes externos (cybercriminals), internos (empleados descontentos), hacktivistas, estados/nation-states.</li>
+    <li><strong>Técnicas:</strong> malware (ransomware, troyanos, botnets), phishing, DDoS, SQL injection, cross-site scripting.</li>
+    <li><strong>Accidentales:</strong> fallos humanos, errores de configuración, pérdida de datos por fallo hardware.</li>
+    <li><strong>Físicas:</strong> robo de equipos, desastres naturales, sabotaje.</li>
+</ul>
+
+<h3>1.3 Gestión de riesgos (resumen)</h3>
+<ol>
+    <li>Identificación de activos y amenazas.</li>
+    <li>Evaluación de vulnerabilidades y valoración del impacto.</li>
+    <li>Cuantificación del riesgo (probabilidad × impacto).</li>
+    <li>Tratamiento del riesgo: evitar, transferir, mitigar, aceptar.</li>
+    <li>Monitoreo y revisión continua.</li>
+</ol>
+
+<div class="note">Tip examen: en preguntas de gestión de riesgos, siempre incluye medidas concretas (ej.: actualizar software, aplicar parches, segmentar red, backups, cifrado) y justifica la selección según impact/probabilidad.</div>
+
+<hr />
+
+<h2 id="cia">2. Principios básicos de seguridad: CIA y más</h2>
+
+<h3>2.1 Confidentiality — Confidencialidad</h3>
+<p>Garantizar que la información solo sea accesible a quienes están autorizados. Medidas: cifrado en tránsito (TLS), cifrado en reposo, control de accesos, políticas de menor privilegio, DLP (data loss prevention).</p>
+
+<h3>2.2 Integrity — Integridad</h3>
+<p>Asegurar que los datos no han sido modificados de forma no autorizada. Medidas: hashes y firmas digitales, checksums, controles de versiones, controles de acceso y registro de auditoría.</p>
+
+<h3>2.3 Availability — Disponibilidad</h3>
+<p>Garantizar acceso oportuno a los activos y servicios. Medidas: redundancia, balanceo de carga, disaster recovery, tolerancia a fallos, protección ante DDoS.</p>
+
+<h3>2.4 Principios adicionales</h3>
+<ul>
+    <li><strong>Principio de menor privilegio:</strong> conceder a usuarios y procesos solo los permisos necesarios.</li>
+    <li><strong>Defensa en profundidad:</strong> varias capas de controles (perímetro, red, host, aplicación, datos).</li>
+    <li><strong>Seguridad por diseño y por defecto:</strong> configuraciones seguras por defecto y diseño seguro desde el inicio del desarrollo (shift-left).</li>
+    <li><strong>Auditoría y trazabilidad:</strong> registrar eventos para detectar y reconstruir incidentes.</li>
+</ul>
+
+<hr />
+
+<h2 id="controles">3. Controles de seguridad: preventivos, detectivos y correctivos</h2>
+<table>
+    <thead><tr><th>Tipo</th><th>Ejemplos</th><th>Objetivo</th></tr></thead>
+    <tbody>
+    <tr><td>Preventivos</td><td>Firewalls, IPS, MFA, cifrado, hardening</td><td>Evitar que ocurra un incidente</td></tr>
+    <tr><td>Detectivos</td><td>IDS/IPS, SIEM, logs, honeypots</td><td>Detectar incidentes cuando ocurren</td></tr>
+    <tr><td>Correctivos</td><td>Backups, planes de recuperación, parches</td><td>Restaurar y mitigar el daño</td></tr>
+    </tbody>
+</table>
+
+<hr />
+
+<h2 id="control-acceso">4. Modelos y mecanismos de control de acceso</h2>
+<h3>4.1 Modelos</h3>
+<ul>
+    <li><strong>DAC (Discretionary Access Control):</strong> propietario asigna permisos (p. ej. UNIX file perms).</li>
+    <li><strong>MAC (Mandatory Access Control):</strong> políticas centralizadas y obligatorias (SELinux, AppArmor).</li>
+    <li><strong>RBAC (Role-Based Access Control):</strong> permisos concedidos mediante roles (AD, IAM).</li>
+    <li><strong>ABAC (Attribute-Based Access Control):</strong> decisiones basadas en atributos del sujeto, objeto y entorno.</li>
+</ul>
+
+<h3>4.2 Mecanismos prácticos</h3>
+<ul>
+    <li>Autenticación: contraseñas, MFA (2FA, U2F), certificados.</li>
+    <li>Autorización: tokens, roles, listas ACL.</li>
+    <li>Auditoría: registros de acceso, alertas por comportamientos anómalos.</li>
+</ul>
+
+<hr />
+
+<h2 id="criptografia">5. Criptografía básica</h2>
+<h3>5.1 Conceptos</h3>
+<ul>
+    <li><strong>Criptografía simétrica:</strong> misma clave para cifrar y descifrar (AES, 3DES). Rápida, adecuada para datos en reposo/traslado privado.</li>
+    <li><strong>Criptografía asimétrica:</strong> pares de claves pública/privada (RSA, ECC). Útil para intercambio de claves y firmas digitales.</li>
+    <li><strong>Funciones hash:</strong> resumen determinista de datos (SHA-256). No reversible; uso en integridad y HMAC.</li>
+    <li><strong>Firmas digitales:</strong> integridad y no repudio (RSA/ECDSA sobre hashes).</li>
+</ul>
+
+<h3>5.2 Protocolos y prácticas</h3>
+<ul>
+    <li>TLS para cifrado en tránsito; versiones seguras y configuración recomendada (evitar TLS 1.0/1.1, usar ciphers modernos).</li>
+    <li>Gestión de claves: rotación, almacenamiento seguro (HSM), políticas de expiración.</li>
+    <li>Evitar uso de algoritmos obsoletos (MD5, SHA-1, RC4).</li>
+</ul>
+
+<hr />
+
+<h2 id="vulnerabilidades">6. Vulnerabilidades y vectores de ataque comunes</h2>
+<h3>6.1 OWASP Top 10 (web)</h3>
+<ol>
+    <li>Injection (SQLi, Command Injection)</li>
+    <li>Broken Authentication</li>
+    <li>Sensitive Data Exposure</li>
+    <li>XML External Entities (XXE)</li>
+    <li>Broken Access Control</li>
+    <li>Security Misconfiguration</li>
+    <li>Cross-Site Scripting (XSS)</li>
+    <li>Insecure Deserialization</li>
+    <li>Using Components with Known Vulnerabilities</li>
+    <li>Insufficient Logging & Monitoring</li>
+</ol>
+
+<h3>6.2 Malware y amenazas técnicas</h3>
+<ul>
+    <li><strong>Ransomware:</strong> cifra datos y exige rescate.</li>
+    <li><strong>Botnets:</strong> redes de máquinas comprometidas para DDoS u otras tareas.</li>
+    <li><strong>Troyanos y backdoors:</strong> acceso remoto no autorizado.</li>
+    <li><strong>Rootkits:</strong> persistencia oculta en kernel/userland.</li>
+    <li><strong>Phishing / Spear-phishing:</strong> ingeniería social para robar credenciales.</li>
+</ul>
+
+<h3>6.3 Vectores de ataque</h3>
+<ul>
+    <li>Red: escaneo de puertos, sniffing, MITM, ARP spoofing.</li>
+    <li>Aplicación: inyección, XSS, CSRF.</li>
+    <li>Usuario: phishing, engaños.</li>
+    <li>Cadena de suministro: código de terceros con vulnerabilidades.</li>
+</ul>
+
+<hr />
+
+<h2 id="deteccion">7. Detección, análisis e respuesta a incidentes</h2>
+<h3>7.1 Detección</h3>
+<ul>
+    <li>SIEM: centraliza logs, correlación y alertas.</li>
+    <li>IDS/IPS: detección y prevención de intrusiones (signature/behavioral).</li>
+    <li>Monitorización de integridad de ficheros (FIM).</li>
+</ul>
+
+<h3>7.2 Análisis</h3>
+<ul>
+    <li>Recolección forense: preservar evidencias, chain of custody.</li>
+    <li>Análisis de malware: sandboxing, dynamic/static analysis.</li>
+</ul>
+
+<h3>7.3 Respuesta a incidentes</h3>
+<ol>
+    <li>Preparación (planes, playbooks, formación).</li>
+    <li>Identificación.</li>
+    <li>Contención (limitar alcance).</li>
+    <li>Erradicación (eliminar causa raíz).</li>
+    <li>Recuperación (restaurar servicios).</li>
+    <li>Lecciones aprendidas (post-mortem).</li>
+</ol>
+
+<hr />
+
+<h2 id="evaluacion">8. Evaluación de seguridad: pentesting y auditorías</h2>
+<ul>
+    <li><strong>Vulnerability Assessment:</strong> escaneo automatizado (Nessus, OpenVAS) y priorización de fallos.</li>
+    <li><strong>Pentest (penetration testing):</strong> pruebas manuales y explotación controlada para evaluar impacto.</li>
+    <li><strong>Red Team / Blue Team:</strong> ejercicios adversarios vs defensores.</li>
+</ul>
+
+<hr />
+
+<h2 id="cumplimiento">9. Cumplimiento y normativa</h2>
+<p>Ejemplos de marcos y normativas relevantes: ISO 27001, NIST CSF, GDPR (protección de datos), PCI-DSS (tarjetas), ENS en España. Importancia: requisitos legales y de auditoría, deber documental y medidas técnicas/organizativas.</p>
+
+<hr />
+
+<h2 id="buenas">10. Buenas prácticas y checklist para examen</h2>
+<ul>
+    <li>Aplicar defensa en profundidad y principio de menor privilegio.</li>
+    <li>Segmentar redes y aislar servicios críticos.</li>
+    <li>Gestionar parches y vulnerabilidades (vulnerability lifecycle).</li>
+    <li>Habilitar MFA en accesos administrativos.</li>
+    <li>Realizar backups periódicos y probar restauraciones.</li>
+    <li>Formación en seguridad para usuarios para reducir phishing.</li>
+    <li>Documentar políticas, procedimientos y mantener playbooks de IR.</li>
+</ul>
+
+<hr />
+
+<h2 id="preguntas">11. Preguntas tipo examen (con respuestas breves)</h2>
+<ol>
+    <li><strong>¿Qué es una vulnerabilidad?</strong> — Debilidad que puede ser explotada por una amenaza para causar daño.</li>
+    <li><strong>Enumere 3 controles preventivos.</strong> — Firewall, MFA, cifrado.</li>
+    <li><strong>Explique CIA.</strong> — Confidencialidad, Integridad y Disponibilidad: pilares de la seguridad de la información.</li>
+    <li><strong>¿Qué es un SIEM?</strong> — Sistema que centraliza logs, correlaciona eventos y facilita la detección de incidentes.</li>
+</ol>
+
+<hr />
+<p class="note">Consejo: en exámenes, combina definiciones teóricas con ejemplos prácticos y medidas concretas. Usa esquemas (capas de defensa, ciclo de respuesta a incidentes) para estructurar tus respuestas.</p>
+<p style="font-size:90%">Apuntes generados para preparación de oposiciones. Puedes adaptar y exportar este HTML.</p>
+<hr />
+
+<h2 id="casos-reales">12. Casos reales recientes (2024-2025)</h2>
+<p>Ejemplos de incidentes de seguridad ocurridos recientemente que sirven para ilustrar amenazas, vectores y lecciones aprendidas.</p>
+
+<h3>12.1 Ataque ransomware a Collins Aerospace (2025)</h3>
+<p>En 2025 se reportó un ataque de tipo <em>ransomware</em> que afectó a sistemas de procesos aeroportuarios y software de check‑in asociados a Collins Aerospace, provocando interrupciones operativas en varios aeropuertos y colas en facturación y handling de equipajes.</p>
+<p><strong>Impacto:</strong> pérdida temporal de disponibilidad en servicios críticos, impacto reputacional y costes de recuperación.</p>
+<p><strong>Lecciones:</strong> segmentación de redes, backups fuera de línea, planes de continuidad y recuperación, pruebas regulares de restauración y políticas de respuesta a incidentes.</p>
+
+<h3>12.2 Brecha de datos en Qantas (2025)</h3>
+<p>En 2025 Qantas confirmó una brecha que expuso datos personales de millones de clientes (nombre, correo, teléfono, fecha de nacimiento). No se reportó acceso a contraseñas ni datos de tarjetas en el comunicado público.</p>
+<p><strong>Impacto:</strong> exposición de datos personales y riesgo de phishing dirigido.</p>
+<p><strong>Lecciones:</strong> fortificar autenticación (MFA), auditoría de accesos, control y supervisión de terceros y proveedores, notificaciones rápidas a afectados y cumplimiento normativo en protección de datos.</p>
+
+<h3>12.3 Incidente en Snowflake (2024)</h3>
+<p>Durante 2024 se detectaron accesos indebidos a datos alojados en plataformas de datos en la nube a raíz de configuraciones inseguras. El caso de Snowflake mostró cómo errores de configuración o control de accesos pueden exponer datos de múltiples clientes.</p>
+<p><strong>Lecciones:</strong> la seguridad en la nube exige configuración segura por defecto, revisión de políticas de IAM, uso de MFA, monitorización continua y principio del menor privilegio.</p>
+
+<h3>12.4 Ataque a Kadokawa / Niconico (2024)</h3>
+<p>En 2024 un ataque con ransomware afectó a empresas del grupo Kadokawa y a la plataforma de vídeo Niconico, con exfiltración de datos de usuarios y amenazas de publicación.</p>
+<p><strong>Lecciones:</strong> respuestas rápidas de contención, cifrado de datos sensibles, segmentación y controles de acceso fuertes para proteger datos de usuarios.</p>
+
+<h3>12.5 Incidentes en España y aumento de ataques (2025)</h3>
+<p>En 2025 se observó un incremento significativo de la actividad maliciosa en España, afectando a sectores como infraestructuras, sanidad y comercio. Esto refleja una tendencia global de crecimiento de ataques dirigidos y sofisticados.</p>
+<p><strong>Lecciones:</strong> necesidad de coordinación entre entidades públicas y privadas, mejorar detección (SIEM), inversión en formación y planes de resiliencia.</p>
+
+<h3>12.6 Tácticas de ingeniería social — Scattered Spider y similares</h3>
+<p>Grupos como Scattered Spider han demostrado la eficacia de la ingeniería social y el compromiso de help desks/proveedores como vector de entrada. Su modus operandi incluye suplantación de empleados y compromisos vía soporte técnico.</p>
+<p><strong>Lecciones:</strong> formación específica para personal de soporte, procesos de verificación de identidad, controles de acceso a herramientas administrativas y segmentación estricta.</p>
+
+<h3>12.7 Caso: El Corte Inglés (2025)</h3>
+<p>En 2025 se comunicó un incidente que dio acceso a datos personales de clientes de una cadena comercial importante. El caso subraya riesgos en el sector retail y la necesidad de seguridad en sistemas que manejan datos personales y pagos.</p>
+<p><strong>Lecciones:</strong> controles en la cadena de suministro de software, protección de datos personales, y medidas de detección temprana.</p>
+
+<h3>12.8 Cómo usar estos casos en examen</h3>
+<ul>
+    <li>Relaciona cada incidente con los pilares CIA (por ejemplo, ransomware → disponibilidad; brechas de datos → confidencialidad).</li>
+    <li>Explica medidas concretas que mitiguen la probabilidad o impacto (segmentación, backups, MFA, revisión de terceros).</li>
+    <li>Propón un plan de respuesta a incidentes resumido: identificación, contención, erradicación, recuperación y lecciones aprendidas.</li>
+</ul>
+
+<h2 id="criptografia">7. Criptografía: algoritmos de cifrado, firmas digitales y gestión de claves</h2>
+<p>La criptografía es el conjunto de técnicas destinadas a proteger la información mediante la transformación de datos para garantizar confidencialidad, integridad, autenticación y no repudio. Es un pilar fundamental de la ciberseguridad.</p>
+
+<h3>7.1 Criptografía simétrica</h3>
+<p>En la criptografía simétrica se utiliza la <strong>misma clave</strong> para cifrar y descifrar la información. Es rápida y eficiente, ideal para grandes volúmenes de datos.</p>
+<ul>
+    <li><strong>AES (Advanced Encryption Standard):</strong> estándar actual; soporta claves de 128, 192 y 256 bits. Amplamente usado en VPNs, WiFi WPA2/WPA3, cifrado de discos y protocolos TLS.</li>
+    <li><strong>DES / 3DES:</strong> algoritmos antiguos; DES es inseguro y 3DES está en proceso de retirada.</li>
+    <li><strong>ChaCha20:</strong> alternativa moderna optimizada para dispositivos sin aceleración AES.</li>
+</ul>
+
+<h3>7.2 Criptografía asimétrica</h3>
+<p>La criptografía asimétrica utiliza un par de claves: una clave pública y una clave privada. Este enfoque posibilita múltiples propiedades fundamentales:</p>
+<ul>
+    <li><strong>Confidencialidad:</strong> permite cifrar información con la clave pública para que solo el propietario de la clave privada pueda descifrarla.</li>
+    <li><strong>Autenticidad:</strong> garantiza que un mensaje procede realmente de quien dice enviarlo, usando la clave pública para verificar acciones hechas con la clave privada.</li>
+    <li><strong>Integridad:</strong> mediante mecanismos como firmas digitales, cualquier alteración del mensaje invalida la verificación.</li>
+    <li><strong>No repudio:</strong> el emisor no puede negar haber firmado digitalmente un mensaje.</li>
+    <li><strong>Intercambio seguro de claves:</strong> permite enviar claves simétricas por canales inseguros de manera segura.</li>
+</ul>
+<p>Algoritmos representativos incluyen RSA, ECC (curvas elípticas) y ElGamal.</p>
+<div class="example">
+    <strong>Comparación práctica: RSA vs ECC</strong>
+    <p>Seguridad equivalente aproximada:</p>
+    <table>
+        <tr><th>RSA</th><th>ECC</th></tr>
+        <tr><td>2048 bits</td><td>224 bits</td></tr>
+        <tr><td>3072 bits</td><td>256 bits</td></tr>
+        <tr><td>7680 bits</td><td>384 bits</td></tr>
+    </table>
+    <p>ECC ofrece igual seguridad con claves mucho más pequeñas, reduciendo tiempo de cómputo y consumo energético.</p>
+</div>
+<h3>7.3 Funciones hash criptográficas</h3>
+<p>Transforman datos en una huella digital fija. Deben ser resistentes a colisiones.</p>
+<ul>
+    <li><strong>SHA‑256 / SHA‑3:</strong> estándares actuales de alta seguridad.</li>
+    <li><strong>HMAC:</strong> hash con clave secreta para garantizar integridad y autenticación.</li>
+    <li><strong>PBKDF2, Argon2, bcrypt:</strong> funciones derivadas de clave para almacenar contraseñas.</li>
+</ul>
+
+<h3>7.4 Firmas digitales</h3>
+<p>Una firma digital garantiza autenticidad, integridad y no repudio. Mecanismo:</p>
+<ol>
+    <li>Se calcula un hash del mensaje.</li>
+    <li>El hash se cifra con la <strong>clave privada</strong> del firmante.</li>
+    <li>Cualquiera puede verificarlo usando la <strong>clave pública</strong>.</li>
+</ol>
+<p>Algoritmos comunes: RSA‑PSS, ECDSA, EdDSA (Ed25519).</p>
+
+<h3>7.5 PKI y gestión de certificados</h3>
+<p>Una <strong>Infraestructura de Clave Pública (PKI)</strong> permite gestionar claves y certificados digitales.</p>
+<ul>
+    <li><strong>Autoridades de Certificación (CA):</strong> entidades que validan identidades y emiten certificados.</li>
+    <li><strong>Certificados X.509:</strong> contienen clave pública, identidad y firma de la CA.</li>
+    <li><strong>CRL / OCSP:</strong> mecanismos para revocar certificados comprometidos.</li>
+</ul>
+
+<h3>7.6 Gestión de claves</h3>
+<p>Un sistema seguro depende de cómo se generan, almacenan y protegen las claves:</p>
+<ul>
+    <li><strong>HSM (Hardware Security Modules):</strong> dispositivos diseñados para almacenar claves privadas y realizar operaciones criptográficas de forma segura.</li>
+    <li><strong>Secure Enclave / TPM:</strong> módulos de hardware en PCs y móviles para proteger claves y operaciones sensibles.</li>
+    <li><strong>Rotación de claves:</strong> buenas prácticas de reemplazo periódico.</li>
+    <li><strong>Derivación de claves:</strong> obtención de claves a partir de material secreto (HKDF, PBKDF2).</li>
+</ul>
+
+<h3>7.7 Protocolos criptográficos relevantes</h3>
+<ul>
+    <li><strong>TLS 1.3:</strong> protocolo de cifrado usado en HTTPS; elimina algoritmos obsoletos, reduce handshake y mejora seguridad.</li>
+    <li><strong>IPsec:</strong> cifrado a nivel de red para VPNs.</li>
+    <li><strong>PGP / OpenPGP:</strong> cifrado y firmas para correos electrónicos.</li>
+</ul>
+
+</body>
+</html>
