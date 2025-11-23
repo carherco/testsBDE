@@ -1,0 +1,209 @@
+{% extends 'content/base.html.twig' %}
+
+{% block content_title %}Tema 5: Arquitectura de Sistemas{% endblock %}
+
+{% block content_body %}
+<div class="content-section">
+    <h1>Arquitectura de Sistemas</h1>
+    <p class="lead">Diseño y arquitectura de sistemas: principios de diseño, patrones arquitectónicos e integración de sistemas empresariales.</p>
+
+    <h2>Parte A — Diseño y arquitectura de sistemas: principios de diseño</h2>
+
+    <h3>1. ¿Qué es la arquitectura de sistemas?</h3>
+    <p>La arquitectura de sistemas define la estructura general de un sistema informático: componentes principales, sus responsabilidades, cómo se comunican y los principios que guían decisiones de diseño. No es sólo diagrama: incluye decisiones sobre escalabilidad, seguridad, mantenibilidad, despliegue y operaciones.</p>
+
+    <h3>2. Principios de diseño fundamentales</h3>
+    <ul>
+        <li><strong>Separación de responsabilidades (Separation of Concerns):</strong> dividir el sistema en capas o módulos con responsabilidades bien definidas para reducir la complejidad</li>
+        <li><strong>Modularidad:</strong> diseñar componentes intercambiables y autónomos para facilitar pruebas, despliegues y mantenimiento</li>
+        <li><strong>Bajo acoplamiento y alta cohesión:</strong> los módulos deben depender poco entre sí (acoplamiento bajo) y cada módulo debe agrupar funcionalidades relacionadas (cohesión alta)</li>
+        <li><strong>Principio de responsabilidad única (SRP):</strong> cada módulo o clase debe tener una única razón para cambiar</li>
+        <li><strong>Abstracción e interfaces:</strong> separar la definición (interfaz) de la implementación para permitir cambios internos sin afectar a consumidores</li>
+        <li><strong>Escalabilidad:</strong> diseñar teniendo en cuenta cómo aumentar capacidad —vertical (mejor hardware) u horizontal (más instancias)</li>
+        <li><strong>Resiliencia y tolerancia a fallos:</strong> emplear patrones como retries, circuit breakers, timeouts y degradación para mantener servicios disponibles ante fallos parciales</li>
+        <li><strong>Seguridad por diseño:</strong> incorporar autenticación, autorización, cifrado, validación y auditoría desde el principio</li>
+        <li><strong>Observabilidad:</strong> diseñar para que el sistema sea medible (logs, métricas, trazas distribuidas) y monitorizable</li>
+        <li><strong>Mantenibilidad y simplicidad:</strong> preferir soluciones simples y legibles; documentar decisiones arquitectónicas (ADR — Architectural Decision Records)</li>
+        <li><strong>Idempotencia:</strong> diseñar operaciones que puedan repetirse sin efectos secundarios indeseados (útil en entornos distribuidos)</li>
+        <li><strong>Consistencia y eventual consistency:</strong> elegir el modelo de consistencia apropiado (fuerte, eventual, causal) según requisitos de negocio y rendimiento</li>
+    </ul>
+
+    <div class="alert alert-info">
+        <strong>💡 Nota práctica:</strong> Para un examen, ilustra cada principio con un ejemplo sencillo: ej. separar interfaz y lógica de acceso a datos para mostrar SRP y abstracción.
+    </div>
+
+    <h3>3. Patrones arquitectónicos comunes</h3>
+    <p>Descripción, cuándo usarlos, ventajas e inconvenientes.</p>
+
+    <h4>Monolito</h4>
+    <p>Aplicación empaquetada y desplegada como una única unidad. Buena para proyectos pequeños y equipos reducidos.</p>
+    <ul>
+        <li><strong>Ventajas:</strong> fácil de desarrollar y probar al principio; menos complejidad operativa</li>
+        <li><strong>Inconvenientes:</strong> problemas para escalar de forma granular; despliegues lentos; mayor riesgo de cambios que afecten a todo el sistema</li>
+    </ul>
+
+    <h4>Arquitectura en capas (n-tier)</h4>
+    <p>Separación en presentación, lógica de negocio y acceso a datos (por ejemplo: UI, API, BLL, DAL).</p>
+    <ul>
+        <li><strong>Ventajas:</strong> clara separación de responsabilidades, reutilización de capas</li>
+        <li><strong>Inconvenientes:</strong> puede introducir latencia y acoplamiento si no se controla</li>
+    </ul>
+
+    <h4>Microservicios</h4>
+    <p>Conjunto de servicios pequeños, desplegables independientemente, cada uno responsable de una funcionalidad de negocio.</p>
+    <ul>
+        <li><strong>Ventajas:</strong> despliegues independientes, escalado por servicio, tolerancia a fallos localizables</li>
+        <li><strong>Inconvenientes:</strong> complejidad operacional (devops), comunicación distribuida, gestión de datos distribuida</li>
+    </ul>
+
+    <h4>Arquitectura orientada a servicios (SOA) / ESB</h4>
+    <p>Diseño centrado en servicios empresariales reutilizables. Suele estar apoyado por un Enterprise Service Bus para mensajería y orquestación.</p>
+
+    <h4>Event-driven (orientada a eventos)</h4>
+    <p>Componentes se comunican publicando y consumiendo eventos (pub/sub). Buena para integración y sistemas altamente desacoplados.</p>
+
+    <h4>Hexagonal / Ports and Adapters</h4>
+    <p>Propuesta para aislar el dominio del sistema de la infraestructura mediante puertos (interfaces) y adaptadores (implementaciones).</p>
+
+    <h4>Command Query Responsibility Segregation (CQRS)</h4>
+    <p>Separación de caminos de lectura y escritura; a menudo combinado con Event Sourcing.</p>
+
+    <h3>4. Decisiones arquitectónicas y ADR</h3>
+    <p>Una buena práctica es mantener <em>Architectural Decision Records</em> (ADR) que documenten la decisión, alternativas consideradas, criterios y consecuencias. En el examen podrías ejemplificar con una decisión entre microservicios vs monolito.</p>
+
+    <h2>Parte B — Integración de sistemas empresariales: Middleware, APIs y servicios web</h2>
+
+    <h3>1. ¿Qué es integración de sistemas?</h3>
+    <p>La integración consiste en conectar aplicaciones, bases de datos y servicios para que compartan datos y procesos de negocio. En empresas grandes, sistemas heterogéneos (ERP, CRM, aplicaciones legadas, nuevas APIs) deben colaborar de forma fiable y segura.</p>
+
+    <h3>2. Middleware — tipos y responsabilidades</h3>
+    <p>El middleware actúa como capa intermedia que facilita la comunicación, mensajería, transformación y gestión entre sistemas:</p>
+    <ul>
+        <li><strong>Message brokers (ej. RabbitMQ, Apache Kafka):</strong> gestionan colas y temas para mensajería asíncrona. Kafka es orientado a logs y escalable para alto throughput; RabbitMQ ofrece colas tradicionales con patterns de enrutamiento</li>
+        <li><strong>Enterprise Service Bus (ESB):</strong> bus central que enruta, transforma y aplica políticas a mensajes entre servicios. Útil en arquitecturas SOA, aunque puede convertirse en un punto de complejidad si no se gestiona</li>
+        <li><strong>API Gateways:</strong> punto de entrada unificado para APIs (autenticación, rate limiting, enrutamiento, logging)</li>
+        <li><strong>Integration Platform as a Service (iPaaS):</strong> plataformas gestionadas que facilitan integración (ej. MuleSoft, Dell Boomi, Azure Logic Apps)</li>
+        <li><strong>Data integration tools:</strong> ETL/ELT para sincronizar y transformar datos entre almacenes (ej. Talend, Informatica)</li>
+    </ul>
+
+    <h3>3. APIs y estilos de comunicación</h3>
+    <p>Las APIs (Application Programming Interfaces) y servicios web proporcionan contratos para que aplicaciones interactúen.</p>
+
+    <h4>SOAP</h4>
+    <p>Protocolo estandarizado (XML, WSDL). Ofrece firma, WS-Security y transacciones distribuidas. Adecuado en entornos que requieren formalidad y compatibilidad con sistemas legados.</p>
+
+    <h4>REST</h4>
+    <p>Estilo arquitectónico sobre HTTP: recursos con identificadores (URIs), uso de métodos HTTP (GET, POST, PUT, DELETE). Es simple y ampliamente adoptado.</p>
+    <ul>
+        <li><strong>Buen uso:</strong> APIs CRUD, interoperabilidad web</li>
+        <li><strong>Consideraciones:</strong> versionado, paginación, manejo de errores, seguridad</li>
+    </ul>
+
+    <h4>GraphQL</h4>
+    <p>Lenguaje de consulta para APIs que permite al cliente pedir exactamente los campos que necesita. Mejora eficiencia en escenarios con requerimientos de datos variados por cliente.</p>
+
+    <h4>gRPC</h4>
+    <p>Framework RPC de alto rendimiento basado en HTTP/2 y Protocol Buffers. Útil para comunicación inter-servicio con baja latencia.</p>
+
+    <h3>4. Patrones de integración</h3>
+    <ul>
+        <li><strong>Request/Reply:</strong> comunicación síncrona directa entre consumidor y proveedor</li>
+        <li><strong>Publish/Subscribe:</strong> productores publican eventos; consumidores se suscriben a los temas de interés</li>
+        <li><strong>Message Queue:</strong> desacopla productores y consumidores mediante colas</li>
+        <li><strong>Event Sourcing:</strong> el estado del sistema se reconstruye a partir de eventos inmutables</li>
+        <li><strong>CDC (Change Data Capture):</strong> captura cambios en bases de datos para sincronización en tiempo real</li>
+        <li><strong>Façade, Adapter y Anti-corruption Layer:</strong> patrones para adaptar sistemas legados sin contaminar el modelo de dominio nuevo</li>
+    </ul>
+
+    <h3>5. Contratos, versionado y gobernanza de APIs</h3>
+    <p>Los contratos (especificaciones) deben ser claros (OpenAPI/Swagger para REST, WSDL para SOAP, schema para GraphQL). El versionado puede hacerse vía URIs (/v1/), encabezados o content negotiation. La gobernanza incluye políticas de seguridad, SLAs, catálogo de APIs y ciclos de vida.</p>
+
+    <h3>6. Seguridad en la integración</h3>
+    <p>Aspectos esenciales:</p>
+    <ul>
+        <li><strong>Autenticación:</strong> OAuth 2.0, mTLS, API keys</li>
+        <li><strong>Autorización:</strong> scopes, roles, RBAC/ABAC</li>
+        <li><strong>Confidencialidad e integridad:</strong> TLS en transporte, cifrado en reposo cuando aplique</li>
+        <li><strong>Validación y sanitización:</strong> prevenir inyección y datos malformados</li>
+        <li><strong>Rate limiting y protección contra abusos</strong></li>
+    </ul>
+
+    <h3>7. Consistencia, transacciones y compensaciones</h3>
+    <p>En sistemas distribuidos, mantener transacciones ACID a través de servicios es difícil. Patrones:</p>
+    <ul>
+        <li><strong>Sagas:</strong> secuencia de transacciones locales con acciones compensatorias en caso de fallo. Orquestadas (un coordinador) o coreografiadas (cada servicio reacciona a eventos)</li>
+        <li><strong>Two-phase commit (2PC):</strong> coordinación distribuida para transacciones ACID (complejidad y bloqueo; menos usado en arquitecturas microservicio)</li>
+        <li><strong>Eventual consistency:</strong> aceptar que datos estarán consistentes con el tiempo; diseñar para tolerar eso</li>
+    </ul>
+
+    <h3>8. Fiabilidad operativa: observabilidad, logging y pruebas</h3>
+    <p>Para integración robusta:</p>
+    <ul>
+        <li><strong>Tracing distribuido</strong> (ej. OpenTelemetry) para seguir peticiones a través de servicios</li>
+        <li><strong>Métricas</strong> y KPIs (latencia, errores/segundo, throughput)</li>
+        <li><strong>Logging centralizado</strong> y correlación por request-id</li>
+        <li><strong>Pruebas:</strong> unitarias, integration tests, contract testing (Pact), end-to-end y pruebas de caos para resiliencia</li>
+    </ul>
+
+    <h3>9. Buenas prácticas y checklist de diseño</h3>
+    <ol>
+        <li>Definir claramente límites de contexto (Bounded Context) y propietarios de datos</li>
+        <li>Elegir el estilo de comunicación (sync/async) según requisitos de latencia y fiabilidad</li>
+        <li>Documentar APIs con OpenAPI y publicar un catálogo interno</li>
+        <li>Usar API Gateway para control centralizado de políticas</li>
+        <li>Implementar autenticación y autorización robustas (OAuth2, JWT) y rotación de claves</li>
+        <li>Evitar compartir bases de datos entre servicios; preferir integración por APIs o eventos</li>
+        <li>Planificar el versionado y compatibilidad hacia atrás (backward compatibility)</li>
+        <li>Implementar observabilidad desde el inicio</li>
+    </ol>
+
+    <h3>10. Ejemplos prácticos</h3>
+    
+    <h4>Especificación OpenAPI (fragmento)</h4>
+    <pre><code>{
+  "openapi": "3.0.1",
+  "info": { 
+    "title": "API de ejemplo", 
+    "version": "1.0.0" 
+  },
+  "paths": {
+    "/clientes": {
+      "get": {
+        "summary": "Lista clientes",
+        "responses": { 
+          "200": { "description": "OK" } 
+        }
+      }
+    }
+  }
+}</code></pre>
+
+    <h4>Flujo asíncrono con eventos</h4>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Productor</th>
+                <th>Consumidor</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Servicio de pedidos publica evento <code>pedido.creado</code> en un broker (Kafka)</td>
+                <td>Servicio de facturación escucha <code>pedido.creado</code> y genera factura; si falla, publica <code>factura.fallo</code></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>11. Errores comunes</h3>
+    <div class="alert alert-warning">
+        <h5>⚠️ Antipatrones a evitar</h5>
+        <ul class="mb-0">
+            <li>Intentar convertir inmediatamente un monolito grande a microservicios sin modularizar primero</li>
+            <li>No tener un contrato claro entre servicios (especificaciones imprecisas)</li>
+            <li>Compartir esquemas de base de datos entre servicios en lugar de APIs o eventos</li>
+            <li>No pensar en idempotencia y retry; causar duplicados o efectos no deseados</li>
+        </ul>
+    </div>
+
+</div>
+{% endblock %}
