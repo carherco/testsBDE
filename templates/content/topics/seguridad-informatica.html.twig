@@ -50,13 +50,173 @@
     <h3>2.3 Availability — Disponibilidad</h3>
     <p>Garantizar acceso oportuno a los activos y servicios. Medidas: redundancia, balanceo de carga, disaster recovery, tolerancia a fallos, protección ante DDoS.</p>
 
-    <h3>2.4 Principios adicionales</h3>
+    <h3>2.4 Authentication — Autenticación</h3>
+    <p>Verificar la identidad de un usuario, sistema o entidad. Responde a la pregunta: <strong>¿Quién eres?</strong></p>
+
+    <h4>Factores de autenticación</h4>
+    <ul>
+        <li><strong>Algo que sabes:</strong> contraseña, PIN, pregunta secreta</li>
+        <li><strong>Algo que tienes:</strong> token hardware, smartphone, tarjeta inteligente</li>
+        <li><strong>Algo que eres:</strong> biometría (huella, facial, iris, voz)</li>
+        <li><strong>Algo que haces:</strong> patrones de comportamiento (keystroke dynamics)</li>
+        <li><strong>Dónde estás:</strong> geolocalización, dirección IP</li>
+    </ul>
+
+    <h4>Autenticación multifactor (MFA)</h4>
+    <p>Combinar dos o más factores diferentes para aumentar seguridad.</p>
+    <ul>
+        <li><strong>2FA (Two-Factor Authentication):</strong> contraseña + código SMS/app</li>
+        <li><strong>TOTP (Time-based One-Time Password):</strong> Google Authenticator, Authy</li>
+        <li><strong>U2F/FIDO2:</strong> llaves de seguridad hardware (YubiKey)</li>
+        <li><strong>Push notifications:</strong> aprobación en smartphone</li>
+        <li><strong>Biometría + PIN:</strong> huella + código</li>
+    </ul>
+
+    <h4>Protocolos de autenticación</h4>
+    <ul>
+        <li><strong>LDAP/Active Directory:</strong> autenticación centralizada en entornos corporativos</li>
+        <li><strong>Kerberos:</strong> autenticación basada en tickets, usado en Windows/AD</li>
+        <li><strong>SAML (Security Assertion Markup Language):</strong> SSO empresarial</li>
+        <li><strong>OAuth 2.0:</strong> delegación de autorización (usado por Google, Facebook)</li>
+        <li><strong>OpenID Connect:</strong> capa de identidad sobre OAuth 2.0</li>
+        <li><strong>RADIUS:</strong> autenticación para acceso a red (WiFi, VPN)</li>
+    </ul>
+
+    <div class="alert alert-warning">
+        <h5>Ataques comunes a autenticación</h5>
+        <ul class="mb-0">
+            <li><strong>Brute force:</strong> probar múltiples contraseñas</li>
+            <li><strong>Credential stuffing:</strong> usar credenciales filtradas de otras brechas</li>
+            <li><strong>Password spraying:</strong> probar contraseñas comunes contra muchas cuentas</li>
+            <li><strong>Session hijacking:</strong> robar tokens de sesión</li>
+            <li><strong>Phishing:</strong> engañar para obtener credenciales</li>
+        </ul>
+    </div>
+
+    <h3>2.5 Authorization — Autorización</h3>
+    <p>Determinar qué acciones puede realizar un usuario autenticado. Responde a la pregunta: <strong>¿Qué puedes hacer?</strong></p>
+
+    <h4>Modelos de control de acceso</h4>
+    <ul>
+        <li><strong>DAC (Discretionary Access Control):</strong> el propietario decide permisos
+            <ul>
+                <li>Ejemplo: permisos de archivos en Linux (rwx)</li>
+            </ul>
+        </li>
+        <li><strong>MAC (Mandatory Access Control):</strong> políticas centralizadas obligatorias
+            <ul>
+                <li>Ejemplo: SELinux, clasificación militar (Top Secret, Secret, Confidential)</li>
+            </ul>
+        </li>
+        <li><strong>RBAC (Role-Based Access Control):</strong> permisos asignados a roles
+            <ul>
+                <li>Ejemplo: rol "Editor" puede crear/modificar, rol "Lector" solo ver</li>
+            </ul>
+        </li>
+        <li><strong>ABAC (Attribute-Based Access Control):</strong> decisiones basadas en atributos
+            <ul>
+                <li>Ejemplo: permitir acceso si (departamento=IT AND hora=laboral AND ubicación=oficina)</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h4>Principios de autorización</h4>
+    <ul>
+        <li><strong>Least Privilege:</strong> mínimos permisos necesarios</li>
+        <li><strong>Separation of Duties:</strong> dividir tareas críticas entre múltiples personas</li>
+        <li><strong>Need to Know:</strong> acceso solo a información necesaria para el trabajo</li>
+        <li><strong>Default Deny:</strong> denegar por defecto, permitir explícitamente</li>
+    </ul>
+
+    <h4>Implementaciones prácticas</h4>
+    <ul>
+        <li><strong>ACL (Access Control Lists):</strong> listas de permisos por recurso</li>
+        <li><strong>Capabilities:</strong> tokens que otorgan permisos específicos</li>
+        <li><strong>JWT (JSON Web Tokens):</strong> tokens con claims de autorización</li>
+        <li><strong>Policy engines:</strong> OPA (Open Policy Agent), AWS IAM Policies</li>
+    </ul>
+
+    <h3>2.6 Non-Repudiation — No repudio</h3>
+    <p>Garantizar que una entidad no pueda negar haber realizado una acción. Proporciona prueba irrefutable de origen y entrega.</p>
+
+    <h4>Mecanismos de no repudio</h4>
+    <ul>
+        <li><strong>Firmas digitales:</strong> prueba criptográfica de autoría
+            <ul>
+                <li>Emisor firma con clave privada</li>
+                <li>Receptor verifica con clave pública</li>
+                <li>Garantiza autenticidad, integridad y no repudio</li>
+            </ul>
+        </li>
+        <li><strong>Certificados digitales:</strong> vinculan identidad con clave pública (PKI)</li>
+        <li><strong>Timestamps criptográficos:</strong> prueba de cuándo se firmó (TSA - Time Stamping Authority)</li>
+        <li><strong>Logs de auditoría:</strong> registros inmutables de acciones
+            <ul>
+                <li>Blockchain para logs inmutables</li>
+                <li>WORM (Write Once Read Many) storage</li>
+            </ul>
+        </li>
+        <li><strong>Acuses de recibo:</strong> confirmación de entrega/recepción</li>
+    </ul>
+
+    <h4>Casos de uso</h4>
+    <ul>
+        <li><strong>Firma electrónica:</strong> contratos digitales legalmente vinculantes</li>
+        <li><strong>Transacciones financieras:</strong> prueba de transferencias</li>
+        <li><strong>Email firmado:</strong> S/MIME, PGP para correos con no repudio</li>
+        <li><strong>Blockchain:</strong> transacciones inmutables y verificables</li>
+        <li><strong>Logs de acceso:</strong> prueba de quién accedió a qué y cuándo</li>
+    </ul>
+
+    <h4>Requisitos legales</h4>
+    <ul>
+        <li><strong>eIDAS (UE):</strong> regulación de firma electrónica y servicios de confianza</li>
+        <li><strong>ESIGN Act (EE.UU.):</strong> validez legal de firmas electrónicas</li>
+        <li><strong>Certificados cualificados:</strong> máximo nivel de garantía legal</li>
+    </ul>
+
+    <h3>2.7 Principios adicionales (AAA + CIA)</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Principio</th>
+                <th>Pregunta</th>
+                <th>Mecanismos</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>Authentication</td><td>¿Quién eres?</td><td>Contraseñas, MFA, biometría, certificados</td></tr>
+            <tr><td>Authorization</td><td>¿Qué puedes hacer?</td><td>RBAC, ACL, políticas, tokens</td></tr>
+            <tr><td>Accounting/Auditing</td><td>¿Qué hiciste?</td><td>Logs, SIEM, auditoría, trazabilidad</td></tr>
+            <tr><td>Confidentiality</td><td>¿Quién puede ver?</td><td>Cifrado, control de acceso, DLP</td></tr>
+            <tr><td>Integrity</td><td>¿Está alterado?</td><td>Hashes, firmas, checksums</td></tr>
+            <tr><td>Availability</td><td>¿Está accesible?</td><td>Redundancia, backups, DDoS protection</td></tr>
+            <tr><td>Non-Repudiation</td><td>¿Puedes negarlo?</td><td>Firmas digitales, logs, timestamps</td></tr>
+        </tbody>
+    </table>
+
+    <h3>2.8 Otros principios de seguridad</h3>
     <ul>
         <li><strong>Principio de menor privilegio:</strong> conceder a usuarios y procesos solo los permisos necesarios</li>
         <li><strong>Defensa en profundidad:</strong> varias capas de controles (perímetro, red, host, aplicación, datos)</li>
         <li><strong>Seguridad por diseño y por defecto:</strong> configuraciones seguras por defecto y diseño seguro desde el inicio del desarrollo (shift-left)</li>
         <li><strong>Auditoría y trazabilidad:</strong> registrar eventos para detectar y reconstruir incidentes</li>
+        <li><strong>Fail secure:</strong> en caso de fallo, el sistema debe fallar de forma segura (denegar acceso)</li>
+        <li><strong>Separation of duties:</strong> dividir responsabilidades críticas</li>
+        <li><strong>Keep it simple:</strong> complejidad es enemiga de la seguridad</li>
     </ul>
+
+    <div class="alert alert-info">
+        <h5>💡 Para examen</h5>
+        <ul class="mb-0">
+            <li><strong>CIA:</strong> Confidencialidad, Integridad, Disponibilidad (triada clásica)</li>
+            <li><strong>AAA:</strong> Authentication, Authorization, Accounting</li>
+            <li>Autenticación ≠ Autorización (primero quién eres, luego qué puedes hacer)</li>
+            <li>MFA combina factores DIFERENTES (contraseña + SMS = 2 factores)</li>
+            <li>No repudio requiere firmas digitales o mecanismos criptográficos</li>
+            <li>Menor privilegio y defensa en profundidad son principios transversales</li>
+        </ul>
+    </div>
 
     <h2>3. Controles de seguridad: preventivos, detectivos y correctivos</h2>
     <table class="table table-striped">
@@ -506,7 +666,1515 @@ https://example.com/download?file=../../../../etc/passwd</code></pre>
     <h2>10. Cumplimiento y normativa</h2>
     <p>Ejemplos de marcos y normativas relevantes: ISO 27001, NIST CSF, GDPR (protección de datos), PCI-DSS (tarjetas), ENS en España. Importancia: requisitos legales y de auditoría, deber documental y medidas técnicas/organizativas.</p>
 
-    <h2>11. Casos reales recientes (2024-2025)</h2>
+    <h2>11. Zero Trust Architecture (Arquitectura de Confianza Cero)</h2>
+    <p>Modelo de seguridad que elimina la confianza implícita en cualquier entidad dentro o fuera del perímetro de red. Principio fundamental: <strong>"Never trust, always verify"</strong> (nunca confíes, siempre verifica).</p>
+
+    <h3>11.1 Principios fundamentales</h3>
+    <ul>
+        <li><strong>Verificación explícita:</strong> autenticar y autorizar siempre basándose en todos los puntos de datos disponibles (identidad, ubicación, dispositivo, servicio, datos)</li>
+        <li><strong>Acceso de menor privilegio:</strong> limitar acceso con Just-In-Time y Just-Enough-Access (JIT/JEA), políticas adaptativas basadas en riesgo</li>
+        <li><strong>Asumir brecha:</strong> minimizar radio de explosión y segmentar acceso; verificar cifrado end-to-end; usar analítica para detectar amenazas</li>
+    </ul>
+
+    <h3>11.2 Componentes clave</h3>
+    
+    <h4>Identity and Access Management (IAM)</h4>
+    <ul>
+        <li><strong>Autenticación multifactor (MFA):</strong> obligatoria para todos los accesos</li>
+        <li><strong>Single Sign-On (SSO):</strong> centralizar autenticación</li>
+        <li><strong>Gestión de identidades privilegiadas (PAM):</strong> control estricto de cuentas administrativas</li>
+        <li><strong>Conditional Access:</strong> políticas basadas en contexto (ubicación, dispositivo, riesgo)</li>
+    </ul>
+
+    <h4>Microsegmentación</h4>
+    <p>Dividir la red en zonas pequeñas con controles de acceso granulares entre ellas.</p>
+    <ul>
+        <li>Segmentación a nivel de aplicación, no solo de red</li>
+        <li>Políticas basadas en identidad, no en direcciones IP</li>
+        <li>Limitar movimiento lateral de atacantes</li>
+    </ul>
+
+    <h4>Device Trust</h4>
+    <ul>
+        <li><strong>Endpoint Detection and Response (EDR):</strong> monitorización continua de dispositivos</li>
+        <li><strong>Device compliance:</strong> verificar que dispositivos cumplen políticas de seguridad</li>
+        <li><strong>Mobile Device Management (MDM):</strong> gestión de dispositivos móviles</li>
+    </ul>
+
+    <h4>Network Security</h4>
+    <ul>
+        <li><strong>Software-Defined Perimeter (SDP):</strong> perímetro definido por software, no por hardware</li>
+        <li><strong>Secure Access Service Edge (SASE):</strong> convergencia de red y seguridad en la nube</li>
+        <li><strong>Zero Trust Network Access (ZTNA):</strong> acceso remoto sin VPN tradicional</li>
+    </ul>
+
+    <h3>11.3 Modelo de madurez Zero Trust</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nivel</th>
+                <th>Descripción</th>
+                <th>Características</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Tradicional</strong></td>
+                <td>Perímetro basado en red</td>
+                <td>Firewall, VPN, confianza implícita dentro del perímetro</td>
+            </tr>
+            <tr>
+                <td><strong>Inicial</strong></td>
+                <td>Primeros pasos</td>
+                <td>MFA implementado, inventario de activos, segmentación básica</td>
+            </tr>
+            <tr>
+                <td><strong>Avanzado</strong></td>
+                <td>Automatización parcial</td>
+                <td>Microsegmentación, políticas basadas en identidad, monitorización continua</td>
+            </tr>
+            <tr>
+                <td><strong>Óptimo</strong></td>
+                <td>Totalmente automatizado</td>
+                <td>Políticas dinámicas, respuesta automática, analítica avanzada con IA/ML</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>11.4 Implementación práctica</h3>
+    
+    <h4>Fase 1: Identificar superficies de protección</h4>
+    <ul>
+        <li>Inventariar datos críticos (DAAS: Data, Applications, Assets, Services)</li>
+        <li>Mapear flujos de tráfico y dependencias</li>
+        <li>Identificar usuarios y dispositivos</li>
+    </ul>
+
+    <h4>Fase 2: Mapear flujos de transacciones</h4>
+    <ul>
+        <li>Entender cómo se mueven los datos</li>
+        <li>Documentar interacciones entre servicios</li>
+        <li>Identificar puntos de control necesarios</li>
+    </ul>
+
+    <h4>Fase 3: Arquitectura Zero Trust</h4>
+    <ul>
+        <li>Diseñar microsegmentos</li>
+        <li>Implementar Next-Generation Firewall (NGFW) o SDP</li>
+        <li>Configurar políticas de acceso granulares</li>
+    </ul>
+
+    <h4>Fase 4: Crear políticas Zero Trust</h4>
+    <ul>
+        <li>Principio de menor privilegio por defecto</li>
+        <li>Políticas basadas en identidad y contexto</li>
+        <li>Reglas de inspección y logging</li>
+    </ul>
+
+    <h4>Fase 5: Monitorizar y mantener</h4>
+    <ul>
+        <li>Logging centralizado (SIEM)</li>
+        <li>Analítica de comportamiento (UEBA)</li>
+        <li>Mejora continua de políticas</li>
+    </ul>
+
+    <h3>11.5 Tecnologías y soluciones</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Categoría</th>
+                <th>Ejemplos de soluciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>IAM/SSO</td><td>Okta, Azure AD, Auth0, Ping Identity</td></tr>
+            <tr><td>ZTNA</td><td>Zscaler Private Access, Cloudflare Access, Palo Alto Prisma Access</td></tr>
+            <tr><td>Microsegmentación</td><td>VMware NSX, Illumio, Guardicore</td></tr>
+            <tr><td>EDR</td><td>CrowdStrike, SentinelOne, Microsoft Defender</td></tr>
+            <tr><td>SIEM</td><td>Splunk, Elastic Security, IBM QRadar</td></tr>
+        </tbody>
+    </table>
+
+    <h3>11.6 Beneficios y desafíos</h3>
+    
+    <div class="alert alert-success">
+        <h5>Beneficios</h5>
+        <ul class="mb-0">
+            <li>Reduce superficie de ataque y limita movimiento lateral</li>
+            <li>Mejora visibilidad y control sobre accesos</li>
+            <li>Facilita cumplimiento normativo</li>
+            <li>Protege contra amenazas internas y externas</li>
+            <li>Soporta trabajo remoto y cloud de forma segura</li>
+        </ul>
+    </div>
+
+    <div class="alert alert-warning">
+        <h5>Desafíos</h5>
+        <ul class="mb-0">
+            <li>Complejidad de implementación en entornos legacy</li>
+            <li>Requiere cambio cultural y organizativo</li>
+            <li>Inversión inicial significativa</li>
+            <li>Necesita inventario completo de activos</li>
+            <li>Puede impactar experiencia de usuario si no se implementa correctamente</li>
+        </ul>
+    </div>
+
+    <h3>11.7 Zero Trust vs Perímetro tradicional</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Aspecto</th>
+                <th>Perímetro tradicional</th>
+                <th>Zero Trust</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Confianza</td>
+                <td>Implícita dentro del perímetro</td>
+                <td>Nunca asumida, siempre verificada</td>
+            </tr>
+            <tr>
+                <td>Segmentación</td>
+                <td>Basada en red (VLANs, subredes)</td>
+                <td>Microsegmentación basada en identidad</td>
+            </tr>
+            <tr>
+                <td>Acceso remoto</td>
+                <td>VPN con acceso amplio</td>
+                <td>ZTNA con acceso granular</td>
+            </tr>
+            <tr>
+                <td>Verificación</td>
+                <td>Una vez en el perímetro</td>
+                <td>Continua en cada transacción</td>
+            </tr>
+            <tr>
+                <td>Enfoque</td>
+                <td>Proteger el perímetro</td>
+                <td>Proteger datos y recursos</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="alert alert-info">
+        <h5>💡 Para examen</h5>
+        <p class="mb-0">Zero Trust es un modelo, no un producto. Requiere combinación de tecnologías (IAM, microsegmentación, EDR, SIEM) y procesos (políticas, monitorización, respuesta). Enfatiza que la ubicación de red no determina confianza.</p>
+    </div>
+
+    <h2>12. DevSecOps: Seguridad en DevOps</h2>
+    <p>Integración de prácticas de seguridad en el ciclo de vida de desarrollo y operaciones. Principio: <strong>"Shift Left"</strong> - incorporar seguridad desde las primeras fases del desarrollo, no al final.</p>
+
+    <h3>12.1 Principios fundamentales</h3>
+    <ul>
+        <li><strong>Seguridad como código (Security as Code):</strong> políticas y controles definidos en código versionado</li>
+        <li><strong>Automatización:</strong> escaneos y pruebas de seguridad integrados en CI/CD</li>
+        <li><strong>Responsabilidad compartida:</strong> seguridad es responsabilidad de todos (dev, ops, sec)</li>
+        <li><strong>Feedback continuo:</strong> detección temprana y corrección rápida de vulnerabilidades</li>
+        <li><strong>Cultura de colaboración:</strong> romper silos entre equipos</li>
+    </ul>
+
+    <h3>12.2 Pipeline de seguridad en CI/CD</h3>
+    
+    <h4>Fase 1: Planificación y diseño</h4>
+    <ul>
+        <li><strong>Threat Modeling:</strong> identificar amenazas en fase de diseño (STRIDE, PASTA)</li>
+        <li><strong>Security Requirements:</strong> definir requisitos de seguridad como user stories</li>
+        <li><strong>Secure Architecture Review:</strong> revisión de arquitectura con foco en seguridad</li>
+    </ul>
+
+    <h4>Fase 2: Desarrollo (Code)</h4>
+    <ul>
+        <li><strong>IDE Security Plugins:</strong> análisis en tiempo real mientras se escribe código</li>
+        <li><strong>Pre-commit hooks:</strong> validaciones antes de commit (secrets scanning, linting)</li>
+        <li><strong>Secure Coding Guidelines:</strong> estándares y buenas prácticas (OWASP, CERT)</li>
+        <li><strong>Peer Code Review:</strong> revisión de código con enfoque en seguridad</li>
+    </ul>
+
+    <h4>Fase 3: Build y Test</h4>
+    <ul>
+        <li><strong>SAST (Static Application Security Testing):</strong> análisis estático de código fuente
+            <ul>
+                <li>Herramientas: SonarQube, Checkmarx, Fortify, Semgrep</li>
+                <li>Detecta: SQL injection, XSS, hardcoded secrets, buffer overflows</li>
+            </ul>
+        </li>
+        <li><strong>SCA (Software Composition Analysis):</strong> análisis de dependencias
+            <ul>
+                <li>Herramientas: Snyk, Dependabot, OWASP Dependency-Check, WhiteSource</li>
+                <li>Detecta: vulnerabilidades conocidas (CVE), licencias incompatibles</li>
+            </ul>
+        </li>
+        <li><strong>Secret Scanning:</strong> detectar credenciales en código
+            <ul>
+                <li>Herramientas: GitGuardian, TruffleHog, git-secrets</li>
+            </ul>
+        </li>
+        <li><strong>Unit Tests de seguridad:</strong> tests específicos para validar controles de seguridad</li>
+    </ul>
+
+    <h4>Fase 4: Deploy</h4>
+    <ul>
+        <li><strong>Container Scanning:</strong> análisis de imágenes Docker
+            <ul>
+                <li>Herramientas: Trivy, Clair, Anchore, Aqua Security</li>
+                <li>Detecta: vulnerabilidades en base images, malware, configuraciones inseguras</li>
+            </ul>
+        </li>
+        <li><strong>IaC Security Scanning:</strong> análisis de Terraform, CloudFormation, Kubernetes manifests
+            <ul>
+                <li>Herramientas: Checkov, tfsec, Terrascan, kube-bench</li>
+                <li>Detecta: misconfigurations, permisos excesivos, recursos públicos</li>
+            </ul>
+        </li>
+        <li><strong>Secrets Management:</strong> gestión segura de credenciales
+            <ul>
+                <li>Herramientas: HashiCorp Vault, AWS Secrets Manager, Azure Key Vault</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h4>Fase 5: Producción (Operate)</h4>
+    <ul>
+        <li><strong>DAST (Dynamic Application Security Testing):</strong> análisis dinámico en runtime
+            <ul>
+                <li>Herramientas: OWASP ZAP, Burp Suite, Acunetix</li>
+                <li>Detecta: vulnerabilidades en aplicación en ejecución</li>
+            </ul>
+        </li>
+        <li><strong>RASP (Runtime Application Self-Protection):</strong> protección en tiempo de ejecución</li>
+        <li><strong>Security Monitoring:</strong> SIEM, logs, alertas</li>
+        <li><strong>Vulnerability Management:</strong> gestión continua de vulnerabilidades</li>
+    </ul>
+
+    <h4>Fase 6: Monitorización y Respuesta</h4>
+    <ul>
+        <li><strong>Security Dashboards:</strong> métricas de seguridad visibles para todos</li>
+        <li><strong>Incident Response Automation:</strong> playbooks automatizados</li>
+        <li><strong>Continuous Compliance:</strong> validación automática de cumplimiento</li>
+    </ul>
+
+    <h3>12.3 Herramientas por categoría</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Categoría</th>
+                <th>Herramientas</th>
+                <th>Propósito</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>SAST</td><td>SonarQube, Checkmarx, Semgrep</td><td>Análisis estático de código</td></tr>
+            <tr><td>DAST</td><td>OWASP ZAP, Burp Suite</td><td>Análisis dinámico en runtime</td></tr>
+            <tr><td>SCA</td><td>Snyk, Dependabot, OWASP Dependency-Check</td><td>Análisis de dependencias</td></tr>
+            <tr><td>Container Security</td><td>Trivy, Aqua, Sysdig</td><td>Escaneo de imágenes y runtime</td></tr>
+            <tr><td>IaC Security</td><td>Checkov, tfsec, Terrascan</td><td>Validación de infraestructura como código</td></tr>
+            <tr><td>Secrets Management</td><td>Vault, AWS Secrets Manager</td><td>Gestión de credenciales</td></tr>
+            <tr><td>Policy as Code</td><td>Open Policy Agent (OPA), Kyverno</td><td>Políticas de seguridad automatizadas</td></tr>
+        </tbody>
+    </table>
+
+    <h3>12.4 Ejemplo de pipeline DevSecOps</h3>
+    <pre><code># .gitlab-ci.yml / GitHub Actions ejemplo
+stages:
+  - security-scan
+  - build
+  - test
+  - security-test
+  - deploy
+
+secret-scan:
+  stage: security-scan
+  script:
+    - trufflehog filesystem . --json
+
+sast:
+  stage: security-scan
+  script:
+    - semgrep --config=auto .
+
+dependency-check:
+  stage: security-scan
+  script:
+    - snyk test --severity-threshold=high
+
+build:
+  stage: build
+  script:
+    - docker build -t myapp:$CI_COMMIT_SHA .
+
+container-scan:
+  stage: test
+  script:
+    - trivy image myapp:$CI_COMMIT_SHA
+
+dast:
+  stage: security-test
+  script:
+    - zap-baseline.py -t https://staging.example.com
+
+deploy:
+  stage: deploy
+  script:
+    - kubectl apply -f k8s/
+  only:
+    - main</code></pre>
+
+    <h3>12.5 Métricas de seguridad DevSecOps</h3>
+    <ul>
+        <li><strong>Mean Time to Detect (MTTD):</strong> tiempo promedio para detectar vulnerabilidad</li>
+        <li><strong>Mean Time to Remediate (MTTR):</strong> tiempo promedio para corregir vulnerabilidad</li>
+        <li><strong>Vulnerability Density:</strong> número de vulnerabilidades por líneas de código</li>
+        <li><strong>Security Debt:</strong> vulnerabilidades acumuladas sin resolver</li>
+        <li><strong>False Positive Rate:</strong> porcentaje de alertas falsas</li>
+        <li><strong>Coverage:</strong> porcentaje de código/infraestructura escaneado</li>
+    </ul>
+
+    <h3>12.6 Buenas prácticas</h3>
+    <div class="alert alert-success">
+        <h5>Recomendaciones</h5>
+        <ul class="mb-0">
+            <li><strong>Automatizar todo:</strong> escaneos, tests, despliegues</li>
+            <li><strong>Fail fast:</strong> romper el build si se detectan vulnerabilidades críticas</li>
+            <li><strong>Priorizar por riesgo:</strong> no todas las vulnerabilidades son iguales</li>
+            <li><strong>Educar al equipo:</strong> formación continua en secure coding</li>
+            <li><strong>Medir y mejorar:</strong> usar métricas para optimizar procesos</li>
+            <li><strong>Integrar, no bloquear:</strong> seguridad debe facilitar, no frenar</li>
+            <li><strong>Shift Left AND Right:</strong> seguridad en desarrollo Y producción</li>
+        </ul>
+    </div>
+
+    <h3>12.7 Desafíos comunes</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Desafío</th>
+                <th>Solución</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Falsos positivos</td>
+                <td>Afinar herramientas, crear baselines, usar múltiples scanners</td>
+            </tr>
+            <tr>
+                <td>Ralentización del pipeline</td>
+                <td>Escaneos paralelos, escaneos incrementales, optimizar herramientas</td>
+            </tr>
+            <tr>
+                <td>Resistencia cultural</td>
+                <td>Formación, demostrar valor, empezar pequeño y escalar</td>
+            </tr>
+            <tr>
+                <td>Sobrecarga de alertas</td>
+                <td>Priorización por severidad, automatizar triaje, integrar con ticketing</td>
+            </tr>
+            <tr>
+                <td>Coste de herramientas</td>
+                <td>Empezar con open source, ROI basado en reducción de incidentes</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>12.8 DevSecOps vs DevOps tradicional</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Aspecto</th>
+                <th>DevOps tradicional</th>
+                <th>DevSecOps</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Seguridad</td>
+                <td>Al final del ciclo</td>
+                <td>Integrada desde el inicio</td>
+            </tr>
+            <tr>
+                <td>Responsabilidad</td>
+                <td>Equipo de seguridad separado</td>
+                <td>Responsabilidad compartida</td>
+            </tr>
+            <tr>
+                <td>Testing</td>
+                <td>Funcional y rendimiento</td>
+                <td>+ Security testing automatizado</td>
+            </tr>
+            <tr>
+                <td>Velocidad</td>
+                <td>Rápido pero potencialmente inseguro</td>
+                <td>Rápido Y seguro</td>
+            </tr>
+            <tr>
+                <td>Herramientas</td>
+                <td>CI/CD, monitoring</td>
+                <td>+ SAST, DAST, SCA, container scanning</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="alert alert-info">
+        <h5>💡 Para examen</h5>
+        <p class="mb-0">DevSecOps no es añadir herramientas, es un cambio cultural. Shift Left significa detectar problemas temprano cuando son más baratos de corregir. La automatización es clave para no ralentizar el desarrollo.</p>
+    </div>
+
+    <h2>13. Análisis Forense Digital</h2>
+    <p>Proceso de identificación, preservación, análisis y presentación de evidencia digital de manera que sea legalmente admisible. Objetivo: reconstruir eventos de un incidente de seguridad.</p>
+
+    <h3>13.1 Principios fundamentales</h3>
+    <ul>
+        <li><strong>Cadena de custodia (Chain of Custody):</strong> documentar quién, cuándo, dónde y cómo se manejó la evidencia</li>
+        <li><strong>Integridad de la evidencia:</strong> usar hashes (MD5, SHA-256) para verificar que no se ha alterado</li>
+        <li><strong>No alteración:</strong> trabajar siempre sobre copias, nunca sobre originales</li>
+        <li><strong>Documentación exhaustiva:</strong> registrar cada paso del proceso</li>
+        <li><strong>Reproducibilidad:</strong> otro experto debe poder replicar el análisis</li>
+    </ul>
+
+    <h3>13.2 Metodología forense (Fases)</h3>
+
+    <h4>Fase 1: Identificación</h4>
+    <ul>
+        <li>Determinar qué sistemas están involucrados</li>
+        <li>Identificar fuentes de evidencia potencial (discos, memoria, logs, red)</li>
+        <li>Evaluar volatilidad de datos (memoria RAM > procesos > disco)</li>
+        <li>Priorizar según orden de volatilidad</li>
+    </ul>
+
+    <h4>Fase 2: Preservación / Adquisición</h4>
+    <ul>
+        <li><strong>Memoria volátil:</strong> capturar RAM antes de apagar sistema
+            <ul>
+                <li>Herramientas: FTK Imager, LiME (Linux), DumpIt, Magnet RAM Capture</li>
+            </ul>
+        </li>
+        <li><strong>Disco:</strong> crear imagen forense bit-a-bit
+            <ul>
+                <li>Herramientas: dd, dcfldd, FTK Imager, EnCase, Guymager</li>
+                <li>Formato: raw (dd), E01 (EnCase), AFF (Advanced Forensic Format)</li>
+            </ul>
+        </li>
+        <li><strong>Logs:</strong> recopilar logs de sistema, aplicaciones, red, firewall</li>
+        <li><strong>Red:</strong> captura de tráfico (pcap)</li>
+        <li><strong>Cloud:</strong> snapshots, logs de API, configuraciones</li>
+    </ul>
+
+    <h5>Orden de volatilidad (RFC 3227)</h5>
+    <ol>
+        <li>Registros y caché del procesador</li>
+        <li>Contenido de memoria RAM</li>
+        <li>Estado de red (conexiones activas, tablas de enrutamiento)</li>
+        <li>Procesos en ejecución</li>
+        <li>Disco duro</li>
+        <li>Logs remotos y archivos de monitorización</li>
+        <li>Configuración física y topología de red</li>
+        <li>Documentación</li>
+    </ol>
+
+    <h4>Fase 3: Análisis</h4>
+    <ul>
+        <li><strong>Timeline Analysis:</strong> reconstruir línea temporal de eventos</li>
+        <li><strong>File System Analysis:</strong> examinar archivos, metadatos, archivos eliminados</li>
+        <li><strong>Registry Analysis (Windows):</strong> analizar registro para artefactos</li>
+        <li><strong>Log Analysis:</strong> correlacionar eventos de múltiples fuentes</li>
+        <li><strong>Memory Analysis:</strong> buscar procesos maliciosos, inyecciones, rootkits</li>
+        <li><strong>Network Analysis:</strong> analizar tráfico capturado (pcap)</li>
+        <li><strong>Malware Analysis:</strong> análisis estático y dinámico de binarios sospechosos</li>
+    </ul>
+
+    <h4>Fase 4: Documentación y Reporte</h4>
+    <ul>
+        <li>Resumen ejecutivo para no técnicos</li>
+        <li>Detalles técnicos del análisis</li>
+        <li>Evidencias encontradas con referencias</li>
+        <li>Línea temporal de eventos</li>
+        <li>Conclusiones y recomendaciones</li>
+        <li>Anexos con hashes, capturas de pantalla, logs</li>
+    </ul>
+
+    <h4>Fase 5: Presentación</h4>
+    <ul>
+        <li>Preparar testimonio para procedimientos legales</li>
+        <li>Explicar hallazgos de forma clara y comprensible</li>
+        <li>Defender metodología y conclusiones</li>
+    </ul>
+
+    <h3>13.3 Herramientas forenses</h3>
+
+    <h4>Suites completas</h4>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Herramienta</th>
+                <th>Tipo</th>
+                <th>Características</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>Autopsy / The Sleuth Kit</td><td>Open Source</td><td>Análisis de disco, timeline, file carving</td></tr>
+            <tr><td>EnCase</td><td>Comercial</td><td>Suite completa, ampliamente aceptada en tribunales</td></tr>
+            <tr><td>FTK (Forensic Toolkit)</td><td>Comercial</td><td>Análisis rápido, indexación, email analysis</td></tr>
+            <tr><td>X-Ways Forensics</td><td>Comercial</td><td>Ligero, potente, análisis avanzado</td></tr>
+        </tbody>
+    </table>
+
+    <h4>Herramientas especializadas</h4>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Categoría</th>
+                <th>Herramientas</th>
+                <th>Uso</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>Adquisición de disco</td><td>dd, dcfldd, Guymager</td><td>Crear imágenes forenses</td></tr>
+            <tr><td>Análisis de memoria</td><td>Volatility, Rekall</td><td>Analizar dumps de RAM</td></tr>
+            <tr><td>File carving</td><td>Foremost, Scalpel, PhotoRec</td><td>Recuperar archivos eliminados</td></tr>
+            <tr><td>Análisis de red</td><td>Wireshark, NetworkMiner, tcpdump</td><td>Analizar tráfico de red</td></tr>
+            <tr><td>Análisis de logs</td><td>Splunk, ELK Stack, Graylog</td><td>Correlación de eventos</td></tr>
+            <tr><td>Análisis de malware</td><td>IDA Pro, Ghidra, Cuckoo Sandbox</td><td>Ingeniería inversa, análisis dinámico</td></tr>
+            <tr><td>Análisis de móviles</td><td>Cellebrite, Oxygen Forensics, UFED</td><td>Extracción de datos de smartphones</td></tr>
+            <tr><td>Registry (Windows)</td><td>RegRipper, Registry Explorer</td><td>Analizar registro de Windows</td></tr>
+        </tbody>
+    </table>
+
+    <h3>13.4 Artefactos forenses comunes</h3>
+
+    <h4>Windows</h4>
+    <ul>
+        <li><strong>Registro:</strong> HKLM, HKCU, SAM, SYSTEM, SOFTWARE
+            <ul>
+                <li>UserAssist: programas ejecutados</li>
+                <li>RecentDocs: documentos recientes</li>
+                <li>MRU (Most Recently Used): listas de uso reciente</li>
+            </ul>
+        </li>
+        <li><strong>Event Logs:</strong> Security, System, Application</li>
+        <li><strong>Prefetch:</strong> archivos ejecutados recientemente</li>
+        <li><strong>Jump Lists:</strong> accesos rápidos de aplicaciones</li>
+        <li><strong>LNK files:</strong> accesos directos con metadatos</li>
+        <li><strong>$MFT (Master File Table):</strong> metadatos de archivos NTFS</li>
+        <li><strong>USN Journal:</strong> registro de cambios en volumen</li>
+        <li><strong>Recycle Bin:</strong> archivos eliminados</li>
+        <li><strong>Browser artifacts:</strong> historial, cookies, cache, descargas</li>
+    </ul>
+
+    <h4>Linux</h4>
+    <ul>
+        <li><strong>Logs:</strong> /var/log/ (auth.log, syslog, kern.log)</li>
+        <li><strong>Bash history:</strong> ~/.bash_history</li>
+        <li><strong>Cron jobs:</strong> /etc/crontab, /var/spool/cron/</li>
+        <li><strong>User accounts:</strong> /etc/passwd, /etc/shadow</li>
+        <li><strong>Network config:</strong> /etc/network/, /etc/hosts</li>
+        <li><strong>Persistence:</strong> /etc/rc.local, systemd units</li>
+    </ul>
+
+    <h3>13.5 Análisis de memoria RAM</h3>
+    <p>La memoria contiene información volátil crítica: procesos, conexiones de red, claves de cifrado, malware en memoria.</p>
+
+    <h4>Volatility Framework - Comandos clave</h4>
+    <pre><code># Identificar perfil del sistema
+volatility -f memory.dmp imageinfo
+
+# Listar procesos
+volatility -f memory.dmp --profile=Win7SP1x64 pslist
+volatility -f memory.dmp --profile=Win7SP1x64 pstree
+
+# Conexiones de red
+volatility -f memory.dmp --profile=Win7SP1x64 netscan
+
+# DLLs cargadas
+volatility -f memory.dmp --profile=Win7SP1x64 dlllist
+
+# Detectar procesos ocultos
+volatility -f memory.dmp --profile=Win7SP1x64 psxview
+
+# Extraer proceso
+volatility -f memory.dmp --profile=Win7SP1x64 procdump -p 1234 -D output/
+
+# Buscar malware
+volatility -f memory.dmp --profile=Win7SP1x64 malfind</code></pre>
+
+    <h3>13.6 Análisis de disco</h3>
+
+    <h4>Crear imagen forense</h4>
+    <pre><code># dd - crear imagen raw
+dd if=/dev/sda of=/mnt/evidence/disk.img bs=4M status=progress
+sha256sum /mnt/evidence/disk.img > disk.img.sha256
+
+# dcfldd - dd mejorado con hash
+dcfldd if=/dev/sda of=/mnt/evidence/disk.img hash=sha256 hashlog=disk.hash
+
+# Montar imagen como solo lectura
+mount -o ro,loop,noexec disk.img /mnt/analysis/</code></pre>
+
+    <h4>Autopsy - Análisis de disco</h4>
+    <ul>
+        <li>Crear caso nuevo e importar imagen</li>
+        <li>Ejecutar ingest modules (file type, hash lookup, keyword search)</li>
+        <li>Analizar timeline de eventos</li>
+        <li>Buscar archivos eliminados</li>
+        <li>Examinar metadatos EXIF de imágenes</li>
+        <li>Generar reporte</li>
+    </ul>
+
+    <h3>13.7 Cadena de custodia</h3>
+    <p>Documento que registra el manejo de la evidencia desde su recolección hasta su presentación.</p>
+
+    <h4>Información requerida</h4>
+    <ul>
+        <li>Descripción de la evidencia (tipo, marca, modelo, número de serie)</li>
+        <li>Ubicación donde se encontró</li>
+        <li>Fecha y hora de recolección</li>
+        <li>Persona que recolectó</li>
+        <li>Hash de integridad (MD5, SHA-256)</li>
+        <li>Transferencias: quién entregó, quién recibió, cuándo, propósito</li>
+        <li>Condiciones de almacenamiento</li>
+    </ul>
+
+    <h3>13.8 Consideraciones legales</h3>
+    <ul>
+        <li><strong>Admisibilidad:</strong> evidencia debe ser relevante, auténtica y obtenida legalmente</li>
+        <li><strong>Autorización:</strong> orden judicial para acceder a sistemas (salvo consentimiento)</li>
+        <li><strong>Privacidad:</strong> respetar GDPR y normativas de protección de datos</li>
+        <li><strong>Perito cualificado:</strong> formación y certificaciones (CHFI, EnCE, GCFA)</li>
+        <li><strong>Testimonio experto:</strong> capacidad de explicar hallazgos técnicos a no técnicos</li>
+    </ul>
+
+    <h3>13.9 Forense en la nube</h3>
+    <p>Desafíos específicos: datos distribuidos, falta de acceso físico, jurisdicciones múltiples, volatilidad.</p>
+
+    <h4>Fuentes de evidencia cloud</h4>
+    <ul>
+        <li><strong>Logs de API:</strong> CloudTrail (AWS), Activity Log (Azure), Cloud Audit Logs (GCP)</li>
+        <li><strong>Snapshots:</strong> instantáneas de volúmenes y máquinas virtuales</li>
+        <li><strong>Flow logs:</strong> tráfico de red (VPC Flow Logs)</li>
+        <li><strong>Configuraciones:</strong> IAM, security groups, políticas</li>
+        <li><strong>Contenedores:</strong> imágenes, logs de pods, eventos de Kubernetes</li>
+    </ul>
+
+    <h3>13.10 Certificaciones forenses</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Certificación</th>
+                <th>Organización</th>
+                <th>Enfoque</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>CHFI (Computer Hacking Forensic Investigator)</td><td>EC-Council</td><td>Forense general</td></tr>
+            <tr><td>EnCE (EnCase Certified Examiner)</td><td>Guidance Software</td><td>EnCase específico</td></tr>
+            <tr><td>GCFA (GIAC Certified Forensic Analyst)</td><td>GIAC/SANS</td><td>Análisis forense avanzado</td></tr>
+            <tr><td>GCFE (GIAC Certified Forensic Examiner)</td><td>GIAC/SANS</td><td>Windows forensics</td></tr>
+            <tr><td>CCE (Certified Computer Examiner)</td><td>ISFCE</td><td>Forense general</td></tr>
+        </tbody>
+    </table>
+
+    <div class="alert alert-warning">
+        <h5>💡 Para examen</h5>
+        <ul class="mb-0">
+            <li>Orden de volatilidad: memoria > procesos > disco</li>
+            <li>Siempre trabajar sobre copias, nunca originales</li>
+            <li>Cadena de custodia es crítica para admisibilidad legal</li>
+            <li>Hashes (SHA-256) para verificar integridad</li>
+            <li>Documentar exhaustivamente cada paso</li>
+        </ul>
+    </div>
+
+    <h2>14. Hardening de Sistemas</h2>
+    <p>Proceso de asegurar un sistema reduciendo su superficie de ataque mediante la eliminación de servicios innecesarios, aplicación de parches, configuración segura y implementación de controles de seguridad.</p>
+
+    <h3>14.1 Principios generales</h3>
+    <ul>
+        <li><strong>Principio de menor privilegio:</strong> usuarios y procesos con mínimos permisos necesarios</li>
+        <li><strong>Defensa en profundidad:</strong> múltiples capas de seguridad</li>
+        <li><strong>Reducción de superficie de ataque:</strong> deshabilitar servicios y puertos innecesarios</li>
+        <li><strong>Configuración segura por defecto:</strong> cambiar valores predeterminados inseguros</li>
+        <li><strong>Actualización continua:</strong> parches de seguridad aplicados regularmente</li>
+        <li><strong>Auditoría y monitorización:</strong> logging habilitado y revisado</li>
+    </ul>
+
+    <h3>14.2 Hardening de Linux</h3>
+
+    <h4>Gestión de usuarios y permisos</h4>
+    <pre><code># Deshabilitar login root directo
+sed -i 's/PermitRootLogin yes/PermitRootLogin no/' /etc/ssh/sshd_config
+
+# Forzar contraseñas fuertes
+apt install libpam-pwquality
+# Editar /etc/security/pwquality.conf
+minlen = 12
+dcredit = -1
+ucredit = -1
+ocredit = -1
+lcredit = -1
+
+# Bloquear cuentas inactivas
+useradd -e 2025-12-31 username  # fecha de expiración
+passwd -l username              # bloquear cuenta
+
+# Auditar usuarios con UID 0 (root)
+awk -F: '($3 == "0") {print}' /etc/passwd
+
+# Eliminar usuarios innecesarios
+userdel -r games
+userdel -r lp</code></pre>
+
+    <h4>SSH hardening</h4>
+    <pre><code># /etc/ssh/sshd_config
+PermitRootLogin no
+PasswordAuthentication no
+PubkeyAuthentication yes
+PermitEmptyPasswords no
+X11Forwarding no
+MaxAuthTries 3
+ClientAliveInterval 300
+ClientAliveCountMax 2
+AllowUsers admin devops
+Protocol 2
+Port 2222  # cambiar puerto por defecto
+
+# Reiniciar SSH
+systemctl restart sshd</code></pre>
+
+    <h4>Firewall (UFW/iptables)</h4>
+    <pre><code># UFW (Ubuntu/Debian)
+ufw default deny incoming
+ufw default allow outgoing
+ufw allow 2222/tcp  # SSH
+ufw allow 80/tcp
+ufw allow 443/tcp
+ufw enable
+
+# iptables (alternativa)
+iptables -P INPUT DROP
+iptables -P FORWARD DROP
+iptables -P OUTPUT ACCEPT
+iptables -A INPUT -i lo -j ACCEPT
+iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+iptables-save > /etc/iptables/rules.v4</code></pre>
+
+    <h4>Actualizaciones automáticas</h4>
+    <pre><code># Debian/Ubuntu
+apt install unattended-upgrades
+dpkg-reconfigure -plow unattended-upgrades
+
+# RHEL/CentOS
+yum install yum-cron
+systemctl enable yum-cron
+systemctl start yum-cron</code></pre>
+
+    <h4>Deshabilitar servicios innecesarios</h4>
+    <pre><code># Listar servicios activos
+systemctl list-units --type=service --state=running
+
+# Deshabilitar servicios innecesarios
+systemctl disable bluetooth
+systemctl disable cups
+systemctl disable avahi-daemon
+systemctl stop bluetooth
+systemctl stop cups</code></pre>
+
+    <h4>Auditoría con auditd</h4>
+    <pre><code># Instalar auditd
+apt install auditd
+
+# Reglas de auditoría
+auditctl -w /etc/passwd -p wa -k passwd_changes
+auditctl -w /etc/shadow -p wa -k shadow_changes
+auditctl -w /etc/sudoers -p wa -k sudoers_changes
+auditctl -w /var/log/auth.log -p wa -k auth_log
+
+# Ver eventos
+ausearch -k passwd_changes</code></pre>
+
+    <h4>SELinux / AppArmor</h4>
+    <pre><code># SELinux (RHEL/CentOS)
+getenforce  # verificar estado
+setenforce 1  # modo enforcing
+# /etc/selinux/config -> SELINUX=enforcing
+
+# AppArmor (Ubuntu/Debian)
+aa-status  # ver perfiles
+aa-enforce /etc/apparmor.d/usr.sbin.nginx  # modo enforce</code></pre>
+
+    <h4>Protección de archivos críticos</h4>
+    <pre><code># Hacer inmutables archivos críticos
+chattr +i /etc/passwd
+chattr +i /etc/shadow
+chattr +i /etc/group
+
+# Verificar
+lsattr /etc/passwd
+
+# Remover inmutabilidad (si necesario)
+chattr -i /etc/passwd</code></pre>
+
+    <h4>Límites de recursos</h4>
+    <pre><code># /etc/security/limits.conf
+* hard core 0                    # deshabilitar core dumps
+* soft nproc 100                 # límite de procesos
+* hard nproc 150
+* soft nofile 1024               # límite de archivos abiertos
+* hard nofile 2048</code></pre>
+
+    <h4>Kernel hardening (sysctl)</h4>
+    <pre><code># /etc/sysctl.conf
+# Protección contra IP spoofing
+net.ipv4.conf.all.rp_filter = 1
+net.ipv4.conf.default.rp_filter = 1
+
+# Ignorar ICMP redirects
+net.ipv4.conf.all.accept_redirects = 0
+net.ipv6.conf.all.accept_redirects = 0
+
+# Ignorar source routed packets
+net.ipv4.conf.all.accept_source_route = 0
+net.ipv6.conf.all.accept_source_route = 0
+
+# Protección SYN flood
+net.ipv4.tcp_syncookies = 1
+net.ipv4.tcp_max_syn_backlog = 2048
+
+# Deshabilitar IPv6 si no se usa
+net.ipv6.conf.all.disable_ipv6 = 1
+
+# Aplicar cambios
+sysctl -p</code></pre>
+
+    <h3>14.3 Hardening de Windows</h3>
+
+    <h4>Políticas de contraseñas (GPO)</h4>
+    <ul>
+        <li>Longitud mínima: 12 caracteres</li>
+        <li>Complejidad: activada (mayúsculas, minúsculas, números, símbolos)</li>
+        <li>Historial: recordar últimas 24 contraseñas</li>
+        <li>Edad máxima: 90 días</li>
+        <li>Edad mínima: 1 día</li>
+        <li>Bloqueo de cuenta: 5 intentos fallidos, duración 30 minutos</li>
+    </ul>
+
+    <h4>Políticas de auditoría</h4>
+    <pre><code># PowerShell - Habilitar auditoría
+auditpol /set /category:"Logon/Logoff" /success:enable /failure:enable
+auditpol /set /category:"Account Logon" /success:enable /failure:enable
+auditpol /set /category:"Object Access" /success:enable /failure:enable
+auditpol /set /category:"Policy Change" /success:enable /failure:enable
+auditpol /set /category:"Privilege Use" /success:enable /failure:enable
+
+# Ver configuración
+auditpol /get /category:*</code></pre>
+
+    <h4>Windows Firewall</h4>
+    <pre><code># PowerShell - Habilitar firewall
+Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled True
+
+# Bloquear conexiones entrantes por defecto
+Set-NetFirewallProfile -DefaultInboundAction Block -DefaultOutboundAction Allow
+
+# Permitir RDP solo desde red específica
+New-NetFirewallRule -DisplayName "RDP from Admin Network" -Direction Inbound -Protocol TCP -LocalPort 3389 -RemoteAddress 10.0.1.0/24 -Action Allow
+
+# Listar reglas
+Get-NetFirewallRule | Where-Object {$_.Enabled -eq 'True'}</code></pre>
+
+    <h4>Deshabilitar servicios innecesarios</h4>
+    <pre><code># PowerShell
+# Listar servicios en ejecución
+Get-Service | Where-Object {$_.Status -eq "Running"}
+
+# Deshabilitar servicios innecesarios
+Stop-Service -Name "RemoteRegistry" -Force
+Set-Service -Name "RemoteRegistry" -StartupType Disabled
+
+Stop-Service -Name "Telnet" -Force
+Set-Service -Name "Telnet" -StartupType Disabled</code></pre>
+
+    <h4>BitLocker (cifrado de disco)</h4>
+    <pre><code># PowerShell - Habilitar BitLocker
+Enable-BitLocker -MountPoint "C:" -EncryptionMethod XtsAes256 -UsedSpaceOnly -TpmProtector
+
+# Backup de clave de recuperación
+Backup-BitLockerKeyProtector -MountPoint "C:" -KeyProtectorId $KeyProtector.KeyProtectorId</code></pre>
+
+    <h4>Windows Defender</h4>
+    <pre><code># PowerShell - Configurar Defender
+Set-MpPreference -DisableRealtimeMonitoring $false
+Set-MpPreference -DisableBehaviorMonitoring $false
+Set-MpPreference -DisableIOAVProtection $false
+Set-MpPreference -DisableScriptScanning $false
+Set-MpPreference -EnableControlledFolderAccess Enabled
+Set-MpPreference -EnableNetworkProtection Enabled
+
+# Actualizar definiciones
+Update-MpSignature
+
+# Escaneo completo
+Start-MpScan -ScanType FullScan</code></pre>
+
+    <h4>AppLocker (control de aplicaciones)</h4>
+    <ul>
+        <li>Configurar reglas para permitir solo aplicaciones autorizadas</li>
+        <li>Bloquear ejecución desde %TEMP%, %APPDATA%</li>
+        <li>Whitelist de ejecutables firmados</li>
+    </ul>
+
+    <h4>Deshabilitar protocolos obsoletos</h4>
+    <pre><code># PowerShell - Deshabilitar SMBv1
+Disable-WindowsOptionalFeature -Online -FeatureName SMB1Protocol
+
+# Deshabilitar TLS 1.0 y 1.1 (Registry)
+New-Item 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.0\Server' -Force
+New-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.0\Server' -Name 'Enabled' -Value 0 -PropertyType 'DWord'</code></pre>
+
+    <h4>Credential Guard</h4>
+    <pre><code># Habilitar Credential Guard (protege credenciales en memoria)
+# Requiere: Windows 10 Enterprise/Education, UEFI, Secure Boot, TPM 2.0
+Enable-WindowsOptionalFeature -Online -FeatureName IsolatedUserMode -NoRestart
+Enable-WindowsOptionalFeature -Online -FeatureName HypervisorPlatform -NoRestart
+
+# Registry
+New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Lsa" -Name "LsaCfgFlags" -Value 1 -PropertyType DWORD</code></pre>
+
+    <h4>Actualizaciones automáticas</h4>
+    <pre><code># PowerShell - Configurar Windows Update
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" -Name "NoAutoUpdate" -Value 0
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" -Name "AUOptions" -Value 4  # Auto download and schedule install
+
+# Instalar actualizaciones
+Install-Module PSWindowsUpdate
+Get-WindowsUpdate
+Install-WindowsUpdate -AcceptAll -AutoReboot</code></pre>
+
+    <h3>14.4 Hardening de aplicaciones</h3>
+
+    <h4>Bases de datos</h4>
+    <ul>
+        <li>Cambiar puertos por defecto (MySQL 3306, PostgreSQL 5432)</li>
+        <li>Deshabilitar acceso remoto root</li>
+        <li>Usar cuentas con privilegios mínimos</li>
+        <li>Cifrar conexiones (SSL/TLS)</li>
+        <li>Auditar consultas y accesos</li>
+        <li>Backups cifrados</li>
+    </ul>
+
+    <h4>Servidores web (Apache/Nginx)</h4>
+    <pre><code># Apache
+ServerTokens Prod
+ServerSignature Off
+TraceEnable Off
+Header always set X-Frame-Options "SAMEORIGIN"
+Header always set X-Content-Type-Options "nosniff"
+Header always set X-XSS-Protection "1; mode=block"
+Header always set Strict-Transport-Security "max-age=31536000"
+
+# Nginx
+server_tokens off;
+add_header X-Frame-Options "SAMEORIGIN" always;
+add_header X-Content-Type-Options "nosniff" always;
+add_header X-XSS-Protection "1; mode=block" always;
+add_header Strict-Transport-Security "max-age=31536000" always;</code></pre>
+
+    <h3>14.5 Checklist de hardening</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Categoría</th>
+                <th>Acción</th>
+                <th>Linux</th>
+                <th>Windows</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>Usuarios</td><td>Deshabilitar root/Administrator directo</td><td>✓</td><td>✓</td></tr>
+            <tr><td>Usuarios</td><td>Políticas de contraseñas fuertes</td><td>✓</td><td>✓</td></tr>
+            <tr><td>Usuarios</td><td>MFA para accesos administrativos</td><td>✓</td><td>✓</td></tr>
+            <tr><td>Red</td><td>Firewall habilitado y configurado</td><td>✓</td><td>✓</td></tr>
+            <tr><td>Red</td><td>Cambiar puertos por defecto</td><td>✓</td><td>✓</td></tr>
+            <tr><td>Red</td><td>Deshabilitar protocolos obsoletos</td><td>✓</td><td>✓</td></tr>
+            <tr><td>Servicios</td><td>Deshabilitar servicios innecesarios</td><td>✓</td><td>✓</td></tr>
+            <tr><td>Actualizaciones</td><td>Parches automáticos</td><td>✓</td><td>✓</td></tr>
+            <tr><td>Auditoría</td><td>Logging habilitado</td><td>✓</td><td>✓</td></tr>
+            <tr><td>Cifrado</td><td>Cifrado de disco</td><td>LUKS</td><td>BitLocker</td></tr>
+            <tr><td>Antimalware</td><td>Protección en tiempo real</td><td>ClamAV</td><td>Defender</td></tr>
+            <tr><td>MAC</td><td>Mandatory Access Control</td><td>SELinux/AppArmor</td><td>AppLocker</td></tr>
+        </tbody>
+    </table>
+
+    <h3>14.6 Herramientas de auditoría de hardening</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Herramienta</th>
+                <th>Plataforma</th>
+                <th>Descripción</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>Lynis</td><td>Linux/Unix</td><td>Auditoría de seguridad y hardening</td></tr>
+            <tr><td>OpenSCAP</td><td>Linux</td><td>Compliance scanning (CIS, STIG)</td></tr>
+            <tr><td>CIS-CAT</td><td>Multi-plataforma</td><td>CIS Benchmarks assessment</td></tr>
+            <tr><td>Microsoft Security Compliance Toolkit</td><td>Windows</td><td>Baselines de seguridad</td></tr>
+            <tr><td>Nessus</td><td>Multi-plataforma</td><td>Vulnerability scanner</td></tr>
+            <tr><td>OpenVAS</td><td>Multi-plataforma</td><td>Vulnerability scanner open source</td></tr>
+        </tbody>
+    </table>
+
+    <h4>Ejemplo: Lynis</h4>
+    <pre><code># Instalar Lynis
+apt install lynis
+
+# Ejecutar auditoría
+lynis audit system
+
+# Ver reporte
+cat /var/log/lynis.log
+
+# Hardening index y sugerencias
+lynis show details</code></pre>
+
+    <h3>14.7 Benchmarks y estándares</h3>
+    <ul>
+        <li><strong>CIS Benchmarks:</strong> guías de configuración segura por sistema operativo y aplicación</li>
+        <li><strong>STIG (Security Technical Implementation Guides):</strong> estándares del DoD de EE.UU.</li>
+        <li><strong>NIST SP 800-123:</strong> guía de seguridad para servidores</li>
+        <li><strong>ISO 27001:</strong> controles de seguridad de la información</li>
+        <li><strong>PCI-DSS:</strong> requisitos para sistemas que procesan tarjetas</li>
+    </ul>
+
+    <div class="alert alert-success">
+        <h5>💡 Para examen</h5>
+        <ul class="mb-0">
+            <li>Hardening = reducir superficie de ataque</li>
+            <li>Principio de menor privilegio en usuarios y servicios</li>
+            <li>Deshabilitar lo innecesario: servicios, puertos, protocolos</li>
+            <li>Actualizaciones automáticas críticas</li>
+            <li>Auditoría y logging siempre habilitados</li>
+            <li>Usar benchmarks reconocidos (CIS, STIG)</li>
+        </ul>
+    </div>
+
+    <h2>15. Seguridad en Contenedores y Kubernetes</h2>
+    <p>Los contenedores y orquestadores introducen nuevos vectores de ataque y requieren controles de seguridad específicos. Principio: seguridad en todas las capas del stack.</p>
+
+    <h3>15.1 Seguridad en contenedores Docker</h3>
+
+    <h4>Imágenes seguras</h4>
+    <ul>
+        <li><strong>Usar imágenes oficiales y verificadas:</strong> Docker Official Images, imágenes firmadas</li>
+        <li><strong>Imágenes mínimas:</strong> Alpine, distroless (menos superficie de ataque)</li>
+        <li><strong>Escaneo de vulnerabilidades:</strong> antes de desplegar
+            <ul>
+                <li>Herramientas: Trivy, Clair, Anchore, Snyk, Aqua</li>
+            </ul>
+        </li>
+        <li><strong>Multi-stage builds:</strong> separar build de runtime, no incluir herramientas de compilación en imagen final</li>
+        <li><strong>No incluir secretos:</strong> usar secrets management, no hardcodear en imagen</li>
+    </ul>
+
+    <h5>Ejemplo Dockerfile seguro</h5>
+    <pre><code># Multi-stage build
+FROM golang:1.21 AS builder
+WORKDIR /app
+COPY . .
+RUN go build -o myapp
+
+# Imagen final mínima
+FROM gcr.io/distroless/base-debian12
+COPY --from=builder /app/myapp /
+USER nonroot:nonroot
+EXPOSE 8080
+ENTRYPOINT ["/myapp"]</code></pre>
+
+    <h4>Runtime security</h4>
+    <pre><code># No ejecutar como root
+docker run --user 1000:1000 myapp
+
+# Modo read-only filesystem
+docker run --read-only myapp
+
+# Limitar capabilities
+docker run --cap-drop=ALL --cap-add=NET_BIND_SERVICE myapp
+
+# Limitar recursos
+docker run --memory="512m" --cpus="1.0" myapp
+
+# No privileged mode
+# EVITAR: docker run --privileged
+
+# Usar security profiles
+docker run --security-opt seccomp=default.json myapp
+docker run --security-opt apparmor=docker-default myapp</code></pre>
+
+    <h4>Docker daemon hardening</h4>
+    <pre><code># /etc/docker/daemon.json
+{
+  "icc": false,
+  "userns-remap": "default",
+  "no-new-privileges": true,
+  "live-restore": true,
+  "userland-proxy": false,
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "10m",
+    "max-file": "3"
+  }
+}</code></pre>
+
+    <h4>Escaneo de imágenes</h4>
+    <pre><code># Trivy - escaneo de vulnerabilidades
+trivy image nginx:latest
+trivy image --severity HIGH,CRITICAL myapp:v1.0
+
+# Generar reporte
+trivy image --format json --output report.json myapp:v1.0
+
+# Escanear Dockerfile
+trivy config Dockerfile</code></pre>
+
+    <h3>15.2 Seguridad en Kubernetes</h3>
+
+    <h4>Las 4C de seguridad en Kubernetes</h4>
+    <ol>
+        <li><strong>Cloud/Datacenter:</strong> seguridad de infraestructura subyacente</li>
+        <li><strong>Cluster:</strong> configuración segura de Kubernetes</li>
+        <li><strong>Container:</strong> imágenes y runtime seguros</li>
+        <li><strong>Code:</strong> aplicación segura</li>
+    </ol>
+
+    <h4>RBAC (Role-Based Access Control)</h4>
+    <p>Control de acceso granular basado en roles.</p>
+    <pre><code># Role - permisos en un namespace
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: production
+  name: pod-reader
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "list"]
+
+---
+# RoleBinding - asignar role a usuario
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: read-pods
+  namespace: production
+subjects:
+- kind: User
+  name: jane
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: pod-reader
+  apiGroup: rbac.authorization.k8s.io</code></pre>
+
+    <h4>Pod Security Standards</h4>
+    <p>Tres niveles de políticas de seguridad para pods:</p>
+    <ul>
+        <li><strong>Privileged:</strong> sin restricciones (no recomendado)</li>
+        <li><strong>Baseline:</strong> previene escaladas de privilegios conocidas</li>
+        <li><strong>Restricted:</strong> hardening máximo, mejores prácticas</li>
+    </ul>
+
+    <h5>Pod Security Admission</h5>
+    <pre><code># Namespace con política restricted
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: production
+  labels:
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted</code></pre>
+
+    <h4>SecurityContext en Pods</h4>
+    <pre><code>apiVersion: v1
+kind: Pod
+metadata:
+  name: secure-pod
+spec:
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 1000
+    fsGroup: 2000
+    seccompProfile:
+      type: RuntimeDefault
+  containers:
+  - name: app
+    image: myapp:v1.0
+    securityContext:
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+      capabilities:
+        drop:
+        - ALL
+        add:
+        - NET_BIND_SERVICE
+    resources:
+      limits:
+        memory: "512Mi"
+        cpu: "500m"
+      requests:
+        memory: "256Mi"
+        cpu: "250m"
+    volumeMounts:
+    - name: tmp
+      mountPath: /tmp
+  volumes:
+  - name: tmp
+    emptyDir: {}</code></pre>
+
+    <h4>Network Policies</h4>
+    <p>Controlar tráfico de red entre pods (firewall a nivel de aplicación).</p>
+    <pre><code>apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-all-ingress
+  namespace: production
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-frontend-to-backend
+  namespace: production
+spec:
+  podSelector:
+    matchLabels:
+      app: backend
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: frontend
+    ports:
+    - protocol: TCP
+      port: 8080</code></pre>
+
+    <h4>Secrets Management</h4>
+    <pre><code># Crear secret
+kubectl create secret generic db-credentials \
+  --from-literal=username=admin \
+  --from-literal=password=s3cr3t
+
+# Usar secret en pod
+apiVersion: v1
+kind: Pod
+metadata:
+  name: app
+spec:
+  containers:
+  - name: app
+    image: myapp
+    env:
+    - name: DB_USER
+      valueFrom:
+        secretKeyRef:
+          name: db-credentials
+          key: username
+    - name: DB_PASS
+      valueFrom:
+        secretKeyRef:
+          name: db-credentials
+          key: password</code></pre>
+
+    <h5>Alternativas más seguras</h5>
+    <ul>
+        <li><strong>External Secrets Operator:</strong> sincronizar desde Vault, AWS Secrets Manager</li>
+        <li><strong>Sealed Secrets:</strong> cifrar secrets en Git</li>
+        <li><strong>HashiCorp Vault:</strong> secrets dinámicos con rotación automática</li>
+    </ul>
+
+    <h4>Admission Controllers</h4>
+    <p>Interceptan peticiones a la API antes de persistir objetos. Validan y mutan recursos.</p>
+    <ul>
+        <li><strong>PodSecurityPolicy (deprecated):</strong> reemplazado por Pod Security Admission</li>
+        <li><strong>OPA Gatekeeper:</strong> políticas como código con Rego</li>
+        <li><strong>Kyverno:</strong> políticas en YAML nativo de Kubernetes</li>
+    </ul>
+
+    <h5>Ejemplo Kyverno - Requerir labels</h5>
+    <pre><code>apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-labels
+spec:
+  validationFailureAction: enforce
+  rules:
+  - name: check-for-labels
+    match:
+      resources:
+        kinds:
+        - Pod
+    validate:
+      message: "Labels 'app' and 'env' are required"
+      pattern:
+        metadata:
+          labels:
+            app: "?*"
+            env: "?*"</code></pre>
+
+    <h4>Auditoría y logging</h4>
+    <pre><code># Habilitar audit logging en API server
+# /etc/kubernetes/manifests/kube-apiserver.yaml
+--audit-policy-file=/etc/kubernetes/audit-policy.yaml
+--audit-log-path=/var/log/kubernetes/audit.log
+--audit-log-maxage=30
+--audit-log-maxbackup=10
+--audit-log-maxsize=100</code></pre>
+
+    <h4>Etcd encryption</h4>
+    <pre><code># Cifrar secrets en etcd
+# /etc/kubernetes/encryption-config.yaml
+apiVersion: apiserver.config.k8s.io/v1
+kind: EncryptionConfiguration
+resources:
+  - resources:
+    - secrets
+    providers:
+    - aescbc:
+        keys:
+        - name: key1
+          secret: <base64-encoded-32-byte-key>
+    - identity: {}
+
+# API server flag
+--encryption-provider-config=/etc/kubernetes/encryption-config.yaml</code></pre>
+
+    <h3>15.3 Herramientas de seguridad</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Herramienta</th>
+                <th>Categoría</th>
+                <th>Descripción</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>Trivy</td><td>Scanning</td><td>Vulnerabilidades en imágenes, IaC, filesystems</td></tr>
+            <tr><td>Falco</td><td>Runtime Security</td><td>Detección de comportamientos anómalos en runtime</td></tr>
+            <tr><td>Aqua Security</td><td>Plataforma completa</td><td>Scanning, runtime, compliance</td></tr>
+            <tr><td>Sysdig Secure</td><td>Plataforma completa</td><td>Runtime security, forensics</td></tr>
+            <tr><td>Snyk</td><td>Scanning</td><td>Vulnerabilidades en código, dependencias, contenedores</td></tr>
+            <tr><td>kube-bench</td><td>Compliance</td><td>CIS Kubernetes Benchmark</td></tr>
+            <tr><td>kube-hunter</td><td>Pentesting</td><td>Buscar vulnerabilidades en cluster</td></tr>
+            <tr><td>Kubesec</td><td>Static Analysis</td><td>Analizar manifests de Kubernetes</td></tr>
+            <tr><td>OPA Gatekeeper</td><td>Policy Engine</td><td>Políticas de admisión</td></tr>
+            <tr><td>Kyverno</td><td>Policy Engine</td><td>Políticas nativas de Kubernetes</td></tr>
+        </tbody>
+    </table>
+
+    <h4>Ejemplo: kube-bench</h4>
+    <pre><code># Ejecutar CIS Benchmark
+kubectl apply -f https://raw.githubusercontent.com/aquasecurity/kube-bench/main/job.yaml
+
+# Ver resultados
+kubectl logs job/kube-bench
+
+# Ejecutar localmente
+kube-bench run --targets master,node</code></pre>
+
+    <h4>Ejemplo: Falco</h4>
+    <pre><code># Instalar Falco
+helm repo add falcosecurity https://falcosecurity.github.io/charts
+helm install falco falcosecurity/falco
+
+# Regla personalizada - detectar shell en contenedor
+- rule: Shell in Container
+  desc: Detect shell execution in container
+  condition: >
+    spawned_process and container and
+    proc.name in (bash, sh, zsh)
+  output: >
+    Shell spawned in container
+    (user=%user.name container=%container.name image=%container.image.repository)
+  priority: WARNING</code></pre>
+
+    <h3>15.4 Supply Chain Security</h3>
+    <ul>
+        <li><strong>Image signing:</strong> Cosign, Notary para firmar y verificar imágenes</li>
+        <li><strong>SBOM (Software Bill of Materials):</strong> inventario de componentes</li>
+        <li><strong>Admission webhooks:</strong> validar firmas antes de desplegar</li>
+        <li><strong>Private registries:</strong> Harbor, ECR, ACR con scanning integrado</li>
+    </ul>
+
+    <h5>Ejemplo: Cosign</h5>
+    <pre><code># Generar par de claves
+cosign generate-key-pair
+
+# Firmar imagen
+cosign sign --key cosign.key myregistry.io/myapp:v1.0
+
+# Verificar firma
+cosign verify --key cosign.pub myregistry.io/myapp:v1.0</code></pre>
+
+    <h3>15.5 Checklist de seguridad Kubernetes</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Categoría</th>
+                <th>Control</th>
+                <th>Prioridad</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>Acceso</td><td>RBAC habilitado y configurado</td><td>Alta</td></tr>
+            <tr><td>Acceso</td><td>Deshabilitar anonymous auth</td><td>Alta</td></tr>
+            <tr><td>Pods</td><td>Pod Security Standards enforced</td><td>Alta</td></tr>
+            <tr><td>Pods</td><td>No ejecutar como root</td><td>Alta</td></tr>
+            <tr><td>Pods</td><td>Read-only root filesystem</td><td>Media</td></tr>
+            <tr><td>Pods</td><td>Drop ALL capabilities</td><td>Alta</td></tr>
+            <tr><td>Red</td><td>Network Policies configuradas</td><td>Alta</td></tr>
+            <tr><td>Secrets</td><td>Secrets cifrados en etcd</td><td>Alta</td></tr>
+            <tr><td>Secrets</td><td>External secrets management</td><td>Media</td></tr>
+            <tr><td>Imágenes</td><td>Escaneo de vulnerabilidades</td><td>Alta</td></tr>
+            <tr><td>Imágenes</td><td>Image signing y verificación</td><td>Media</td></tr>
+            <tr><td>Auditoría</td><td>Audit logging habilitado</td><td>Alta</td></tr>
+            <tr><td>Runtime</td><td>Runtime security (Falco)</td><td>Media</td></tr>
+            <tr><td>Compliance</td><td>CIS Benchmark (kube-bench)</td><td>Alta</td></tr>
+        </tbody>
+    </table>
+
+    <h3>15.6 Mejores prácticas</h3>
+    <div class="alert alert-success">
+        <h5>Recomendaciones</h5>
+        <ul class="mb-0">
+            <li><strong>Imágenes:</strong> mínimas, escaneadas, firmadas, sin secretos</li>
+            <li><strong>Pods:</strong> no root, read-only FS, drop capabilities, límites de recursos</li>
+            <li><strong>RBAC:</strong> principio de menor privilegio, revisar permisos regularmente</li>
+            <li><strong>Network Policies:</strong> deny-all por defecto, whitelist explícito</li>
+            <li><strong>Secrets:</strong> cifrados en etcd, usar external secrets, rotar regularmente</li>
+            <li><strong>Auditoría:</strong> logging centralizado, monitorización continua</li>
+            <li><strong>Updates:</strong> mantener Kubernetes y componentes actualizados</li>
+            <li><strong>Compliance:</strong> ejecutar kube-bench periódicamente</li>
+        </ul>
+    </div>
+
+    <div class="alert alert-info">
+        <h5>💡 Para examen</h5>
+        <ul class="mb-0">
+            <li>Contenedores NO son máquinas virtuales - comparten kernel del host</li>
+            <li>Nunca ejecutar contenedores como root</li>
+            <li>RBAC es fundamental en Kubernetes - menor privilegio</li>
+            <li>Network Policies = firewall entre pods</li>
+            <li>Escanear imágenes antes de desplegar (shift left)</li>
+            <li>Las 4C: Cloud, Cluster, Container, Code</li>
+        </ul>
+    </div>
+
+    <h2>16. Casos reales recientes (2024-2025)</h2>
     <p>Ejemplos de incidentes de seguridad ocurridos recientemente que sirven para ilustrar amenazas, vectores y lecciones aprendidas.</p>
 
     <h3>11.1 Ataque ransomware a Collins Aerospace (2025)</h3>
