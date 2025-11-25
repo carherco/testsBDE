@@ -5,9 +5,1705 @@
 {% block content_body %}
 <div class="content-section">
     <h1>Fundamentos de Programación</h1>
-    <p class="lead">Estructuras de datos fundamentales: listas, pilas, colas, árboles, grafos y algoritmos esenciales con ejemplos prácticos.</p>
+    <p class="lead">Tipos de datos, estructuras de datos fundamentales y algoritmos esenciales con ejemplos prácticos en Python.</p>
 
-    <h2>1. Listas</h2>
+    <h2>1. Tipos de Datos en Python</h2>
+    <p>Python es un lenguaje de tipado dinámico que ofrece diversos tipos de datos integrados para representar diferentes tipos de información.</p>
+
+    <h3>1.1. Tipos de Datos Básicos</h3>
+    
+    <h4>Números</h4>
+    <ul>
+        <li><strong>Enteros (int):</strong> Números sin decimales
+            <pre><code>edad = 25
+temperatura = -10
+respuesta = 42</code></pre>
+        </li>
+        <li><strong>Punto flotante (float):</strong> Números con decimales
+            <pre><code>pi = 3.14
+precision = -0.001
+valor = 2.0</code></pre>
+        </li>
+        <li><strong>Complejos (complex):</strong> Números con parte real e imaginaria
+            <pre><code>z = 3 + 4j
+w = complex(2, -5)  # 2 - 5j
+print(z.real)  # 3.0
+print(z.imag)  # 4.0</code></pre>
+        </li>
+    </ul>
+
+    <h4>Texto (str)</h4>
+    <p>Cadenas de caracteres, secuencias de texto encerradas en comillas simples o dobles:</p>
+    <pre><code>nombre = 'Juan'
+mensaje = "Hola mundo"
+multilinea = """Este es un
+texto de varias
+líneas"""
+
+# Operaciones comunes
+print(len(nombre))        # 4
+print(mensaje.upper())    # HOLA MUNDO
+print(nombre + " Pérez")  # Juan Pérez</code></pre>
+
+    <h4>Booleanos (bool)</h4>
+    <p>Representan valores lógicos: <code>True</code> (verdadero) o <code>False</code> (falso):</p>
+    <pre><code>activo = True
+completado = False
+
+# Operaciones lógicas
+print(activo and completado)  # False
+print(activo or completado)   # True
+print(not activo)             # False</code></pre>
+
+    <h3>1.2. Secuencias</h3>
+
+    <h4>Listas (list)</h4>
+    <p>Colecciones ordenadas y <strong>mutables</strong> de elementos, definidas con corchetes <code>[]</code>:</p>
+    <pre><code>numeros = [1, 2, 3, 4, 5]
+mixta = [1, "dos", 3.0, True]
+
+# Operaciones
+numeros.append(6)        # Añadir al final
+numeros.insert(0, 0)     # Insertar en posición
+numeros.remove(3)        # Eliminar valor
+elemento = numeros[2]    # Acceso por índice
+sublista = numeros[1:4]  # Slicing</code></pre>
+
+    <h4>Tuplas (tuple)</h4>
+    <p>Colecciones ordenadas e <strong>inmutables</strong> de elementos, definidas con paréntesis <code>()</code>:</p>
+    <pre><code>coordenadas = (10, 20)
+persona = ("Juan", 25, "Madrid")
+
+# Acceso
+x, y = coordenadas  # Desempaquetado
+nombre = persona[0]
+
+# Las tuplas NO se pueden modificar
+# persona[1] = 26  # Error!</code></pre>
+
+    <h4>Rango (range)</h4>
+    <p>Secuencia inmutable de números, útil para bucles:</p>
+    <pre><code>rango = range(5)        # 0, 1, 2, 3, 4
+rango2 = range(1, 10)   # 1, 2, 3, ..., 9
+rango3 = range(0, 10, 2) # 0, 2, 4, 6, 8
+
+for i in range(5):
+    print(i)</code></pre>
+
+    <h3>1.3. Mapeo</h3>
+
+    <h4>Diccionarios (dict)</h4>
+    <p>Colecciones de pares clave-valor, definidas con llaves <code>{}</code>:</p>
+    <pre><code>persona = {
+    "nombre": "Ana",
+    "edad": 30,
+    "ciudad": "Barcelona"
+}
+
+# Acceso y modificación
+print(persona["nombre"])     # Ana
+persona["edad"] = 31         # Modificar
+persona["email"] = "a@b.com" # Añadir
+
+# Métodos útiles
+print(persona.keys())        # Claves
+print(persona.values())      # Valores
+print(persona.items())       # Pares clave-valor</code></pre>
+
+    <h3>1.4. Conjuntos</h3>
+
+    <h4>Conjuntos (set)</h4>
+    <p>Colecciones <strong>desordenadas</strong> de elementos <strong>únicos</strong>, definidas con llaves <code>{}</code>:</p>
+    <pre><code>numeros = {1, 2, 3, 4, 5}
+letras = set(['a', 'b', 'c', 'a'])  # {'a', 'b', 'c'}
+
+# Operaciones
+numeros.add(6)           # Añadir
+numeros.remove(3)        # Eliminar
+numeros.discard(10)      # Eliminar sin error si no existe
+
+# Operaciones de conjuntos
+a = {1, 2, 3}
+b = {3, 4, 5}
+print(a | b)  # Unión: {1, 2, 3, 4, 5}
+print(a & b)  # Intersección: {3}
+print(a - b)  # Diferencia: {1, 2}</code></pre>
+
+    <h4>Conjuntos congelados (frozenset)</h4>
+    <p>Conjuntos <strong>inmutables</strong>:</p>
+    <pre><code>inmutable = frozenset([1, 2, 3])
+# inmutable.add(4)  # Error! No se puede modificar
+
+# Útil como clave de diccionario
+cache = {frozenset([1, 2]): "resultado"}</code></pre>
+
+    <h3>1.5. Tipos Binarios</h3>
+
+    <h4>Bytes (bytes)</h4>
+    <p>Secuencias <strong>inmutables</strong> de bytes (0-255):</p>
+    <pre><code>datos = b'Hola'
+datos2 = bytes([72, 111, 108, 97])
+
+# Conversión
+texto = "Hola"
+bytes_texto = texto.encode('utf-8')
+texto_recuperado = bytes_texto.decode('utf-8')</code></pre>
+
+    <h4>Bytearray (bytearray)</h4>
+    <p>Secuencias <strong>mutables</strong> de bytes:</p>
+    <pre><code>ba = bytearray(b'Hola')
+ba[0] = 74  # Modificar primer byte
+ba.append(33)  # Añadir byte</code></pre>
+
+    <h4>Memoryview (memoryview)</h4>
+    <p>Proporciona una vista de la memoria de otro objeto binario sin copiar:</p>
+    <pre><code>datos = bytearray(b'Hola Mundo')
+vista = memoryview(datos)
+print(vista[0:4].tobytes())  # b'Hola'
+
+# Modificar a través de la vista
+vista[0] = 74  # Cambia 'H' por 'J'</code></pre>
+
+    <h3>1.6. Conversión entre Tipos</h3>
+    <pre><code># A entero
+int("42")      # 42
+int(3.14)      # 3
+int(True)      # 1
+
+# A flotante
+float("3.14")  # 3.14
+float(42)      # 42.0
+
+# A cadena
+str(42)        # "42"
+str(3.14)      # "3.14"
+str([1, 2])    # "[1, 2]"
+
+# A lista
+list("abc")    # ['a', 'b', 'c']
+list((1, 2))   # [1, 2]
+
+# A tupla
+tuple([1, 2])  # (1, 2)
+
+# A conjunto
+set([1, 2, 2]) # {1, 2}</code></pre>
+
+    <div class="alert alert-info">
+        <h5>💡 Mutabilidad vs Inmutabilidad</h5>
+        <ul class="mb-0">
+            <li><strong>Mutables:</strong> list, dict, set, bytearray (se pueden modificar)</li>
+            <li><strong>Inmutables:</strong> int, float, str, tuple, frozenset, bytes (no se pueden modificar)</li>
+            <li>Los objetos inmutables son más seguros y eficientes en memoria</li>
+        </ul>
+    </div>
+
+    <h2>1.7. Tipos de Datos en Java</h2>
+    <p>Java es un lenguaje de tipado estático fuertemente tipado. Distingue entre tipos primitivos y tipos de referencia (objetos).</p>
+
+    <h3>Tipos Primitivos</h3>
+
+    <h4>Números Enteros</h4>
+    <pre><code>byte edad = 25;        // 8 bits: -128 a 127
+short año = 2024;      // 16 bits: -32,768 a 32,767
+int poblacion = 1000000; // 32 bits: -2^31 a 2^31-1
+long distancia = 9223372036854775807L; // 64 bits</code></pre>
+
+    <h4>Números Decimales</h4>
+    <pre><code>float precio = 19.99f;  // 32 bits, precisión simple
+double pi = 3.141592653589793; // 64 bits, precisión doble</code></pre>
+
+    <h4>Caracteres y Booleanos</h4>
+    <pre><code>char letra = 'A';       // 16 bits Unicode
+boolean activo = true;  // true o false</code></pre>
+
+    <h3>Tipos de Referencia (Objetos)</h3>
+
+    <h4>String</h4>
+    <pre><code>String nombre = "Juan";
+String mensaje = "Hola " + nombre;
+int longitud = nombre.length();
+String mayusculas = nombre.toUpperCase();</code></pre>
+
+    <h4>Arrays</h4>
+    <pre><code>// Array de tamaño fijo
+int[] numeros = {1, 2, 3, 4, 5};
+int[] vacio = new int[10];
+String[] nombres = {"Ana", "Luis", "María"};
+
+// Acceso
+int primero = numeros[0];
+numeros[2] = 10;</code></pre>
+
+    <h4>Colecciones (java.util)</h4>
+    <pre><code>// ArrayList - lista dinámica
+ArrayList&lt;String&gt; lista = new ArrayList&lt;&gt;();
+lista.add("elemento");
+lista.remove(0);
+String item = lista.get(0);
+
+// HashMap - diccionario
+HashMap&lt;String, Integer&gt; edades = new HashMap&lt;&gt;();
+edades.put("Ana", 25);
+edades.put("Luis", 30);
+int edad = edades.get("Ana");
+
+// HashSet - conjunto
+HashSet&lt;Integer&gt; unicos = new HashSet&lt;&gt;();
+unicos.add(1);
+unicos.add(2);
+unicos.add(1); // No se duplica
+
+// LinkedList - lista enlazada
+LinkedList&lt;String&gt; cola = new LinkedList&lt;&gt;();
+cola.addLast("primero");
+cola.addLast("segundo");
+String primero = cola.removeFirst();</code></pre>
+
+    <h4>Wrapper Classes</h4>
+    <p>Clases que envuelven tipos primitivos para usarlos como objetos:</p>
+    <pre><code>Integer num = 42;           // Autoboxing
+int valor = num;            // Unboxing
+Double decimal = 3.14;
+Boolean flag = true;
+Character c = 'A';
+
+// Métodos útiles
+int parsed = Integer.parseInt("123");
+String str = Integer.toString(42);</code></pre>
+
+    <h3>Conversión de Tipos en Java</h3>
+    <pre><code>// Casting implícito (widening)
+int i = 100;
+long l = i;
+double d = l;
+
+// Casting explícito (narrowing)
+double pi = 3.14;
+int entero = (int) pi;  // 3
+
+// String a primitivo
+int num = Integer.parseInt("42");
+double dec = Double.parseDouble("3.14");
+
+// Primitivo a String
+String s1 = String.valueOf(42);
+String s2 = Integer.toString(42);</code></pre>
+
+    <div class="alert alert-warning">
+        <h5>⚠️ Diferencias clave Java vs Python</h5>
+        <ul class="mb-0">
+            <li><strong>Tipado:</strong> Java es estático (declarar tipo), Python es dinámico</li>
+            <li><strong>Primitivos:</strong> Java tiene tipos primitivos, Python todo son objetos</li>
+            <li><strong>Arrays:</strong> Java arrays son de tamaño fijo, Python listas son dinámicas</li>
+            <li><strong>Null:</strong> Java usa <code>null</code>, Python usa <code>None</code></li>
+        </ul>
+    </div>
+
+    <h2>1.8. Tipos de Datos en C++</h2>
+    <p>C++ es un lenguaje de tipado estático con control de bajo nivel sobre la memoria.</p>
+
+    <h3>Tipos Fundamentales</h3>
+
+    <h4>Números Enteros</h4>
+    <pre><code>char c = 'A';              // 8 bits (también usado para caracteres)
+short s = 32000;           // 16 bits
+int i = 2147483647;        // 32 bits (típicamente)
+long l = 2147483647L;      // 32 o 64 bits (depende del sistema)
+long long ll = 9223372036854775807LL; // 64 bits
+
+// Versiones sin signo
+unsigned int positivo = 4294967295U;
+unsigned char byte = 255;</code></pre>
+
+    <h4>Números Decimales</h4>
+    <pre><code>float f = 3.14f;           // 32 bits, ~7 dígitos precisión
+double d = 3.14159265359;  // 64 bits, ~15 dígitos precisión
+long double ld = 3.14159265358979323846L; // 80+ bits</code></pre>
+
+    <h4>Booleanos</h4>
+    <pre><code>bool activo = true;
+bool completado = false;</code></pre>
+
+    <h3>Tipos Derivados</h3>
+
+    <h4>Arrays</h4>
+    <pre><code>// Array estático
+int numeros[5] = {1, 2, 3, 4, 5};
+int matriz[3][3] = { {1,2,3}, {4,5,6}, {7,8,9} };
+
+// Acceso
+int primero = numeros[0];
+numeros[2] = 10;</code></pre>
+
+    <pre><code>
+int x = 42;
+int* ptr = &x;        // Puntero a x
+int& ref = x;         // Referencia a x
+
+*ptr = 50;            // Modifica x a través del puntero
+ref = 60;             // Modifica x a través de la referencia
+
+cout << x;            // 60
+</code></pre>
+
+    <h4>Strings (C++)</h4>
+    <pre><code>#include &lt;string&gt;
+
+std::string nombre = "Juan";
+std::string mensaje = "Hola " + nombre;
+int longitud = nombre.length();
+std::string mayusculas = nombre;
+// No hay método toUpperCase() directo, usar transform</code></pre>
+
+    <h4>C-style Strings</h4>
+    <pre><code>char nombre[20] = "Juan";
+char mensaje[] = "Hola mundo";
+int longitud = strlen(nombre);
+strcpy(nombre, "Pedro");</code></pre>
+
+    <h3>STL (Standard Template Library)</h3>
+
+    <h4>Vector - array dinámico</h4>
+    <pre><code>#include &lt;vector&gt;
+
+std::vector&lt;int&gt; numeros = {1, 2, 3, 4, 5};
+numeros.push_back(6);      // Añadir al final
+numeros.pop_back();        // Eliminar último
+int primero = numeros[0];
+int tamaño = numeros.size();</code></pre>
+
+    <h4>Map - diccionario</h4>
+    <pre><code>#include &lt;map&gt;
+
+std::map&lt;std::string, int&gt; edades;
+edades["Ana"] = 25;
+edades["Luis"] = 30;
+int edad = edades["Ana"];
+
+// Verificar existencia
+if (edades.find("Ana") != edades.end()) {
+    // Existe
+}</code></pre>
+
+    <h4>Set - conjunto</h4>
+    <pre><code>#include &lt;set&gt;
+
+std::set&lt;int&gt; unicos;
+unicos.insert(1);
+unicos.insert(2);
+unicos.insert(1);  // No se duplica
+
+// Verificar existencia
+if (unicos.find(1) != unicos.end()) {
+    // Existe
+}</code></pre>
+
+    <h4>List - lista enlazada</h4>
+    <pre><code>#include &lt;list&gt;
+
+std::list&lt;int&gt; lista;
+lista.push_back(1);
+lista.push_front(0);
+lista.pop_back();
+lista.pop_front();</code></pre>
+
+    <h4>Queue y Stack</h4>
+    <pre><code>#include &lt;queue&gt;
+#include &lt;stack&gt;
+
+// Cola (FIFO)
+std::queue&lt;int&gt; cola;
+cola.push(1);
+cola.push(2);
+int primero = cola.front();
+cola.pop();
+
+// Pila (LIFO)
+std::stack&lt;int&gt; pila;
+pila.push(1);
+pila.push(2);
+int tope = pila.top();
+pila.pop();</code></pre>
+
+    <h3>Conversión de Tipos en C++</h3>
+    <pre><code>// Casting estilo C
+int i = 42;
+double d = (double)i;
+
+// Casting estilo C++
+double pi = 3.14;
+int entero = static_cast&lt;int&gt;(pi);
+
+// String a número (C++11)
+#include &lt;string&gt;
+std::string str = "42";
+int num = std::stoi(str);
+double dec = std::stod("3.14");
+
+// Número a string
+int x = 42;
+std::string s = std::to_string(x);</code></pre>
+
+    <h3>Gestión de Memoria</h3>
+    <pre><code>// Memoria dinámica (heap)
+int* ptr = new int(42);
+delete ptr;
+
+int* arr = new int[10];
+delete[] arr;
+
+// Smart pointers (C++11) - gestión automática
+#include &lt;memory&gt;
+
+std::unique_ptr&lt;int&gt; uptr = std::make_unique&lt;int&gt;(42);
+std::shared_ptr&lt;int&gt; sptr = std::make_shared&lt;int&gt;(42);
+// No necesitan delete, se liberan automáticamente</code></pre>
+
+    <div class="alert alert-danger">
+        <h5>⚠️ Características únicas de C++</h5>
+        <ul class="mb-0">
+            <li><strong>Gestión manual de memoria:</strong> new/delete (o smart pointers)</li>
+            <li><strong>Punteros:</strong> Acceso directo a direcciones de memoria</li>
+            <li><strong>Referencias:</strong> Alias a variables existentes</li>
+            <li><strong>Tamaño de tipos:</strong> Puede variar según arquitectura (usar sizeof())</li>
+            <li><strong>Sin garbage collector:</strong> El programador controla la memoria</li>
+        </ul>
+    </div>
+
+    <h2>1.9. Comparativa de Tipos de Datos</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Concepto</th>
+                <th>Python</th>
+                <th>Java</th>
+                <th>C++</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Tipado</strong></td>
+                <td>Dinámico</td>
+                <td>Estático</td>
+                <td>Estático</td>
+            </tr>
+            <tr>
+                <td><strong>Enteros</strong></td>
+                <td>int (tamaño ilimitado)</td>
+                <td>byte, short, int, long</td>
+                <td>char, short, int, long, long long</td>
+            </tr>
+            <tr>
+                <td><strong>Decimales</strong></td>
+                <td>float</td>
+                <td>float, double</td>
+                <td>float, double, long double</td>
+            </tr>
+            <tr>
+                <td><strong>Strings</strong></td>
+                <td>str (inmutable)</td>
+                <td>String (inmutable)</td>
+                <td>std::string (mutable)</td>
+            </tr>
+            <tr>
+                <td><strong>Listas dinámicas</strong></td>
+                <td>list</td>
+                <td>ArrayList</td>
+                <td>std::vector</td>
+            </tr>
+            <tr>
+                <td><strong>Diccionarios</strong></td>
+                <td>dict</td>
+                <td>HashMap</td>
+                <td>std::map</td>
+            </tr>
+            <tr>
+                <td><strong>Conjuntos</strong></td>
+                <td>set</td>
+                <td>HashSet</td>
+                <td>std::set</td>
+            </tr>
+            <tr>
+                <td><strong>Null/None</strong></td>
+                <td>None</td>
+                <td>null</td>
+                <td>nullptr (C++11)</td>
+            </tr>
+            <tr>
+                <td><strong>Gestión memoria</strong></td>
+                <td>Automática (GC)</td>
+                <td>Automática (GC)</td>
+                <td>Manual o smart pointers</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Tipos Primitivos vs No Primitivos</h3>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Lenguaje</th>
+                <th>Tipos Primitivos</th>
+                <th>Tipos No Primitivos (Referencia/Objetos)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Python</strong></td>
+                <td>
+                    <span class="badge bg-warning text-dark">No tiene tipos primitivos</span><br>
+                    <small>Todo en Python es un objeto</small>
+                </td>
+                <td>
+                    <strong>Todos los tipos son objetos:</strong><br>
+                    • int, float, complex, bool<br>
+                    • str, bytes, bytearray<br>
+                    • list, tuple, range<br>
+                    • dict, set, frozenset<br>
+                    • NoneType
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Java</strong></td>
+                <td>
+                    <strong>8 tipos primitivos:</strong><br>
+                    • <code>byte</code> (8 bits)<br>
+                    • <code>short</code> (16 bits)<br>
+                    • <code>int</code> (32 bits)<br>
+                    • <code>long</code> (64 bits)<br>
+                    • <code>float</code> (32 bits)<br>
+                    • <code>double</code> (64 bits)<br>
+                    • <code>char</code> (16 bits)<br>
+                    • <code>boolean</code> (true/false)
+                </td>
+                <td>
+                    <strong>Tipos de referencia:</strong><br>
+                    • String<br>
+                    • Arrays (int[], String[], etc.)<br>
+                    • Wrapper classes (Integer, Double, Boolean, etc.)<br>
+                    • Colecciones (ArrayList, HashMap, HashSet, etc.)<br>
+                    • Clases definidas por usuario<br>
+                    • Interfaces, Enums
+                </td>
+            </tr>
+            <tr>
+                <td><strong>C++</strong></td>
+                <td>
+                    <strong>Tipos fundamentales (built-in):</strong><br>
+                    • <code>char</code>, <code>signed char</code>, <code>unsigned char</code><br>
+                    • <code>short</code>, <code>unsigned short</code><br>
+                    • <code>int</code>, <code>unsigned int</code><br>
+                    • <code>long</code>, <code>unsigned long</code><br>
+                    • <code>long long</code>, <code>unsigned long long</code><br>
+                    • <code>float</code>, <code>double</code>, <code>long double</code><br>
+                    • <code>bool</code><br>
+                    • <code>void</code><br>
+                    • <code>wchar_t</code>, <code>char16_t</code>, <code>char32_t</code>
+                </td>
+                <td>
+                    <strong>Tipos compuestos/derivados:</strong><br>
+                    • Punteros (int*, char*, etc.)<br>
+                    • Referencias (int&, const int&, etc.)<br>
+                    • Arrays (int[10], char[], etc.)<br>
+                    • std::string<br>
+                    • STL containers (vector, map, set, list, etc.)<br>
+                    • Structs y Classes<br>
+                    • Enums, Unions
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="alert alert-info">
+        <h5>🔑 Diferencias Clave</h5>
+        <ul class="mb-0">
+            <li><strong>Python:</strong> Todo es objeto, no hay distinción primitivo/referencia. Más simple pero menos control.</li>
+            <li><strong>Java:</strong> Primitivos se almacenan en stack (rápidos), objetos en heap (más lentos pero flexibles). Autoboxing convierte automáticamente entre primitivos y wrappers.</li>
+            <li><strong>C++:</strong> Tipos fundamentales son eficientes en memoria. Tipos compuestos ofrecen más funcionalidad. El programador controla dónde se almacenan (stack/heap).</li>
+        </ul>
+    </div>
+
+    <h3>Ejemplo de Diferencias</h3>
+    <div class="row">
+        <div class="col-md-4">
+            <h6>Python</h6>
+            <pre><code># Todo es objeto
+x = 5
+print(type(x))  # &lt;class 'int'&gt;
+print(x.bit_length())  # 3
+
+# int es un objeto con métodos
+y = int("42")
+</code></pre>
+        </div>
+        <div class="col-md-4">
+            <h6>Java</h6>
+            <pre><code>// Primitivo
+int x = 5;
+// x.toString(); // ERROR
+
+// Objeto (wrapper)
+Integer y = 5;  // Autoboxing
+y.toString();   // OK
+
+// Conversión
+int z = y;  // Unboxing
+</code></pre>
+        </div>
+        <div class="col-md-4">
+            <h6>C++</h6>
+            <pre><code>// Tipo fundamental
+int x = 5;
+// sizeof(x) == 4 bytes
+
+// Objeto STL
+std::string s = "hola";
+s.length();  // Método
+
+// Puntero
+int* ptr = &x;
+</code></pre>
+        </div>
+    </div>
+
+    <h2>1.10. Paso de Parámetros: Por Valor vs Por Referencia</h2>
+    
+    <h3>Python: Paso por Asignación (Pass by Object Reference)</h3>
+    <p>Python usa un modelo único: pasa referencias a objetos, pero el comportamiento depende de la mutabilidad.</p>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <h6>Objetos Inmutables (int, str, tuple)</h6>
+            <pre><code>def modificar(x):
+    x = x + 10  # Crea nuevo objeto
+    print(f"Dentro: {x}")
+
+numero = 5
+modificar(numero)
+print(f"Fuera: {numero}")
+
+# Salida:
+# Dentro: 15
+# Fuera: 5  ← No cambia
+</code></pre>
+        </div>
+        <div class="col-md-6">
+            <h6>Objetos Mutables (list, dict, set)</h6>
+            <pre><code>def modificar(lista):
+    lista.append(4)  # Modifica el objeto
+    print(f"Dentro: {lista}")
+
+numeros = [1, 2, 3]
+modificar(numeros)
+print(f"Fuera: {numeros}")
+
+# Salida:
+# Dentro: [1, 2, 3, 4]
+# Fuera: [1, 2, 3, 4]  ← Sí cambia
+</code></pre>
+        </div>
+    </div>
+
+    <div class="alert alert-warning">
+        <strong>Python:</strong> Pasa la referencia al objeto, pero no puedes cambiar a qué objeto apunta la variable original. Si el objeto es mutable, puedes modificar su contenido.
+    </div>
+
+    <h3>Java: Por Valor Siempre (pero con matices)</h3>
+    <p>Java siempre pasa por valor, pero para objetos pasa el valor de la referencia (copia del puntero).</p>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h6>Tipos Primitivos</h6>
+            <pre><code>public static void modificar(int x) {
+    x = x + 10;
+    System.out.println("Dentro: " + x);
+}
+
+public static void main(String[] args) {
+    int numero = 5;
+    modificar(numero);
+    System.out.println("Fuera: " + numero);
+}
+
+// Salida:
+// Dentro: 15
+// Fuera: 5  ← No cambia
+</code></pre>
+        </div>
+        <div class="col-md-6">
+            <h6>Objetos (Referencias)</h6>
+            <pre><code>public static void modificar(ArrayList&lt;Integer&gt; lista) {
+    lista.add(4);  // Modifica el objeto
+    System.out.println("Dentro: " + lista);
+}
+
+public static void main(String[] args) {
+    ArrayList&lt;Integer&gt; nums = new ArrayList&lt;&gt;();
+    nums.add(1); nums.add(2); nums.add(3);
+    modificar(nums);
+    System.out.println("Fuera: " + nums);
+}
+
+// Salida:
+// Dentro: [1, 2, 3, 4]
+// Fuera: [1, 2, 3, 4]  ← Sí cambia
+</code></pre>
+        </div>
+    </div>
+
+    <h6>Reasignación de Objetos en Java</h6>
+    <pre><code>public static void reasignar(ArrayList&lt;Integer&gt; lista) {
+    lista = new ArrayList&lt;&gt;();  // Nueva referencia local
+    lista.add(99);
+    System.out.println("Dentro: " + lista);
+}
+
+public static void main(String[] args) {
+    ArrayList&lt;Integer&gt; nums = new ArrayList&lt;&gt;();
+    nums.add(1);
+    reasignar(nums);
+    System.out.println("Fuera: " + nums);
+}
+
+// Salida:
+// Dentro: [99]
+// Fuera: [1]  ← No cambia la referencia original
+</code></pre>
+
+    <div class="alert alert-warning">
+        <strong>Java:</strong> Siempre pasa por valor. Para primitivos, copia el valor. Para objetos, copia la referencia (puedes modificar el objeto, pero no cambiar a qué objeto apunta la variable original).
+    </div>
+
+    <h3>C++: Control Total (Por Valor, Por Referencia, Por Puntero)</h3>
+    <p>C++ permite elegir explícitamente cómo pasar parámetros.</p>
+
+    <div class="row">
+        <div class="col-md-4">
+            <h6>Por Valor (copia)</h6>
+            <pre><code>void modificar(int x) {
+    x = x + 10;
+    cout &lt;&lt; "Dentro: " &lt;&lt; x;
+}
+
+int main() {
+    int numero = 5;
+    modificar(numero);
+    cout &lt;&lt; "Fuera: " &lt;&lt; numero;
+}
+
+// Salida:
+// Dentro: 15
+// Fuera: 5  ← No cambia
+</code></pre>
+        </div>
+        <div class="col-md-4">
+            <h6>Por Referencia (&)</h6>
+            <pre><code>void modificar(int& x) {
+    x = x + 10;
+    cout &lt;&lt; "Dentro: " &lt;&lt; x;
+}
+
+int main() {
+    int numero = 5;
+    modificar(numero);
+    cout &lt;&lt; "Fuera: " &lt;&lt; numero;
+}
+
+// Salida:
+// Dentro: 15
+// Fuera: 15  ← Sí cambia
+</code></pre>
+        </div>
+        <div class="col-md-4">
+            <h6>Por Puntero (*)</h6>
+            <pre><code>void modificar(int* x) {
+    *x = *x + 10;
+    cout &lt;&lt; "Dentro: " &lt;&lt; *x;
+}
+
+int main() {
+    int numero = 5;
+    modificar(&numero);
+    cout &lt;&lt; "Fuera: " &lt;&lt; numero;
+}
+
+// Salida:
+// Dentro: 15
+// Fuera: 15  ← Sí cambia
+</code></pre>
+        </div>
+    </div>
+
+    <h6>Objetos en C++</h6>
+    <pre><code>// Por valor (copia todo el objeto - costoso)
+void modificar1(vector&lt;int&gt; v) {
+    v.push_back(4);  // Modifica la copia
+}
+
+// Por referencia (eficiente, permite modificar)
+void modificar2(vector&lt;int&gt;& v) {
+    v.push_back(4);  // Modifica el original
+}
+
+// Por referencia constante (eficiente, solo lectura)
+void mostrar(const vector&lt;int&gt;& v) {
+    // v.push_back(4);  // ERROR: no se puede modificar
+    cout &lt;&lt; v.size();
+}
+
+int main() {
+    vector&lt;int&gt; nums = {1, 2, 3};
+    
+    modificar1(nums);
+    cout &lt;&lt; nums.size();  // 3 (no cambió)
+    
+    modificar2(nums);
+    cout &lt;&lt; nums.size();  // 4 (sí cambió)
+    
+    mostrar(nums);  // 4 (solo lectura)
+}
+</code></pre>
+
+    <div class="alert alert-warning">
+        <strong>C++:</strong> Control explícito. Por defecto pasa por valor (copia). Usa <code>&</code> para referencia (modificable) o <code>const &</code> para referencia de solo lectura (eficiente). Usa <code>*</code> para punteros (más flexible pero menos seguro).
+    </div>
+
+    <h3>Tabla Comparativa: Paso de Parámetros</h3>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Aspecto</th>
+                <th>Python</th>
+                <th>Java</th>
+                <th>C++</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Mecanismo</strong></td>
+                <td>Paso por asignación (object reference)</td>
+                <td>Siempre por valor (copia valor o referencia)</td>
+                <td>Por valor, referencia o puntero (explícito)</td>
+            </tr>
+            <tr>
+                <td><strong>Tipos inmutables</strong></td>
+                <td>No se pueden modificar (int, str, tuple)</td>
+                <td>No se pueden modificar (primitivos, String)</td>
+                <td>Depende: por valor (no), por ref/puntero (sí)</td>
+            </tr>
+            <tr>
+                <td><strong>Tipos mutables</strong></td>
+                <td>Se pueden modificar (list, dict, set)</td>
+                <td>Se pueden modificar (ArrayList, HashMap, etc.)</td>
+                <td>Depende del modo de paso</td>
+            </tr>
+            <tr>
+                <td><strong>Reasignar parámetro</strong></td>
+                <td>No afecta al original</td>
+                <td>No afecta al original</td>
+                <td>Por referencia/puntero: sí afecta</td>
+            </tr>
+            <tr>
+                <td><strong>Eficiencia</strong></td>
+                <td>Siempre eficiente (pasa referencia)</td>
+                <td>Primitivos: copia. Objetos: referencia</td>
+                <td>Control total: valor (copia), ref (sin copia)</td>
+            </tr>
+            <tr>
+                <td><strong>Sintaxis especial</strong></td>
+                <td>No (automático)</td>
+                <td>No (automático)</td>
+                <td>Sí: <code>&</code> (ref), <code>*</code> (puntero)</td>
+            </tr>
+            <tr>
+                <td><strong>Mejor práctica</strong></td>
+                <td>Usar inmutables para evitar efectos secundarios</td>
+                <td>Primitivos para datos simples, objetos para complejos</td>
+                <td><code>const &</code> para lectura, <code>&</code> para modificar</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Ejemplo Comparativo Completo</h3>
+    <div class="row">
+        <div class="col-md-4">
+            <h6>Python</h6>
+            <pre><code># Inmutable
+def f1(x):
+    x += 10
+
+n = 5
+f1(n)
+print(n)  # 5
+
+# Mutable
+def f2(lst):
+    lst.append(4)
+
+nums = [1,2,3]
+f2(nums)
+print(nums)  # [1,2,3,4]
+</code></pre>
+        </div>
+        <div class="col-md-4">
+            <h6>Java</h6>
+            <pre><code>// Primitivo
+void f1(int x) {
+    x += 10;
+}
+
+int n = 5;
+f1(n);
+// n sigue siendo 5
+
+// Objeto
+void f2(List&lt;Integer&gt; lst) {
+    lst.add(4);
+}
+
+List&lt;Integer&gt; nums = 
+    Arrays.asList(1,2,3);
+f2(nums);
+// nums es [1,2,3,4]
+</code></pre>
+        </div>
+        <div class="col-md-4">
+            <h6>C++</h6>
+            <pre><code>// Por valor
+void f1(int x) {
+    x += 10;
+}
+
+// Por referencia
+void f2(int& x) {
+    x += 10;
+}
+
+int n = 5;
+f1(n);  // n = 5
+f2(n);  // n = 15
+
+// Vector por ref
+void f3(vector&lt;int&gt;& v) {
+    v.push_back(4);
+}
+</code></pre>
+        </div>
+    </div>
+
+    <div class="alert alert-success">
+        <h5>✅ Resumen Práctico</h5>
+        <ul class="mb-0">
+            <li><strong>Python:</strong> No te preocupes por el mecanismo, pero ten cuidado con objetos mutables</li>
+            <li><strong>Java:</strong> Primitivos son seguros (no cambian), objetos pueden cambiar su contenido</li>
+            <li><strong>C++:</strong> Usa <code>const &</code> por defecto para eficiencia, <code>&</code> solo si necesitas modificar</li>
+        </ul>
+    </div>
+
+    <h2>1.11. Programación Orientada a Objetos (POO)</h2>
+    <p>Los tres lenguajes soportan POO, pero con diferentes enfoques y características.</p>
+
+    <h3>Definición de Clases</h3>
+    <div class="row">
+        <div class="col-md-4">
+            <h6>Python</h6>
+            <pre><code>class Persona:
+    # Constructor
+    def __init__(self, nombre, edad):
+        self.nombre = nombre
+        self.edad = edad
+    
+    # Método
+    def saludar(self):
+        return f"Hola, soy {self.nombre}"
+    
+    # Método estático
+    @staticmethod
+    def es_mayor_edad(edad):
+        return edad >= 18
+
+# Uso
+p = Persona("Ana", 25)
+print(p.saludar())
+print(Persona.es_mayor_edad(20))
+</code></pre>
+        </div>
+        <div class="col-md-4">
+            <h6>Java</h6>
+            <pre><code>public class Persona {
+    // Atributos privados
+    private String nombre;
+    private int edad;
+    
+    // Constructor
+    public Persona(String nombre, int edad) {
+        this.nombre = nombre;
+        this.edad = edad;
+    }
+    
+    // Método
+    public String saludar() {
+        return "Hola, soy " + nombre;
+    }
+    
+    // Método estático
+    public static boolean esMayorEdad(int edad) {
+        return edad >= 18;
+    }
+}
+
+// Uso
+Persona p = new Persona("Ana", 25);
+System.out.println(p.saludar());
+System.out.println(Persona.esMayorEdad(20));
+</code></pre>
+        </div>
+        <div class="col-md-4">
+            <h6>C++</h6>
+            <pre><code>class Persona {
+private:
+    string nombre;
+    int edad;
+
+public:
+    // Constructor
+    Persona(string n, int e) 
+        : nombre(n), edad(e) { }
+    
+    // Método
+    string saludar() {
+        return "Hola, soy " + nombre;
+    }
+    
+    // Método estático
+    static bool esMayorEdad(int edad) {
+        return edad >= 18;
+    }
+};
+
+// Uso
+Persona p("Ana", 25);
+cout &lt;&lt; p.saludar();
+cout &lt;&lt; Persona::esMayorEdad(20);
+</code></pre>
+        </div>
+    </div>
+
+    <h3>Herencia</h3>
+    <div class="row">
+        <div class="col-md-4">
+            <h6>Python</h6>
+            <pre><code>class Empleado(Persona):
+    def __init__(self, nombre, edad, salario):
+        super().__init__(nombre, edad)
+        self.salario = salario
+    
+    # Sobrescribir método
+    def saludar(self):
+        return f"{super().saludar()}, trabajo aquí"
+    
+    def trabajar(self):
+        return "Trabajando..."
+
+# Herencia múltiple
+class Estudiante:
+    def estudiar(self):
+        return "Estudiando..."
+
+class Becario(Empleado, Estudiante):
+    pass
+
+b = Becario("Luis", 22, 1000)
+print(b.trabajar())
+print(b.estudiar())
+</code></pre>
+        </div>
+        <div class="col-md-4">
+            <h6>Java</h6>
+            <pre><code>public class Empleado extends Persona {
+    private double salario;
+    
+    public Empleado(String nombre, 
+                    int edad, double salario) {
+        super(nombre, edad);
+        this.salario = salario;
+    }
+    
+    // Sobrescribir método
+    @Override
+    public String saludar() {
+        return super.saludar() + 
+               ", trabajo aquí";
+    }
+    
+    public String trabajar() {
+        return "Trabajando...";
+    }
+}
+
+// NO hay herencia múltiple
+// Usar interfaces en su lugar
+interface Estudiante {
+    String estudiar();
+}
+</code></pre>
+        </div>
+        <div class="col-md-4">
+            <h6>C++</h6>
+            <pre><code>class Empleado : public Persona {
+private:
+    double salario;
+
+public:
+    Empleado(string n, int e, double s)
+        : Persona(n, e), salario(s) { }
+    
+    // Sobrescribir método
+    string saludar() override {
+        return Persona::saludar() + 
+               ", trabajo aquí";
+    }
+    
+    string trabajar() {
+        return "Trabajando...";
+    }
+};
+
+// Herencia múltiple
+class Estudiante {
+public:
+    string estudiar() {
+        return "Estudiando...";
+    }
+};
+
+class Becario : public Empleado, 
+                public Estudiante { };
+</code></pre>
+        </div>
+    </div>
+
+    <h3>Encapsulación y Modificadores de Acceso</h3>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Modificador</th>
+                <th>Python</th>
+                <th>Java</th>
+                <th>C++</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Público</strong></td>
+                <td>Por defecto (sin prefijo)</td>
+                <td><code>public</code></td>
+                <td><code>public:</code></td>
+            </tr>
+            <tr>
+                <td><strong>Protegido</strong></td>
+                <td><code>_atributo</code> (convención)</td>
+                <td><code>protected</code></td>
+                <td><code>protected:</code></td>
+            </tr>
+            <tr>
+                <td><strong>Privado</strong></td>
+                <td><code>__atributo</code> (name mangling)</td>
+                <td><code>private</code></td>
+                <td><code>private:</code></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="row">
+        <div class="col-md-4">
+            <h6>Python</h6>
+            <pre><code>class Cuenta:
+    def __init__(self, saldo):
+        self.titular = "Ana"  # Público
+        self._banco = "BBVA"  # Protegido
+        self.__saldo = saldo  # Privado
+    
+    def get_saldo(self):
+        return self.__saldo
+    
+    def depositar(self, cantidad):
+        self.__saldo += cantidad
+
+c = Cuenta(1000)
+print(c.titular)      # OK
+print(c._banco)       # OK (convención)
+# print(c.__saldo)    # Error
+print(c.get_saldo())  # OK
+</code></pre>
+        </div>
+        <div class="col-md-4">
+            <h6>Java</h6>
+            <pre><code>public class Cuenta {
+    public String titular = "Ana";
+    protected String banco = "BBVA";
+    private double saldo;
+    
+    public Cuenta(double saldo) {
+        this.saldo = saldo;
+    }
+    
+    // Getter
+    public double getSaldo() {
+        return saldo;
+    }
+    
+    // Setter
+    public void setSaldo(double saldo) {
+        if (saldo >= 0)
+            this.saldo = saldo;
+    }
+}
+
+Cuenta c = new Cuenta(1000);
+System.out.println(c.titular);
+// System.out.println(c.saldo); // Error
+System.out.println(c.getSaldo());
+</code></pre>
+        </div>
+        <div class="col-md-4">
+            <h6>C++</h6>
+            <pre><code>class Cuenta {
+public:
+    string titular = "Ana";
+    
+    Cuenta(double s) : saldo(s) { }
+    
+    double getSaldo() const {
+        return saldo;
+    }
+    
+    void depositar(double cantidad) {
+        saldo += cantidad;
+    }
+
+protected:
+    string banco = "BBVA";
+
+private:
+    double saldo;
+};
+
+Cuenta c(1000);
+cout &lt;&lt; c.titular;
+// cout &lt;&lt; c.saldo;  // Error
+cout &lt;&lt; c.getSaldo();
+</code></pre>
+        </div>
+    </div>
+
+    <h3>Polimorfismo</h3>
+    <div class="row">
+        <div class="col-md-4">
+            <h6>Python (Duck Typing)</h6>
+            <pre><code>class Perro:
+    def hablar(self):
+        return "Guau"
+
+class Gato:
+    def hablar(self):
+        return "Miau"
+
+def hacer_hablar(animal):
+    print(animal.hablar())
+
+# No necesita herencia común
+hacer_hablar(Perro())  # Guau
+hacer_hablar(Gato())   # Miau
+
+# Polimorfismo dinámico
+animales = [Perro(), Gato()]
+for animal in animales:
+    print(animal.hablar())
+</code></pre>
+        </div>
+        <div class="col-md-4">
+            <h6>Java (Interfaces/Clases abstractas)</h6>
+            <pre><code>interface Animal {
+    String hablar();
+}
+
+class Perro implements Animal {
+    public String hablar() {
+        return "Guau";
+    }
+}
+
+class Gato implements Animal {
+    public String hablar() {
+        return "Miau";
+    }
+}
+
+void hacerHablar(Animal animal) {
+    System.out.println(animal.hablar());
+}
+
+// Necesita tipo común
+hacerHablar(new Perro());
+hacerHablar(new Gato());
+
+// Polimorfismo con arrays
+Animal[] animales = {
+    new Perro(), new Gato()
+};
+for (Animal a : animales) {
+    System.out.println(a.hablar());
+}
+</code></pre>
+        </div>
+        <div class="col-md-4">
+            <h6>C++ (Funciones virtuales)</h6>
+            <pre><code>class Animal {
+public:
+    virtual string hablar() = 0;
+    virtual ~Animal() { }
+};
+
+class Perro : public Animal {
+public:
+    string hablar() override {
+        return "Guau";
+    }
+};
+
+class Gato : public Animal {
+public:
+    string hablar() override {
+        return "Miau";
+    }
+};
+
+void hacerHablar(Animal* animal) {
+    cout &lt;&lt; animal-&gt;hablar();
+}
+
+// Usar punteros/referencias
+Perro p; Gato g;
+hacerHablar(&p);
+hacerHablar(&g);
+
+// Vector de punteros
+vector&lt;Animal*&gt; animales = {&p, &g};
+for (auto a : animales) {
+    cout &lt;&lt; a-&gt;hablar();
+}
+</code></pre>
+        </div>
+    </div>
+
+    <h3>Clases Abstractas e Interfaces</h3>
+    <div class="row">
+        <div class="col-md-4">
+            <h6>Python</h6>
+            <pre><code>from abc import ABC, abstractmethod
+
+class Figura(ABC):
+    @abstractmethod
+    def area(self):
+        pass
+    
+    @abstractmethod
+    def perimetro(self):
+        pass
+
+class Circulo(Figura):
+    def __init__(self, radio):
+        self.radio = radio
+    
+    def area(self):
+        return 3.14 * self.radio ** 2
+    
+    def perimetro(self):
+        return 2 * 3.14 * self.radio
+
+# f = Figura()  # Error
+c = Circulo(5)
+print(c.area())
+</code></pre>
+        </div>
+        <div class="col-md-4">
+            <h6>Java</h6>
+            <pre><code>// Interfaz (solo métodos abstractos)
+interface Figura {
+    double area();
+    double perimetro();
+}
+
+// Clase abstracta (puede tener implementación)
+abstract class FiguraBase {
+    protected String color;
+    
+    public abstract double area();
+    
+    public void setColor(String c) {
+        this.color = c;
+    }
+}
+
+class Circulo implements Figura {
+    private double radio;
+    
+    public Circulo(double radio) {
+        this.radio = radio;
+    }
+    
+    public double area() {
+        return Math.PI * radio * radio;
+    }
+    
+    public double perimetro() {
+        return 2 * Math.PI * radio;
+    }
+}
+</code></pre>
+        </div>
+        <div class="col-md-4">
+            <h6>C++</h6>
+            <pre><code>// Clase abstracta (virtual puro)
+class Figura {
+public:
+    virtual double area() = 0;
+    virtual double perimetro() = 0;
+    virtual ~Figura() { }
+};
+
+// Clase base con implementación
+class FiguraBase {
+protected:
+    string color;
+
+public:
+    virtual double area() = 0;
+    
+    void setColor(string c) {
+        color = c;
+    }
+};
+
+class Circulo : public Figura {
+private:
+    double radio;
+
+public:
+    Circulo(double r) : radio(r) { }
+    
+    double area() override {
+        return 3.14159 * radio * radio;
+    }
+    
+    double perimetro() override {
+        return 2 * 3.14159 * radio;
+    }
+};
+</code></pre>
+        </div>
+    </div>
+
+    <h3>Propiedades y Getters/Setters</h3>
+    <div class="row">
+        <div class="col-md-4">
+            <h6>Python (Properties)</h6>
+            <pre><code>class Persona:
+    def __init__(self, nombre):
+        self._nombre = nombre
+        self._edad = 0
+    
+    @property
+    def nombre(self):
+        return self._nombre
+    
+    @nombre.setter
+    def nombre(self, valor):
+        if valor:
+            self._nombre = valor
+    
+    @property
+    def edad(self):
+        return self._edad
+    
+    @edad.setter
+    def edad(self, valor):
+        if valor >= 0:
+            self._edad = valor
+
+p = Persona("Ana")
+print(p.nombre)  # Usa getter
+p.edad = 25      # Usa setter
+print(p.edad)
+</code></pre>
+        </div>
+        <div class="col-md-4">
+            <h6>Java (Getters/Setters)</h6>
+            <pre><code>public class Persona {
+    private String nombre;
+    private int edad;
+    
+    public Persona(String nombre) {
+        this.nombre = nombre;
+        this.edad = 0;
+    }
+    
+    // Getter
+    public String getNombre() {
+        return nombre;
+    }
+    
+    // Setter
+    public void setNombre(String nombre) {
+        if (nombre != null && 
+            !nombre.isEmpty()) {
+            this.nombre = nombre;
+        }
+    }
+    
+    public int getEdad() {
+        return edad;
+    }
+    
+    public void setEdad(int edad) {
+        if (edad >= 0) {
+            this.edad = edad;
+        }
+    }
+}
+
+Persona p = new Persona("Ana");
+System.out.println(p.getNombre());
+p.setEdad(25);
+</code></pre>
+        </div>
+        <div class="col-md-4">
+            <h6>C++ (Getters/Setters)</h6>
+            <pre><code>class Persona {
+private:
+    string nombre;
+    int edad;
+
+public:
+    Persona(string n) 
+        : nombre(n), edad(0) { }
+    
+    // Getter (const)
+    string getNombre() const {
+        return nombre;
+    }
+    
+    // Setter
+    void setNombre(string n) {
+        if (!n.empty()) {
+            nombre = n;
+        }
+    }
+    
+    int getEdad() const {
+        return edad;
+    }
+    
+    void setEdad(int e) {
+        if (e >= 0) {
+            edad = e;
+        }
+    }
+};
+
+Persona p("Ana");
+cout &lt;&lt; p.getNombre();
+p.setEdad(25);
+</code></pre>
+        </div>
+    </div>
+
+    <h3>Tabla Comparativa POO</h3>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Característica</th>
+                <th>Python</th>
+                <th>Java</th>
+                <th>C++</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Paradigma</strong></td>
+                <td>Multi-paradigma (POO opcional)</td>
+                <td>Puramente POO (todo es clase)</td>
+                <td>Multi-paradigma (POO + procedural)</td>
+            </tr>
+            <tr>
+                <td><strong>Herencia múltiple</strong></td>
+                <td>✅ Sí (con MRO)</td>
+                <td>❌ No (usar interfaces)</td>
+                <td>✅ Sí (puede causar problemas)</td>
+            </tr>
+            <tr>
+                <td><strong>Interfaces</strong></td>
+                <td>No formales (duck typing)</td>
+                <td>✅ Sí (palabra clave <code>interface</code>)</td>
+                <td>Clases abstractas puras</td>
+            </tr>
+            <tr>
+                <td><strong>Encapsulación</strong></td>
+                <td>Por convención (<code>_</code>, <code>__</code>)</td>
+                <td>Estricta (<code>private</code>, <code>protected</code>, <code>public</code>)</td>
+                <td>Estricta (<code>private</code>, <code>protected</code>, <code>public</code>)</td>
+            </tr>
+            <tr>
+                <td><strong>Polimorfismo</strong></td>
+                <td>Duck typing (dinámico)</td>
+                <td>Basado en tipos (estático)</td>
+                <td>Funciones virtuales (dinámico)</td>
+            </tr>
+            <tr>
+                <td><strong>Sobrecarga métodos</strong></td>
+                <td>❌ No (usar args por defecto)</td>
+                <td>✅ Sí</td>
+                <td>✅ Sí</td>
+            </tr>
+            <tr>
+                <td><strong>Sobrecarga operadores</strong></td>
+                <td>✅ Sí (<code>__add__</code>, <code>__eq__</code>, etc.)</td>
+                <td>❌ No</td>
+                <td>✅ Sí (<code>operator+</code>, etc.)</td>
+            </tr>
+            <tr>
+                <td><strong>Constructores múltiples</strong></td>
+                <td>❌ No (usar args por defecto)</td>
+                <td>✅ Sí (sobrecarga)</td>
+                <td>✅ Sí (sobrecarga)</td>
+            </tr>
+            <tr>
+                <td><strong>Destructores</strong></td>
+                <td><code>__del__</code> (raro usarlo)</td>
+                <td>Finalizadores (GC)</td>
+                <td>✅ Sí (<code>~Clase()</code>) - importante</td>
+            </tr>
+            <tr>
+                <td><strong>Métodos abstractos</strong></td>
+                <td>✅ Sí (módulo <code>abc</code>)</td>
+                <td>✅ Sí (<code>abstract</code>)</td>
+                <td>✅ Sí (virtual puro <code>= 0</code>)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="alert alert-info">
+        <h5>🎯 Diferencias Clave en POO</h5>
+        <ul class="mb-0">
+            <li><strong>Python:</strong> Flexible y dinámico. Duck typing permite polimorfismo sin herencia. Encapsulación por convención.</li>
+            <li><strong>Java:</strong> Estricto y seguro. Todo debe estar en clases. Interfaces para contratos. Encapsulación forzada.</li>
+            <li><strong>C++:</strong> Potente y complejo. Control total sobre memoria. Herencia múltiple. Destructores críticos para liberar recursos.</li>
+        </ul>
+    </div>
+
+    <h2>2. Listas</h2>
     <p>Una <strong>lista</strong> es una colección ordenada de elementos. Cada elemento tiene una posición (índice). Puede ser estática (array) o dinámica (lista enlazada).</p>
     
     <h3>Propiedades</h3>
@@ -25,7 +1721,7 @@ valor = lista[2]  # 30</code></pre>
     <h3>Lista enlazada (concepto)</h3>
     <p>Cada nodo contiene un valor y referencia al siguiente. Insertar al principio O(1), búsqueda O(n).</p>
 
-    <h2>2. Pilas (Stack)</h2>
+    <h2>3. Pilas (Stack)</h2>
     <p>Una <strong>pila</strong> sigue la política <em>LIFO</em> (Last In, First Out): el último elemento en entrar es el primero en salir.</p>
 
     <h3>Operaciones principales</h3>
@@ -55,7 +1751,7 @@ print(pila.pop()) # 20</code></pre>
         <li><strong>Navegador web:</strong> Historial - el último sitio visitado es el primero en "volver atrás"</li>
     </ul>
 
-    <h2>3. Colas (Queue)</h2>
+    <h2>4. Colas (Queue)</h2>
     <p>Una <strong>cola</strong> sigue <em>FIFO</em> (First In, First Out): el primero en entrar es el primero en salir.</p>
 
     <h3>Operaciones principales</h3>
@@ -85,7 +1781,7 @@ print(cola.popleft())  # dequeue -> 1</code></pre>
         <li><strong>Algoritmo BFS:</strong> Usa una cola para recorrer niveles</li>
     </ul>
 
-    <h2>4. Árboles</h2>
+    <h2>5. Árboles</h2>
     <p>Un <strong>árbol</strong> es una estructura jerárquica de nodos: raíz, hijos y hojas. Es un grafo acíclico orientado hacia abajo (sin ciclos) y normalmente conectado.</p>
 
     <h3>Términos clave</h3>
@@ -110,7 +1806,7 @@ raiz.der = Nodo('C')</code></pre>
         <strong>Usos comunes:</strong> árboles de búsqueda (BST), sistemas de archivos, índices (B-tree), parsers (AST).
     </div>
 
-    <h2>5. Grafos</h2>
+    <h2>6. Grafos</h2>
     <p>Un <strong>grafo</strong> es un conjunto de <em>nodos</em> y <em>aristas</em> que conectan pares de nodos. Es muy flexible para modelar relaciones.</p>
 
     <h3>Tipos de grafos</h3>
@@ -346,7 +2042,7 @@ E: C(10),D(2)</textarea>
         </div>
     </div>
 
-    <h2>6. Algoritmos de Grafos</h2>
+    <h2>7. Algoritmos de Grafos</h2>
 
     <h3>BFS — Breadth-First Search</h3>
     <p>Recorre por niveles. Ideal para distancia mínima en grafos <strong>no ponderados</strong>.</p>
@@ -482,7 +2178,7 @@ def dijkstra(g, inicio):
         <li><strong>Grafos no dirigidos:</strong> usar DFS; si encuentras un vecino visitado que no es el padre, hay ciclo</li>
     </ul>
 
-    <h2>7. Grafos en MySQL</h2>
+    <h2>8. Grafos en MySQL</h2>
     <p>El modelo más flexible es <em>lista de aristas</em> con tabla de nodos y tabla de aristas.</p>
 
     <h3>Esquema de base de datos</h3>
