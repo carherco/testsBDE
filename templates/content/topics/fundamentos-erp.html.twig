@@ -1,0 +1,861 @@
+{% extends 'content/base.html.twig' %}
+
+{% block content_title %}{{ tema.nombre }}{% endblock %}
+
+{% block content_body %}
+<div class="content-section">
+    <h2>1. ¿Qué es un ERP?</h2>
+    <p><strong>ERP (Enterprise Resource Planning)</strong> es un sistema integrado de gestión empresarial que centraliza y automatiza procesos de negocio en diferentes áreas de una organización.</p>
+    
+    <div class="alert alert-info">
+        <strong>Características principales:</strong>
+        <ul>
+            <li><strong>Integración:</strong> Conecta todos los departamentos en una única base de datos</li>
+            <li><strong>Tiempo real:</strong> Información actualizada instantáneamente</li>
+            <li><strong>Estandarización:</strong> Procesos uniformes en toda la organización</li>
+            <li><strong>Modularidad:</strong> Implementación por módulos según necesidades</li>
+        </ul>
+    </div>
+
+    <h3>Beneficios de un ERP</h3>
+    <ul>
+        <li>Eliminación de redundancia de datos</li>
+        <li>Mejora en la toma de decisiones con información centralizada</li>
+        <li>Automatización de procesos repetitivos</li>
+        <li>Reducción de costos operativos</li>
+        <li>Cumplimiento normativo y auditoría</li>
+        <li>Escalabilidad del negocio</li>
+    </ul>
+</div>
+
+<div class="content-section">
+    <h2>2. Ciclo de Vida de Implementación de ERP</h2>
+    
+    <h3>Fase 1: Planificación y Análisis</h3>
+    <ul>
+        <li><strong>Definición de objetivos:</strong> Identificar necesidades del negocio</li>
+        <li><strong>Análisis de procesos actuales:</strong> Mapeo de workflows existentes</li>
+        <li><strong>Selección de ERP:</strong> Evaluación de proveedores (SAP, Oracle, Microsoft Dynamics, Odoo)</li>
+        <li><strong>Análisis de GAP:</strong> Diferencias entre procesos actuales y capacidades del ERP</li>
+        <li><strong>Presupuesto y ROI:</strong> Estimación de costos y retorno de inversión</li>
+    </ul>
+
+    <h3>Fase 2: Diseño</h3>
+    <ul>
+        <li>Diseño de arquitectura técnica</li>
+        <li>Configuración de módulos seleccionados</li>
+        <li>Diseño de personalizaciones necesarias</li>
+        <li>Definición de integraciones con sistemas existentes</li>
+        <li>Diseño de migración de datos</li>
+    </ul>
+
+    <h3>Fase 3: Desarrollo y Configuración</h3>
+    <ul>
+        <li><strong>Configuración:</strong> Parametrización del sistema sin código</li>
+        <li><strong>Personalización:</strong> Desarrollo de funcionalidades específicas</li>
+        <li><strong>Desarrollo de interfaces:</strong> Conexión con otros sistemas</li>
+        <li><strong>Migración de datos:</strong> Limpieza, transformación y carga (ETL)</li>
+    </ul>
+
+    <h3>Fase 4: Testing</h3>
+    <ul>
+        <li><strong>Pruebas unitarias:</strong> Funcionalidades individuales</li>
+        <li><strong>Pruebas de integración:</strong> Interacción entre módulos</li>
+        <li><strong>Pruebas de usuario (UAT):</strong> Validación por usuarios finales</li>
+        <li><strong>Pruebas de rendimiento:</strong> Carga y estrés del sistema</li>
+        <li><strong>Pruebas de seguridad:</strong> Vulnerabilidades y accesos</li>
+    </ul>
+
+    <h3>Fase 5: Despliegue (Go-Live)</h3>
+    <ul>
+        <li><strong>Estrategias de despliegue:</strong>
+            <ul>
+                <li><strong>Big Bang:</strong> Activación completa en una fecha</li>
+                <li><strong>Phased:</strong> Implementación por fases/módulos</li>
+                <li><strong>Parallel:</strong> Sistemas antiguo y nuevo simultáneamente</li>
+                <li><strong>Pilot:</strong> Prueba en un departamento/ubicación</li>
+            </ul>
+        </li>
+        <li>Capacitación de usuarios finales</li>
+        <li>Soporte intensivo post go-live</li>
+    </ul>
+
+    <h3>Fase 6: Soporte y Mantenimiento</h3>
+    <ul>
+        <li>Soporte técnico continuo</li>
+        <li>Actualizaciones y parches</li>
+        <li>Optimización de procesos</li>
+        <li>Mejora continua</li>
+    </ul>
+</div>
+
+<div class="content-section">
+    <h2>3. Módulos Principales de ERP</h2>
+
+    <h3>Módulo de Finanzas (FI/CO)</h3>
+    <ul>
+        <li><strong>Contabilidad General (FI):</strong> Libro mayor, cuentas por cobrar/pagar</li>
+        <li><strong>Controlling (CO):</strong> Contabilidad de costos, centros de costo</li>
+        <li><strong>Gestión de Activos:</strong> Activos fijos, depreciaciones</li>
+        <li><strong>Tesorería:</strong> Gestión de efectivo, previsiones</li>
+        <li><strong>Reporting financiero:</strong> Balance, P&L, cash flow</li>
+    </ul>
+
+    <h3>Módulo de Cadena de Suministro (SCM)</h3>
+    <ul>
+        <li><strong>Gestión de Materiales (MM):</strong> Compras, inventario, almacenes</li>
+        <li><strong>Planificación de Producción (PP):</strong> MRP, órdenes de fabricación</li>
+        <li><strong>Gestión de Calidad (QM):</strong> Control de calidad, inspecciones</li>
+        <li><strong>Logística:</strong> Envíos, recepciones, transporte</li>
+    </ul>
+
+    <h3>Módulo de Ventas y Distribución (SD)</h3>
+    <ul>
+        <li>Gestión de pedidos de venta</li>
+        <li>Pricing y condiciones comerciales</li>
+        <li>Facturación y crédito</li>
+        <li>Gestión de clientes (CRM integrado)</li>
+    </ul>
+
+    <h3>Módulo de Recursos Humanos (HCM/HR)</h3>
+    <ul>
+        <li>Gestión de personal y nóminas</li>
+        <li>Reclutamiento y selección</li>
+        <li>Formación y desarrollo</li>
+        <li>Evaluación de desempeño</li>
+        <li>Gestión de tiempo y asistencia</li>
+    </ul>
+
+    <h3>Módulo de Gestión de Proyectos (PM)</h3>
+    <ul>
+        <li>Planificación de proyectos</li>
+        <li>Seguimiento de costos y recursos</li>
+        <li>Facturación por proyecto</li>
+        <li>Gestión de hitos y entregables</li>
+    </ul>
+
+    <h3>Módulo de Business Intelligence (BI)</h3>
+    <ul>
+        <li>Dashboards ejecutivos</li>
+        <li>Reportes analíticos</li>
+        <li>KPIs y métricas de negocio</li>
+        <li>Data warehousing</li>
+    </ul>
+</div>
+
+<div class="content-section">
+    <h2>4. Bases de Datos en ERP</h2>
+
+    <h3>Bases de Datos Relacionales</h3>
+    <p>Los ERP utilizan RDBMS para almacenar datos estructurados:</p>
+    <ul>
+        <li><strong>SAP:</strong> SAP HANA, Oracle, SQL Server, DB2</li>
+        <li><strong>Oracle ERP:</strong> Oracle Database</li>
+        <li><strong>Microsoft Dynamics:</strong> SQL Server</li>
+        <li><strong>Odoo:</strong> PostgreSQL</li>
+    </ul>
+
+    <h3>SQL en ERP</h3>
+    <div class="code-block">
+        <pre><code>-- Consulta de órdenes de venta pendientes
+SELECT 
+    so.order_number,
+    c.customer_name,
+    so.order_date,
+    so.total_amount,
+    so.status
+FROM sales_orders so
+JOIN customers c ON so.customer_id = c.customer_id
+WHERE so.status = 'PENDING'
+ORDER BY so.order_date DESC;
+
+-- Análisis de inventario por almacén
+SELECT 
+    w.warehouse_name,
+    p.product_code,
+    p.product_name,
+    i.quantity_on_hand,
+    i.quantity_reserved,
+    (i.quantity_on_hand - i.quantity_reserved) AS available_qty
+FROM inventory i
+JOIN products p ON i.product_id = p.product_id
+JOIN warehouses w ON i.warehouse_id = w.warehouse_id
+WHERE i.quantity_on_hand > 0;
+
+-- Reporte de ventas por región
+SELECT 
+    r.region_name,
+    COUNT(DISTINCT so.order_id) AS total_orders,
+    SUM(so.total_amount) AS total_sales,
+    AVG(so.total_amount) AS avg_order_value
+FROM sales_orders so
+JOIN customers c ON so.customer_id = c.customer_id
+JOIN regions r ON c.region_id = r.region_id
+WHERE so.order_date >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+GROUP BY r.region_name
+ORDER BY total_sales DESC;</code></pre>
+    </div>
+
+    <h3>Estructura de Tablas Típicas</h3>
+    <ul>
+        <li><strong>Tablas maestras:</strong> Clientes, proveedores, productos, empleados</li>
+        <li><strong>Tablas transaccionales:</strong> Órdenes, facturas, pagos, movimientos</li>
+        <li><strong>Tablas de configuración:</strong> Parámetros, catálogos, tipos</li>
+        <li><strong>Tablas de auditoría:</strong> Logs, cambios, historial</li>
+    </ul>
+</div>
+
+<div class="content-section">
+    <h2>5. Configuración y Personalización</h2>
+
+    <h3>Configuración (Customizing)</h3>
+    <p>Ajustes sin programación mediante parametrización:</p>
+    <ul>
+        <li>Definición de estructura organizativa (empresas, plantas, centros)</li>
+        <li>Configuración de workflows y aprobaciones</li>
+        <li>Parametrización de cálculos (impuestos, descuentos)</li>
+        <li>Configuración de numeración de documentos</li>
+        <li>Definición de roles y permisos</li>
+    </ul>
+
+    <h3>Personalización (Customization)</h3>
+    <p>Desarrollo de funcionalidades específicas mediante código:</p>
+    
+    <h4>Ejemplo: ABAP en SAP</h4>
+    <div class="code-block">
+        <pre><code>*&---------------------------------------------------------------------*
+*& Report  Z_SALES_REPORT
+*&---------------------------------------------------------------------*
+REPORT z_sales_report.
+
+DATA: lt_sales TYPE TABLE OF ztt_sales,
+      ls_sales TYPE zts_sales,
+      lv_total TYPE p DECIMALS 2.
+
+SELECT order_id customer_name order_date amount
+  FROM zsales_orders
+  INTO TABLE lt_sales
+  WHERE order_date >= sy-datum - 30.
+
+LOOP AT lt_sales INTO ls_sales.
+  WRITE: / ls_sales-order_id,
+           ls_sales-customer_name,
+           ls_sales-order_date,
+           ls_sales-amount.
+  lv_total = lv_total + ls_sales-amount.
+ENDLOOP.
+
+WRITE: / 'Total:', lv_total.</code></pre>
+    </div>
+
+    <h4>Ejemplo: JavaScript en NetSuite</h4>
+    <div class="code-block">
+        <pre><code>/**
+ * @NApiVersion 2.1
+ * @NScriptType UserEventScript
+ */
+define(['N/record', 'N/log'], (record, log) => {
+    
+    const afterSubmit = (context) => {
+        if (context.type !== context.UserEventType.CREATE) return;
+        
+        const salesOrder = context.newRecord;
+        const customerId = salesOrder.getValue('entity');
+        const orderTotal = salesOrder.getValue('total');
+        
+        // Actualizar total de ventas del cliente
+        const customerRecord = record.load({
+            type: record.Type.CUSTOMER,
+            id: customerId
+        });
+        
+        const currentTotal = customerRecord.getValue('custentity_total_sales') || 0;
+        customerRecord.setValue({
+            fieldId: 'custentity_total_sales',
+            value: currentTotal + orderTotal
+        });
+        
+        customerRecord.save();
+        log.audit('Customer Updated', `Customer ${customerId} total updated`);
+    };
+    
+    return { afterSubmit };
+});</code></pre>
+    </div>
+</div>
+
+<div class="content-section">
+    <h2>6. Generación y Análisis de Reportes</h2>
+
+    <h3>Tipos de Reportes</h3>
+    <ul>
+        <li><strong>Operacionales:</strong> Listados diarios, órdenes pendientes</li>
+        <li><strong>Tácticos:</strong> Análisis mensuales, comparativas</li>
+        <li><strong>Estratégicos:</strong> Dashboards ejecutivos, KPIs</li>
+        <li><strong>Regulatorios:</strong> Reportes fiscales, auditoría</li>
+    </ul>
+
+    <h3>Herramientas de Reporting</h3>
+    <ul>
+        <li><strong>SAP:</strong> SAP Crystal Reports, SAP BusinessObjects, SAP Analytics Cloud</li>
+        <li><strong>Oracle:</strong> Oracle BI Publisher, Oracle Analytics</li>
+        <li><strong>Microsoft:</strong> Power BI, SQL Server Reporting Services</li>
+        <li><strong>Open Source:</strong> Jasper Reports, Pentaho</li>
+    </ul>
+
+    <h3>KPIs Comunes en ERP</h3>
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Finanzas</h4>
+            <ul>
+                <li>ROI (Return on Investment)</li>
+                <li>EBITDA</li>
+                <li>Days Sales Outstanding (DSO)</li>
+                <li>Cash Conversion Cycle</li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <h4>Operaciones</h4>
+            <ul>
+                <li>Inventory Turnover</li>
+                <li>Order Fulfillment Rate</li>
+                <li>On-Time Delivery</li>
+                <li>Production Efficiency</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="content-section">
+    <h2>7. Lenguajes de Programación en ERP</h2>
+
+    <h3>ABAP (SAP)</h3>
+    <ul>
+        <li><strong>Advanced Business Application Programming</strong></li>
+        <li>Lenguaje propietario de SAP</li>
+        <li>Orientado a procesamiento de datos empresariales</li>
+        <li>Integración nativa con base de datos SAP HANA</li>
+        <li>ABAP Objects: Programación orientada a objetos</li>
+    </ul>
+
+    <h3>JavaScript (NetSuite)</h3>
+    <ul>
+        <li>SuiteScript: Framework basado en JavaScript</li>
+        <li>APIs: SuiteScript 1.0 y 2.x</li>
+        <li>Tipos de scripts: User Event, Client, Scheduled, RESTlet</li>
+        <li>Integración con APIs REST</li>
+    </ul>
+
+    <h3>Python (Odoo)</h3>
+    <div class="code-block">
+        <pre><code>from odoo import models, fields, api
+
+class SaleOrder(models.Model):
+    _inherit = 'sale.order'
+    
+    custom_discount = fields.Float(string='Descuento Personalizado')
+    
+    @api.depends('order_line.price_total', 'custom_discount')
+    def _compute_amount_total(self):
+        for order in self:
+            amount = sum(line.price_total for line in order.order_line)
+            discount = amount * (order.custom_discount / 100)
+            order.amount_total = amount - discount
+    
+    def action_apply_discount(self):
+        if self.custom_discount > 20:
+            raise ValidationError('El descuento no puede superar el 20%')
+        self._compute_amount_total()</code></pre>
+    </div>
+
+    <h3>X++ (Microsoft Dynamics AX/365)</h3>
+    <ul>
+        <li>Lenguaje orientado a objetos similar a C#</li>
+        <li>Integración con .NET Framework</li>
+        <li>Desarrollo de lógica de negocio y extensiones</li>
+    </ul>
+
+    <h3>PL/SQL (Oracle ERP)</h3>
+    <ul>
+        <li>Extensión procedural de SQL</li>
+        <li>Stored procedures y triggers</li>
+        <li>Procesamiento de datos en base de datos</li>
+    </ul>
+</div>
+
+<div class="content-section">
+    <h2>8. Modelos de Seguridad en ERP</h2>
+
+    <h3>Control de Acceso Basado en Roles (RBAC)</h3>
+    <ul>
+        <li><strong>Roles:</strong> Conjuntos de permisos agrupados por función (Contador, Comprador, Gerente)</li>
+        <li><strong>Permisos:</strong> Acciones específicas (crear, leer, modificar, eliminar)</li>
+        <li><strong>Asignación:</strong> Usuarios asignados a uno o múltiples roles</li>
+        <li><strong>Herencia:</strong> Roles pueden heredar permisos de otros roles</li>
+    </ul>
+
+    <h3>Segregación de Funciones (SoD)</h3>
+    <p>Principio que previene que una persona tenga control completo sobre procesos críticos:</p>
+    <ul>
+        <li><strong>Ejemplo:</strong> Quien crea una orden de compra no puede aprobarla</li>
+        <li><strong>Ejemplo:</strong> Quien registra pagos no puede aprobar facturas</li>
+        <li><strong>Conflictos SoD:</strong> Detectados automáticamente por el ERP</li>
+    </ul>
+
+    <h3>Niveles de Seguridad</h3>
+    <ul>
+        <li><strong>Nivel de aplicación:</strong> Autenticación, autorización</li>
+        <li><strong>Nivel de datos:</strong> Restricciones por organización, planta, centro de costo</li>
+        <li><strong>Nivel de campo:</strong> Campos sensibles ocultos o protegidos</li>
+        <li><strong>Nivel de registro:</strong> Acceso a registros específicos</li>
+    </ul>
+
+    <h3>Auditoría y Trazabilidad</h3>
+    <ul>
+        <li><strong>Audit Trail:</strong> Registro de todas las transacciones y cambios</li>
+        <li><strong>Change Logs:</strong> Historial de modificaciones con usuario, fecha, valores anteriores/nuevos</li>
+        <li><strong>Login History:</strong> Registro de accesos al sistema</li>
+        <li><strong>Compliance:</strong> SOX, GDPR, ISO 27001</li>
+    </ul>
+
+    <h3>Autenticación y Autorización</h3>
+    <ul>
+        <li><strong>Single Sign-On (SSO):</strong> Integración con Active Directory, LDAP, SAML</li>
+        <li><strong>Multi-Factor Authentication (MFA):</strong> Seguridad adicional</li>
+        <li><strong>OAuth/OpenID Connect:</strong> Para integraciones API</li>
+        <li><strong>Tokens de sesión:</strong> Gestión segura de sesiones</li>
+    </ul>
+
+    <h3>Seguridad de Datos</h3>
+    <ul>
+        <li><strong>Cifrado en reposo:</strong> Datos sensibles cifrados en base de datos</li>
+        <li><strong>Cifrado en tránsito:</strong> HTTPS/TLS para comunicaciones</li>
+        <li><strong>Enmascaramiento de datos:</strong> Protección de datos sensibles en entornos no productivos</li>
+        <li><strong>Backups cifrados:</strong> Protección de copias de seguridad</li>
+    </ul>
+</div>
+
+<div class="content-section">
+    <h2>9. Gestión de Proyectos en Implementaciones ERP</h2>
+
+    <h3>Metodologías</h3>
+    <ul>
+        <li><strong>Waterfall:</strong> Fases secuenciales, documentación exhaustiva</li>
+        <li><strong>Agile/Scrum:</strong> Iteraciones cortas, entregas incrementales</li>
+        <li><strong>Hybrid:</strong> Combinación de waterfall para planificación y agile para desarrollo</li>
+        <li><strong>SAP Activate:</strong> Metodología específica de SAP</li>
+        <li><strong>Oracle AIM:</strong> Application Implementation Methodology</li>
+    </ul>
+
+    <h3>Roles en el Proyecto</h3>
+    <ul>
+        <li><strong>Project Manager:</strong> Coordinación general</li>
+        <li><strong>Business Analyst:</strong> Análisis de procesos y requisitos</li>
+        <li><strong>Functional Consultant:</strong> Configuración de módulos</li>
+        <li><strong>Technical Consultant:</strong> Desarrollo y personalizaciones</li>
+        <li><strong>Data Migration Specialist:</strong> Migración de datos</li>
+        <li><strong>Change Manager:</strong> Gestión del cambio organizacional</li>
+        <li><strong>Trainer:</strong> Capacitación de usuarios</li>
+    </ul>
+
+    <h3>Factores Críticos de Éxito</h3>
+    <ul>
+        <li>Compromiso de la alta dirección</li>
+        <li>Definición clara de alcance</li>
+        <li>Gestión efectiva del cambio</li>
+        <li>Capacitación adecuada de usuarios</li>
+        <li>Calidad de datos migrados</li>
+        <li>Testing exhaustivo</li>
+        <li>Comunicación continua</li>
+    </ul>
+
+    <h3>Riesgos Comunes</h3>
+    <ul>
+        <li>Scope creep (crecimiento descontrolado del alcance)</li>
+        <li>Resistencia al cambio organizacional</li>
+        <li>Subestimación de esfuerzo de migración de datos</li>
+        <li>Falta de recursos especializados</li>
+        <li>Integración compleja con sistemas legacy</li>
+        <li>Problemas de rendimiento en go-live</li>
+    </ul>
+</div>
+
+<div class="content-section">
+    <h2>10. Principales Proveedores de ERP</h2>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h3>SAP</h3>
+            <ul>
+                <li><strong>SAP S/4HANA:</strong> ERP de última generación</li>
+                <li><strong>SAP Business One:</strong> Para PYMES</li>
+                <li><strong>Industrias:</strong> Todos los sectores</li>
+                <li><strong>Despliegue:</strong> On-premise, Cloud</li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <h3>Oracle</h3>
+            <ul>
+                <li><strong>Oracle ERP Cloud:</strong> Suite completa en cloud</li>
+                <li><strong>Oracle NetSuite:</strong> Cloud ERP para medianas empresas</li>
+                <li><strong>JD Edwards, PeopleSoft:</strong> Soluciones legacy</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <h3>Microsoft</h3>
+            <ul>
+                <li><strong>Dynamics 365:</strong> Suite modular cloud</li>
+                <li><strong>Business Central:</strong> Para PYMES</li>
+                <li><strong>Integración:</strong> Office 365, Power Platform</li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <h3>Odoo</h3>
+            <ul>
+                <li><strong>Open Source:</strong> Community y Enterprise</li>
+                <li><strong>Modular:</strong> Apps individuales</li>
+                <li><strong>Flexible:</strong> Altamente personalizable</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="content-section">
+    <h2>11. Conceptos Clave Adicionales</h2>
+
+    <h3>Master Data vs Transactional Data</h3>
+    <ul>
+        <li><strong>Master Data (Datos Maestros):</strong> Datos fundamentales relativamente estáticos
+            <ul>
+                <li>Clientes, proveedores, productos, empleados</li>
+                <li>Centros de coste, cuentas contables, almacenes</li>
+                <li>Calidad crítica para el ERP</li>
+            </ul>
+        </li>
+        <li><strong>Transactional Data:</strong> Operaciones diarias
+            <ul>
+                <li>Ventas, compras, pagos, movimientos de inventario</li>
+                <li>Volumen alto, cambian constantemente</li>
+                <li>Referencian master data</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3>Documentos en ERP</h3>
+    <p>Los documentos son registros de transacciones con número único, fecha, estado y líneas de detalle:</p>
+    <ul>
+        <li><strong>Ciclo de compras:</strong> Solicitud de compra → Orden de compra → Recepción (albarán) → Factura de proveedor → Pago</li>
+        <li><strong>Ciclo de ventas:</strong> Cotización → Pedido de venta → Entrega (albarán) → Factura de cliente → Cobro</li>
+        <li>Cada documento genera asientos contables automáticamente</li>
+    </ul>
+
+    <h3>Workflows y Flujos de Aprobación</h3>
+    <ul>
+        <li>Automatización de procesos de aprobación</li>
+        <li>Configurables por importe, tipo, departamento</li>
+        <li>Ejemplo: Solicitud de compra > $10,000 requiere aprobación de gerente</li>
+        <li>Notificaciones automáticas, escalamiento por timeout</li>
+        <li>Mejora control interno y cumplimiento</li>
+    </ul>
+
+    <h3>Integración en Tiempo Real</h3>
+    <p>Característica fundamental de ERP que diferencia de sistemas aislados:</p>
+    <ul>
+        <li>Una venta actualiza instantáneamente: inventario, cuentas por cobrar, contabilidad</li>
+        <li>Una compra actualiza: inventario, cuentas por pagar, presupuestos</li>
+        <li>Garantiza consistencia de datos en toda la organización</li>
+        <li>Visibilidad en tiempo real para toma de decisiones</li>
+    </ul>
+
+    <h3>Trazabilidad y Auditoría</h3>
+    <ul>
+        <li><strong>Audit Trail:</strong> Registro completo de quién, qué, cuándo, desde dónde</li>
+        <li><strong>Change Logs:</strong> Historial de cambios con valores anteriores y nuevos</li>
+        <li>Rastreo completo desde origen hasta destino (orden → pago, venta → cobro)</li>
+        <li>Crítico para: cumplimiento (SOX, GDPR), auditorías, investigación de errores</li>
+        <li>Logs inmutables para garantizar integridad</li>
+    </ul>
+
+    <h3>Centros de Coste</h3>
+    <ul>
+        <li>Unidades organizativas para asignar y controlar costes</li>
+        <li>Ejemplos: Marketing, IT, Producción, Ventas</li>
+        <li>Permite análisis de rentabilidad por área</li>
+        <li>Fundamental en contabilidad analítica (Controlling)</li>
+        <li>Presupuestos y seguimiento por centro de coste</li>
+    </ul>
+
+    <h3>Plan de Cuentas</h3>
+    <ul>
+        <li>Estructura jerárquica de cuentas contables</li>
+        <li>Categorías: Activo, Pasivo, Patrimonio Neto, Ingresos, Gastos</li>
+        <li>Cada empresa define su plan según necesidades y normativa</li>
+        <li>Debe configurarse al inicio de la implementación</li>
+        <li>Mapeo necesario en migraciones de datos</li>
+    </ul>
+</div>
+
+<div class="content-section">
+    <h2>12. Ambientes y Gestión de Cambios</h2>
+
+    <h3>Ambientes de ERP</h3>
+    <ul>
+        <li><strong>Desarrollo (DEV):</strong> Desarrollar y probar personalizaciones</li>
+        <li><strong>Calidad/QA (Quality Assurance):</strong> Pruebas integradas, UAT</li>
+        <li><strong>Producción (PRD):</strong> Operación real del negocio</li>
+        <li><strong>Sandbox:</strong> Ambiente de pruebas aislado (opcional)</li>
+    </ul>
+
+    <div class="alert alert-warning">
+        <strong>Regla de oro:</strong> Nunca desarrollar directamente en producción. Los cambios deben seguir el flujo: DEV → QA → PRD
+    </div>
+
+    <h3>Proceso de Transporte de Cambios</h3>
+    <ol>
+        <li>Desarrollar/configurar en DEV</li>
+        <li>Probar en DEV</li>
+        <li>Transportar a QA</li>
+        <li>Pruebas de integración y UAT en QA</li>
+        <li>Aprobación de cambio</li>
+        <li>Transportar a PRD (ventana de mantenimiento)</li>
+        <li>Verificación post-despliegue</li>
+    </ol>
+</div>
+
+<div class="content-section">
+    <h2>13. Procesos de Negocio End-to-End</h2>
+
+    <h3>Procure-to-Pay (P2P)</h3>
+    <p>Proceso completo de compras hasta pago:</p>
+    <ol>
+        <li>Identificación de necesidad</li>
+        <li>Solicitud de compra (requisition)</li>
+        <li>Aprobación de solicitud</li>
+        <li>Orden de compra (PO)</li>
+        <li>Recepción de mercancía (goods receipt)</li>
+        <li>Verificación de factura (3-way match: PO, recepción, factura)</li>
+        <li>Aprobación de pago</li>
+        <li>Pago a proveedor</li>
+    </ol>
+
+    <h3>Order-to-Cash (O2C)</h3>
+    <p>Proceso completo de venta hasta cobro:</p>
+    <ol>
+        <li>Consulta/cotización de cliente</li>
+        <li>Pedido de venta (sales order)</li>
+        <li>Verificación de crédito</li>
+        <li>Picking y packing en almacén</li>
+        <li>Entrega (delivery/shipment)</li>
+        <li>Facturación</li>
+        <li>Cobro</li>
+        <li>Conciliación bancaria</li>
+    </ol>
+
+    <h3>Hire-to-Retire (H2R)</h3>
+    <p>Proceso completo de gestión de empleados:</p>
+    <ol>
+        <li>Reclutamiento y selección</li>
+        <li>Onboarding</li>
+        <li>Gestión de nóminas</li>
+        <li>Evaluación de desempeño</li>
+        <li>Formación y desarrollo</li>
+        <li>Promociones y cambios</li>
+        <li>Offboarding y jubilación</li>
+    </ol>
+</div>
+
+<div class="content-section">
+    <h2>14. Migración de Datos</h2>
+
+    <h3>Proceso ETL</h3>
+    <ul>
+        <li><strong>Extract (Extracción):</strong> Extraer datos del sistema antiguo</li>
+        <li><strong>Transform (Transformación):</strong>
+            <ul>
+                <li>Limpieza de datos (duplicados, inconsistencias)</li>
+                <li>Mapeo a estructura del nuevo ERP</li>
+                <li>Conversión de formatos y unidades</li>
+                <li>Validación de integridad</li>
+            </ul>
+        </li>
+        <li><strong>Load (Carga):</strong> Cargar datos en el nuevo ERP</li>
+    </ul>
+
+    <h3>Tipos de Datos a Migrar</h3>
+    <ul>
+        <li><strong>Master data:</strong> Clientes, proveedores, productos, empleados</li>
+        <li><strong>Saldos iniciales:</strong> Balances contables, inventario</li>
+        <li><strong>Transacciones abiertas:</strong> Pedidos pendientes, facturas sin pagar</li>
+        <li><strong>Histórico:</strong> Según necesidad (1-3 años típicamente)</li>
+    </ul>
+
+    <h3>Estrategias de Migración</h3>
+    <ul>
+        <li><strong>Migración completa:</strong> Todo el histórico</li>
+        <li><strong>Migración parcial:</strong> Solo datos activos + saldos</li>
+        <li><strong>Migración en fases:</strong> Master data primero, luego transacciones</li>
+    </ul>
+
+    <div class="alert alert-danger">
+        <strong>Crítico:</strong> La migración de datos es una de las fases más complejas y subestimadas. Requiere múltiples iteraciones de prueba y validación exhaustiva.
+    </div>
+</div>
+
+<div class="content-section">
+    <h2>15. Cutover y Go-Live</h2>
+
+    <h3>Cutover Plan</h3>
+    <p>Plan detallado de la transición final del sistema antiguo al nuevo:</p>
+    <ul>
+        <li>Cronograma hora por hora</li>
+        <li>Responsables de cada tarea</li>
+        <li>Checkpoints de validación</li>
+        <li>Plan de rollback en caso de problemas</li>
+        <li>Típicamente ejecutado en fin de semana</li>
+    </ul>
+
+    <h3>Actividades de Cutover</h3>
+    <ol>
+        <li>Congelamiento del sistema antiguo</li>
+        <li>Extracción final de datos</li>
+        <li>Migración final a producción</li>
+        <li>Validación de datos migrados</li>
+        <li>Verificación de integraciones</li>
+        <li>Pruebas de humo (smoke tests)</li>
+        <li>Apertura del nuevo sistema</li>
+    </ol>
+
+    <h3>Soporte Post Go-Live</h3>
+    <ul>
+        <li><strong>Hypercare:</strong> Soporte intensivo 24/7 primeras semanas</li>
+        <li>Resolución rápida de incidencias</li>
+        <li>Ajustes de configuración</li>
+        <li>Formación adicional just-in-time</li>
+        <li>Monitoreo de rendimiento</li>
+        <li>Fase de estabilización: 2-3 meses típicamente</li>
+    </ul>
+</div>
+
+<div class="content-section">
+    <h2>16. Conciliación Bancaria</h2>
+
+    <h3>Proceso de Conciliación</h3>
+    <p>Comparar movimientos del extracto bancario con registros contables:</p>
+    <ul>
+        <li>Identificar cheques no cobrados</li>
+        <li>Identificar depósitos en tránsito</li>
+        <li>Detectar errores bancarios o contables</li>
+        <li>Ajustar diferencias</li>
+    </ul>
+
+    <h3>Conciliación Automática en ERP</h3>
+    <ul>
+        <li>Importación de extractos bancarios (formato MT940, BAI2, CSV)</li>
+        <li>Matching automático por importe, fecha, referencia</li>
+        <li>Reglas configurables de conciliación</li>
+        <li>Conciliación manual de excepciones</li>
+        <li>Generación de asientos de ajuste</li>
+    </ul>
+</div>
+
+<div class="content-section">
+    <h2>17. Add-ons y Extensiones</h2>
+
+    <h3>Tipos de Add-ons</h3>
+    <ul>
+        <li><strong>Del fabricante:</strong> Extensiones oficiales del proveedor ERP</li>
+        <li><strong>De terceros certificados:</strong> Desarrollados por partners certificados</li>
+        <li><strong>Custom:</strong> Desarrollados específicamente para la empresa</li>
+    </ul>
+
+    <h3>Ventajas de Add-ons vs Personalización</h3>
+    <ul>
+        <li>Mantenidos y actualizados por el proveedor</li>
+        <li>Compatibles con nuevas versiones del ERP</li>
+        <li>Soportados oficialmente</li>
+        <li>Menor costo total de propiedad (TCO)</li>
+        <li>Implementación más rápida</li>
+    </ul>
+
+    <h3>Ejemplos de Add-ons Comunes</h3>
+    <ul>
+        <li>E-commerce integrado</li>
+        <li>Gestión avanzada de proyectos</li>
+        <li>Business Intelligence avanzado</li>
+        <li>Gestión documental (DMS)</li>
+        <li>Portales de autoservicio (clientes, proveedores, empleados)</li>
+        <li>Gestión de calidad (QMS)</li>
+    </ul>
+</div>
+
+<div class="content-section">
+    <h2>18. Blueprint y Documentación</h2>
+
+    <h3>Blueprint Document</h3>
+    <p>Documento maestro que detalla el diseño completo de la solución:</p>
+    <ul>
+        <li><strong>Procesos TO-BE:</strong> Procesos futuros con el ERP</li>
+        <li><strong>Configuración:</strong> Parámetros y customizing</li>
+        <li><strong>Personalizaciones:</strong> Desarrollos custom necesarios</li>
+        <li><strong>Integraciones:</strong> Interfaces con otros sistemas</li>
+        <li><strong>Migraciones:</strong> Estrategia y mapeo de datos</li>
+        <li><strong>Reportes:</strong> Reportes custom requeridos</li>
+        <li><strong>Seguridad:</strong> Roles y autorizaciones</li>
+    </ul>
+
+    <h3>Importancia del Blueprint</h3>
+    <ul>
+        <li>Es el "plano de construcción" del proyecto</li>
+        <li>Base para estimación de esfuerzo</li>
+        <li>Referencia durante implementación</li>
+        <li>Documentación para mantenimiento futuro</li>
+        <li>Requiere aprobación formal de stakeholders</li>
+    </ul>
+</div>
+
+<div class="content-section">
+    <h2>19. SAP Fiori</h2>
+
+    <h3>¿Qué es SAP Fiori?</h3>
+    <ul>
+        <li>UX moderna de SAP basada en HTML5/SAPUI5</li>
+        <li>Diseño responsive (desktop, tablet, móvil)</li>
+        <li>Interfaz intuitiva y consistente</li>
+        <li>Apps específicas por rol y tarea</li>
+        <li>Reemplaza SAP GUI tradicional</li>
+    </ul>
+
+    <h3>Tipos de Apps Fiori</h3>
+    <ul>
+        <li><strong>Transactional:</strong> Crear, modificar datos (crear orden de compra)</li>
+        <li><strong>Analytical:</strong> Dashboards y reportes interactivos</li>
+        <li><strong>Fact Sheets:</strong> Vista consolidada de objetos (cliente, producto)</li>
+    </ul>
+
+    <h3>Beneficios</h3>
+    <ul>
+        <li>Mejora experiencia de usuario</li>
+        <li>Aumenta adopción y productividad</li>
+        <li>Reduce necesidad de formación</li>
+        <li>Acceso desde cualquier dispositivo</li>
+    </ul>
+</div>
+
+<div class="content-section">
+    <h2>20. Tendencias Futuras en ERP</h2>
+    <ul>
+        <li><strong>Cloud-First:</strong> Migración masiva a SaaS</li>
+        <li><strong>IA y Machine Learning:</strong> Automatización inteligente, predicciones</li>
+        <li><strong>IoT Integration:</strong> Datos en tiempo real de dispositivos</li>
+        <li><strong>Mobile-First:</strong> Aplicaciones móviles nativas</li>
+        <li><strong>Blockchain:</strong> Trazabilidad en supply chain</li>
+        <li><strong>Low-Code/No-Code:</strong> Personalización sin programación</li>
+        <li><strong>Microservicios:</strong> Arquitecturas más flexibles</li>
+        <li><strong>RPA:</strong> Automatización de procesos robóticos</li>
+    </ul>
+</div>
+
+{% endblock %}
