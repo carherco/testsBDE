@@ -24,31 +24,30 @@
                     {% else %}
                         <div class="alert alert-danger">
                             <h5>❌ Incorrecto</h5>
-                            <p class="mb-1"><strong>Tu respuesta:</strong> {{ respuesta_usuario|upper }}</p>
-                            <p class="mb-0"><strong>Respuesta correcta:</strong> {{ pregunta.correcta|upper }}</p>
+                            <p class="mb-0">La respuesta correcta era la opción que contenía: <strong>{{ pregunta['opcion' ~ pregunta.correcta|upper] }}</strong></p>
                         </div>
                     {% endif %}
 
                     <div class="mb-4">
                         <h6>Opciones:</h6>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <p class="mb-1 {% if pregunta.correcta|lower == 'a' %}text-success fw-bold{% endif %}">
-                                    A) {{ pregunta.opcionA }}
-                                </p>
-                                <p class="mb-1 {% if pregunta.correcta|lower == 'b' %}text-success fw-bold{% endif %}">
-                                    B) {{ pregunta.opcionB }}
-                                </p>
-                            </div>
-                            <div class="col-md-6">
-                                <p class="mb-1 {% if pregunta.correcta|lower == 'c' %}text-success fw-bold{% endif %}">
-                                    C) {{ pregunta.opcionC }}
-                                </p>
-                                <p class="mb-1 {% if pregunta.correcta|lower == 'd' %}text-success fw-bold{% endif %}">
-                                    D) {{ pregunta.opcionD }}
-                                </p>
-                            </div>
-                        </div>
+                        {% set opciones_originales = {
+                            'a': pregunta.opcionA,
+                            'b': pregunta.opcionB,
+                            'c': pregunta.opcionC,
+                            'd': pregunta.opcionD
+                        } %}
+                        
+                        {% for letra_mostrada in ['a', 'b', 'c', 'd'] %}
+                            {% set letra_original = mapeo[letra_mostrada] %}
+                            {% set es_correcta = (letra_original == pregunta.correcta|lower) %}
+                            {% set fue_seleccionada = (letra_mostrada == respuesta_mostrada) %}
+                            
+                            <p class="mb-2 {% if es_correcta %}text-success fw-bold{% endif %}">
+                                {{ letra_mostrada|upper }}) {{ opciones_originales[letra_original] }}
+                                {% if es_correcta %}✓{% endif %}
+                                {% if fue_seleccionada and not acertada %}<span class="text-danger">← Tu respuesta</span>{% endif %}
+                            </p>
+                        {% endfor %}
                     </div>
 
                     {% if pregunta.explicacion %}

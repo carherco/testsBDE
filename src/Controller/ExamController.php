@@ -153,8 +153,30 @@ class ExamController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
+        // Crear mapeo de opciones desordenadas
+        $opciones = [
+            'a' => $pregunta->getOpcionA(),
+            'b' => $pregunta->getOpcionB(),
+            'c' => $pregunta->getOpcionC(),
+            'd' => $pregunta->getOpcionD(),
+        ];
+        
+        $letras = ['a', 'b', 'c', 'd'];
+        shuffle($letras);
+        
+        $opcionesDesordenadas = [];
+        $mapeo = [];
+        foreach ($letras as $index => $letraOriginal) {
+            $letraMostrada = ['a', 'b', 'c', 'd'][$index];
+            $opcionesDesordenadas[$letraMostrada] = $opciones[$letraOriginal];
+            $mapeo[$letraMostrada] = $letraOriginal;
+        }
+        
+        $session->set('practice_mapeo_' . $pregunta->getId(), $mapeo);
+
         return $this->render('exam/practice_question.html.twig', [
             'pregunta' => $pregunta,
+            'opciones' => $opcionesDesordenadas,
             'current' => $current + 1,
             'total' => count($preguntaIds),
         ]);
@@ -164,16 +186,19 @@ class ExamController extends AbstractController
     public function practiceValidate(Request $request, EntityManagerInterface $em, SessionInterface $session): Response
     {
         $preguntaId = $request->request->getInt('pregunta_id');
-        $respuesta = $request->request->get('respuesta');
+        $respuestaMostrada = strtolower($request->request->get('respuesta'));
 
         $pregunta = $em->getRepository(Pregunta::class)->find($preguntaId);
         if (!$pregunta) {
             return $this->redirectToRoute('app_home');
         }
 
+        // Obtener mapeo para convertir respuesta mostrada a letra original
+        $mapeo = $session->get('practice_mapeo_' . $preguntaId, []);
+        $respuestaOriginal = $mapeo[$respuestaMostrada] ?? $respuestaMostrada;
+        
         $correcta = strtolower($pregunta->getCorrecta());
-        $respuestaUsuario = strtolower($respuesta);
-        $acertada = ($correcta === $respuestaUsuario);
+        $acertada = ($correcta === $respuestaOriginal);
 
         if ($acertada) {
             $session->set('practice_aciertos', $session->get('practice_aciertos', 0) + 1);
@@ -183,8 +208,10 @@ class ExamController extends AbstractController
 
         return $this->render('exam/practice_result.html.twig', [
             'pregunta' => $pregunta,
-            'respuesta_usuario' => $respuesta,
+            'respuesta_mostrada' => $respuestaMostrada,
+            'respuesta_original' => $respuestaOriginal,
             'acertada' => $acertada,
+            'mapeo' => $mapeo,
             'current' => $session->get('practice_current', 0) + 1,
             'total' => count($session->get('practice_preguntas', [])),
         ]);
