@@ -795,6 +795,135 @@ function validarCampo(campo) {
         campo.parentNode.appendChild(div);
     }
 }</code></pre>
+
+    <h4>Web Components Nativos</h4>
+    <p>Estándar web para crear componentes reutilizables sin frameworks:</p>
+
+    <h5>Custom Elements</h5>
+    <ul>
+        <li><strong>Definición:</strong> Crear elementos HTML personalizados</li>
+        <li><strong>Lifecycle callbacks:</strong> connectedCallback, disconnectedCallback, attributeChangedCallback</li>
+        <li><strong>Registro:</strong> customElements.define() para registrar elementos</li>
+        <li><strong>Herencia:</strong> Extender HTMLElement o elementos existentes</li>
+    </ul>
+
+    <h5>Shadow DOM</h5>
+    <ul>
+        <li><strong>Encapsulación:</strong> CSS y DOM aislados del documento principal</li>
+        <li><strong>Shadow Root:</strong> Raíz del árbol shadow</li>
+        <li><strong>Slots:</strong> Puntos de inserción para contenido externo</li>
+        <li><strong>CSS Scoping:</strong> Estilos no afectan al documento padre</li>
+    </ul>
+
+    <h5>HTML Templates</h5>
+    <ul>
+        <li><strong>&lt;template&gt;:</strong> Contenido inerte que se puede clonar</li>
+        <li><strong>&lt;slot&gt;:</strong> Marcadores para contenido proyectado</li>
+        <li><strong>DocumentFragment:</strong> Clonación eficiente de templates</li>
+        <li><strong>Named slots:</strong> Múltiples puntos de inserción</li>
+    </ul>
+
+    <h5>HTML Imports (Deprecated)</h5>
+    <ul>
+        <li><strong>ES Modules:</strong> Reemplazo moderno para importar componentes</li>
+        <li><strong>Dynamic imports:</strong> Carga bajo demanda</li>
+        <li><strong>Module bundlers:</strong> Webpack, Rollup para empaquetado</li>
+    </ul>
+
+    <h5>Ejemplo Conceptual de Web Component</h5>
+    <pre><code>// Definir un custom element
+class MiBoton extends HTMLElement {
+    constructor() {
+        super();
+        // Crear shadow DOM
+        this.attachShadow({ mode: 'open' });
+    }
+    
+    connectedCallback() {
+        // Se ejecuta cuando el elemento se añade al DOM
+        this.render();
+        this.addEventListener('click', this.handleClick);
+    }
+    
+    disconnectedCallback() {
+        // Limpieza cuando se elimina del DOM
+        this.removeEventListener('click', this.handleClick);
+    }
+    
+    static get observedAttributes() {
+        return ['label', 'disabled'];
+    }
+    
+    attributeChangedCallback(name, oldValue, newValue) {
+        // Se ejecuta cuando cambian atributos observados
+        if (oldValue !== newValue) {
+            this.render();
+        }
+    }
+    
+    render() {
+        const label = this.getAttribute('label') || 'Click me';
+        const disabled = this.hasAttribute('disabled');
+        
+        this.shadowRoot.innerHTML = `
+            &lt;style&gt;
+                button {
+                    padding: 10px 20px;
+                    border: none;
+                    border-radius: 4px;
+                    background: #007bff;
+                    color: white;
+                    cursor: pointer;
+                }
+                button:disabled {
+                    background: #ccc;
+                    cursor: not-allowed;
+                }
+            &lt;/style&gt;
+            &lt;button ${disabled ? 'disabled' : ''}&gt;
+                ${label}
+            &lt;/button&gt;
+        `;
+    }
+    
+    handleClick(event) {
+        // Emitir evento personalizado
+        this.dispatchEvent(new CustomEvent('mi-click', {
+            detail: { timestamp: Date.now() },
+            bubbles: true
+        }));
+    }
+}
+
+// Registrar el elemento
+customElements.define('mi-boton', MiBoton);
+
+// Uso en HTML: &lt;mi-boton label="Guardar"&gt;&lt;/mi-boton&gt;</code></pre>
+
+    <h5>Ventajas de Web Components</h5>
+    <ul>
+        <li><strong>Estándar nativo:</strong> No requiere frameworks</li>
+        <li><strong>Interoperabilidad:</strong> Funciona con cualquier framework</li>
+        <li><strong>Encapsulación:</strong> CSS y DOM aislados</li>
+        <li><strong>Reutilización:</strong> Componentes verdaderamente portables</li>
+        <li><strong>Performance:</strong> Sin overhead de frameworks</li>
+    </ul>
+
+    <h5>Desventajas</h5>
+    <ul>
+        <li><strong>Soporte limitado:</strong> IE no compatible</li>
+        <li><strong>Complejidad:</strong> Más código boilerplate</li>
+        <li><strong>Ecosistema:</strong> Menos herramientas y librerías</li>
+        <li><strong>State management:</strong> No incluye gestión de estado</li>
+    </ul>
+
+    <h5>Librerías para Web Components</h5>
+    <ul>
+        <li><strong>Lit:</strong> Librería ligera de Google para Web Components</li>
+        <li><strong>Stencil:</strong> Compilador para generar Web Components</li>
+        <li><strong>Polymer:</strong> Librería de Google (legacy)</li>
+        <li><strong>Hybrids:</strong> Librería funcional para Web Components</li>
+    </ul>
 </div>
 
 <div class="content-section">
