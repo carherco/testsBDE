@@ -1,0 +1,1316 @@
+{% extends 'content/base.html.twig' %}
+
+{% block content_title %}{{ tema.nombre }}{% endblock %}
+
+{% block content_body %}
+<div class="content-section">
+    <h2>1. Principios de Diseño de Interfaces de Usuario (UI/UX)</h2>
+
+    <h3>1.1. Fundamentos de UI y UX</h3>
+
+    <h4>Diferencias entre UI y UX</h4>
+    <ul>
+        <li><strong>UI (User Interface):</strong> La interfaz visual con la que interactúa el usuario - botones, menús, colores, tipografía</li>
+        <li><strong>UX (User Experience):</strong> La experiencia completa del usuario - usabilidad, accesibilidad, emociones, satisfacción</li>
+    </ul>
+
+    <div class="alert alert-info">
+        <strong>Analogía:</strong> Si un producto fuera un cuerpo humano, los huesos serían el código, los órganos serían el UX, y la apariencia sería el UI.
+    </div>
+
+    <h3>1.2. Principios Fundamentales de Diseño Visual</h3>
+
+    <h4>Jerarquía Visual</h4>
+    <p>Organización de elementos para guiar la atención del usuario hacia lo más importante:</p>
+    <ul>
+        <li><strong>Tamaño:</strong> Elementos más grandes atraen más atención</li>
+        <li><strong>Color:</strong> Colores brillantes y contrastantes destacan</li>
+        <li><strong>Contraste:</strong> Diferencia visual entre elementos para hacerlos distinguibles</li>
+        <li><strong>Posición:</strong> Elementos arriba y a la izquierda se ven primero (patrón F)</li>
+        <li><strong>Espaciado:</strong> White space dirige la atención</li>
+        <li><strong>Tipografía:</strong> Diferentes pesos y tamaños crean jerarquía</li>
+    </ul>
+
+    <h4>Principios de Gestalt</h4>
+    <p>Principios de cómo percibimos patrones y organizamos información visual:</p>
+    <ul>
+        <li><strong>Proximidad:</strong> Elementos cercanos se perciben como relacionados</li>
+        <li><strong>Similitud:</strong> Elementos similares se agrupan mentalmente</li>
+        <li><strong>Continuidad:</strong> El ojo sigue líneas y formas</li>
+        <li><strong>Cierre:</strong> Completamos formas incompletas mentalmente</li>
+        <li><strong>Figura-fondo:</strong> Distinguimos entre objeto principal y fondo</li>
+    </ul>
+
+    <h4>Regla de los Tercios</h4>
+    <p>Dividir el espacio en cuadrícula 3x3 y colocar elementos importantes en las intersecciones o líneas crea composiciones más equilibradas e interesantes que el centrado perfecto.</p>
+
+    <h4>Consistencia</h4>
+    <ul>
+        <li><strong>Consistencia Interna:</strong> Mantener patrones visuales y comportamientos similares dentro del producto</li>
+        <li><strong>Consistencia Externa:</strong> Seguir convenciones y patrones establecidos en la industria</li>
+    </ul>
+
+    <h3>1.3. Leyes Fundamentales de UX</h3>
+
+    <h4>Ley de Fitts</h4>
+    <p><strong>Principio:</strong> El tiempo para alcanzar un objetivo depende de su tamaño y distancia.</p>
+    <p><strong>Aplicaciones:</strong></p>
+    <ul>
+        <li>Botones importantes deben ser grandes y cercanos</li>
+        <li>Esquinas de pantalla son fáciles de alcanzar (distancia infinita)</li>
+        <li>Elementos frecuentes deben ser accesibles</li>
+        <li>Menús contextuales cerca del cursor</li>
+    </ul>
+
+    <h4>Ley de Hick</h4>
+    <p><strong>Principio:</strong> El tiempo de decisión aumenta logarítmicamente con el número de opciones.</p>
+    <p><strong>Aplicaciones:</strong></p>
+    <ul>
+        <li>Simplificar menús y opciones</li>
+        <li>Agrupar opciones relacionadas</li>
+        <li>Usar valores por defecto inteligentes</li>
+        <li>Progressive disclosure (mostrar opciones gradualmente)</li>
+    </ul>
+
+    <h4>Principio de Miller (7±2)</h4>
+    <p><strong>Principio:</strong> La memoria de trabajo puede retener 7±2 elementos simultáneamente.</p>
+    <p><strong>Aplicaciones:</strong></p>
+    <ul>
+        <li>Limitar opciones de menú a 5-9 elementos</li>
+        <li>Agrupar información (chunking)</li>
+        <li>No sobrecargar al usuario con información</li>
+        <li>Usar navegación por pasos para procesos complejos</li>
+    </ul>
+
+    <h4>Reconocimiento vs Recuerdo</h4>
+    <p><strong>Principio:</strong> Es más fácil reconocer opciones que recordarlas de memoria.</p>
+    <p><strong>Aplicaciones:</strong></p>
+    <ul>
+        <li>Usar menús desplegables en lugar de campos de texto libre</li>
+        <li>Proporcionar autocompletar y sugerencias</li>
+        <li>Usar iconos con labels descriptivos</li>
+        <li>Mostrar opciones recientes o frecuentes</li>
+    </ul>
+
+    <h4>Principio de Pareto (80/20)</h4>
+    <p><strong>Principio:</strong> 80% de usuarios usan 20% de funcionalidades.</p>
+    <p><strong>Aplicaciones:</strong></p>
+    <ul>
+        <li>Priorizar y hacer más accesibles las funcionalidades más usadas</li>
+        <li>Ocultar funciones raras en menús secundarios</li>
+        <li>Optimizar para casos de uso frecuentes</li>
+        <li>Analizar datos de uso para identificar el 20% crítico</li>
+    </ul>
+
+    <h3>1.4. Principios de Experiencia de Usuario</h3>
+
+    <h4>Affordances</h4>
+    <p>Características visuales que sugieren cómo usar un elemento:</p>
+    <ul>
+        <li>Botones parecen presionables (sombras, bordes, gradientes)</li>
+        <li>Enlaces están subrayados o coloreados diferente</li>
+        <li>Campos de texto tienen borde y muestran cursor</li>
+        <li>Sliders tienen handle visible para arrastrar</li>
+        <li>Elementos arrastrables tienen textura o indicadores</li>
+    </ul>
+
+    <h4>Feedback</h4>
+    <p>Informar al usuario sobre el resultado de sus acciones:</p>
+    <ul>
+        <li><strong>Visual:</strong> Cambios de color, animaciones, estados hover</li>
+        <li><strong>Loading states:</strong> Spinners, progress bars, skeleton screens</li>
+        <li><strong>Mensajes:</strong> Notificaciones de éxito, error, información</li>
+        <li><strong>Sonido:</strong> Notificaciones auditivas (con cuidado)</li>
+        <li><strong>Háptico:</strong> Vibración en dispositivos móviles</li>
+    </ul>
+
+    <h4>Progressive Disclosure</h4>
+    <p>Mostrar información gradualmente según la necesidad del usuario:</p>
+    <ul>
+        <li>Acordeones para contenido extenso</li>
+        <li>Tabs para organizar información relacionada</li>
+        <li>Botones "Ver más" para listas largas</li>
+        <li>Wizards paso a paso para procesos complejos</li>
+        <li>Tooltips para información adicional</li>
+    </ul>
+
+    <h4>White Space (Espacio en Blanco)</h4>
+    <p>Espacio vacío que mejora la experiencia:</p>
+    <ul>
+        <li><strong>Legibilidad:</strong> Facilita la lectura del contenido</li>
+        <li><strong>Enfoque:</strong> Dirige la atención a elementos importantes</li>
+        <li><strong>Jerarquía:</strong> Separa y agrupa elementos relacionados</li>
+        <li><strong>Elegancia:</strong> Crea sensación de calidad y profesionalismo</li>
+    </ul>
+
+    <div class="alert alert-warning">
+        <strong>Importante:</strong> El white space no es espacio desperdiciado, es una herramienta de diseño fundamental que mejora la usabilidad.
+    </div>
+
+    <h3>1.5. Accesibilidad (a11y)</h3>
+
+    <h4>¿Qué es la Accesibilidad Web?</h4>
+    <p>Hacer sitios web usables para personas con discapacidades:</p>
+    <ul>
+        <li><strong>Visuales:</strong> Ceguera, baja visión, daltonismo</li>
+        <li><strong>Auditivas:</strong> Sordera, problemas de audición</li>
+        <li><strong>Motoras:</strong> Dificultades para usar mouse o teclado</li>
+        <li><strong>Cognitivas:</strong> Dislexia, TDAH, problemas de memoria</li>
+    </ul>
+
+    <h4>WCAG (Web Content Accessibility Guidelines)</h4>
+    <p>Estándares internacionales con tres niveles:</p>
+    <ul>
+        <li><strong>Nivel A:</strong> Básico - requisitos mínimos</li>
+        <li><strong>Nivel AA:</strong> Estándar - requerido legalmente en muchos países</li>
+        <li><strong>Nivel AAA:</strong> Avanzado - ideal pero no siempre práctico</li>
+    </ul>
+
+    <h4>Contraste de Color</h4>
+    <p>Ratios mínimos según WCAG 2.1:</p>
+    <ul>
+        <li><strong>Texto normal:</strong> 4.5:1 (AA), 7:1 (AAA)</li>
+        <li><strong>Texto grande:</strong> 3:1 (AA), 4.5:1 (AAA)</li>
+        <li><strong>Texto grande:</strong> 18pt+ o 14pt+ en negrita</li>
+        <li><strong>Elementos no textuales:</strong> 3:1 para iconos y controles</li>
+    </ul>
+
+    <h4>Navegación por Teclado</h4>
+    <ul>
+        <li>Todos los elementos interactivos accesibles con Tab</li>
+        <li>Orden lógico de tabulación</li>
+        <li>Indicadores visuales claros del foco</li>
+        <li>Atajos de teclado para funciones importantes</li>
+        <li>Escape para cerrar modales y menús</li>
+    </ul>
+
+    <h3>1.6. Diseño Responsive</h3>
+
+    <h4>¿Qué es el Diseño Responsive?</h4>
+    <p>Diseño que se adapta fluidamente a diferentes tamaños de pantalla usando:</p>
+    <ul>
+        <li><strong>Grids flexibles:</strong> Layouts que se reorganizan</li>
+        <li><strong>Imágenes fluidas:</strong> Imágenes que escalan proporcionalmente</li>
+        <li><strong>Media queries:</strong> CSS condicional según características del dispositivo</li>
+    </ul>
+
+    <h4>Mobile-First Approach</h4>
+    <p>Filosofía de diseño que comienza por móvil:</p>
+    <ul>
+        <li><strong>Priorización:</strong> Fuerza a identificar contenido esencial</li>
+        <li><strong>Performance:</strong> Optimiza para conexiones lentas</li>
+        <li><strong>Escalabilidad:</strong> Es más fácil añadir que quitar</li>
+        <li><strong>Adopción:</strong> Móvil representa >50% del tráfico web</li>
+    </ul>
+
+    <h3>1.7. Herramientas de Diseño</h3>
+
+    <h4>Wireframes</h4>
+    <p>Bocetos de baja fidelidad que definen:</p>
+    <ul>
+        <li>Estructura y layout básico</li>
+        <li>Jerarquía de información</li>
+        <li>Flujo de navegación</li>
+        <li>Funcionalidad sin detalles visuales</li>
+    </ul>
+
+    <h4>Mockups</h4>
+    <p>Diseños de alta fidelidad con:</p>
+    <ul>
+        <li>Colores, tipografía y estilos finales</li>
+        <li>Imágenes y contenido real o representativo</li>
+        <li>Detalles visuales precisos</li>
+        <li>Branding y identidad visual</li>
+    </ul>
+
+    <h4>Prototipos</h4>
+    <p>Versiones interactivas para:</p>
+    <ul>
+        <li>Probar flujos de usuario</li>
+        <li>Validar interacciones y animaciones</li>
+        <li>Obtener feedback temprano</li>
+        <li>Comunicar funcionalidad al equipo de desarrollo</li>
+    </ul>
+
+    <h4>Design Systems</h4>
+    <p>Colección completa de recursos de diseño:</p>
+    <ul>
+        <li><strong>Componentes:</strong> Botones, formularios, cards, navegación</li>
+        <li><strong>Tokens de diseño:</strong> Colores, espaciado, tipografía, sombras</li>
+        <li><strong>Patrones:</strong> Layouts comunes, flujos de usuario</li>
+        <li><strong>Guías:</strong> Principios, mejores prácticas, casos de uso</li>
+        <li><strong>Código:</strong> Implementaciones reutilizables</li>
+    </ul>
+
+    <div class="alert alert-success">
+        <strong>Ejemplos de Design Systems:</strong>
+        <ul class="mb-0">
+            <li><strong>Material Design</strong> (Google) - Principios de diseño físico</li>
+            <li><strong>Human Interface Guidelines</strong> (Apple) - Enfoque en simplicidad</li>
+            <li><strong>Fluent Design</strong> (Microsoft) - Sistema cohesivo multiplataforma</li>
+            <li><strong>Ant Design</strong> - Para aplicaciones empresariales</li>
+        </ul>
+    </div>
+</div>
+
+<div class="content-section">
+    <h2>2. Herramientas y Tecnologías para el Desarrollo de Interfaces</h2>
+
+    <h3>2.1. HTML - Estructura Semántica</h3>
+
+    <h4>HTML5 Semántico</h4>
+    <p>Uso de etiquetas que describen el significado del contenido:</p>
+    <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="es"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Título descriptivo de la página&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header&gt;
+        &lt;nav&gt;
+            &lt;ul&gt;
+                &lt;li&gt;&lt;a href="#inicio"&gt;Inicio&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href="#servicios"&gt;Servicios&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href="#contacto"&gt;Contacto&lt;/a&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/nav&gt;
+    &lt;/header&gt;
+    
+    &lt;main&gt;
+        &lt;article&gt;
+            &lt;h1&gt;Título principal del artículo&lt;/h1&gt;
+            &lt;section&gt;
+                &lt;h2&gt;Sección del artículo&lt;/h2&gt;
+                &lt;p&gt;Contenido del párrafo...&lt;/p&gt;
+            &lt;/section&gt;
+        &lt;/article&gt;
+        
+        &lt;aside&gt;
+            &lt;h3&gt;Contenido relacionado&lt;/h3&gt;
+            &lt;p&gt;Información complementaria...&lt;/p&gt;
+        &lt;/aside&gt;
+    &lt;/main&gt;
+    
+    &lt;footer&gt;
+        &lt;p&gt;&copy; 2024 Mi sitio web&lt;/p&gt;
+    &lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+    <h4>Formularios Accesibles</h4>
+    <pre><code>&lt;form&gt;
+    &lt;fieldset&gt;
+        &lt;legend&gt;Información personal&lt;/legend&gt;
+        
+        &lt;div&gt;
+            &lt;label for="nombre"&gt;Nombre completo *&lt;/label&gt;
+            &lt;input type="text" id="nombre" name="nombre" required 
+                   aria-describedby="nombre-help"&gt;
+            &lt;div id="nombre-help"&gt;Introduce tu nombre y apellidos&lt;/div&gt;
+        &lt;/div&gt;
+        
+        &lt;div&gt;
+            &lt;label for="email"&gt;Correo electrónico *&lt;/label&gt;
+            &lt;input type="email" id="email" name="email" required
+                   pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"&gt;
+        &lt;/div&gt;
+        
+        &lt;div&gt;
+            &lt;label for="telefono"&gt;Teléfono&lt;/label&gt;
+            &lt;input type="tel" id="telefono" name="telefono"
+                   pattern="[0-9]{9}" minlength="9" maxlength="9"&gt;
+        &lt;/div&gt;
+    &lt;/fieldset&gt;
+    
+    &lt;fieldset&gt;
+        &lt;legend&gt;Preferencias de contacto&lt;/legend&gt;
+        &lt;input type="radio" id="email-pref" name="contacto" value="email"&gt;
+        &lt;label for="email-pref"&gt;Correo electrónico&lt;/label&gt;
+        
+        &lt;input type="radio" id="tel-pref" name="contacto" value="telefono"&gt;
+        &lt;label for="tel-pref"&gt;Teléfono&lt;/label&gt;
+    &lt;/fieldset&gt;
+    
+    &lt;button type="submit"&gt;Enviar formulario&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+
+    <h4>ARIA para Accesibilidad</h4>
+    <pre><code>&lt;!-- Botón con descripción --&gt;
+&lt;button aria-label="Cerrar ventana modal"&gt;×&lt;/button&gt;
+
+&lt;!-- Región con contenido dinámico --&gt;
+&lt;div role="alert" aria-live="polite"&gt;
+    Mensaje guardado correctamente
+&lt;/div&gt;
+
+&lt;!-- Elemento expandible --&gt;
+&lt;button aria-expanded="false" aria-controls="menu"&gt;
+    Menú
+&lt;/button&gt;
+&lt;ul id="menu" aria-hidden="true"&gt;
+    &lt;li&gt;&lt;a href="#"&gt;Opción 1&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="#"&gt;Opción 2&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!-- Barra de progreso --&gt;
+&lt;div role="progressbar" aria-valuenow="32" aria-valuemin="0" 
+     aria-valuemax="100"&gt;32%&lt;/div&gt;</code></pre>
+
+    <h3>2.2. CSS - Diseño y Layout</h3>
+
+    <h4>Modelo de Caja CSS</h4>
+    <pre><code>/* Modelo de caja estándar */
+.elemento {
+    width: 200px;
+    height: 100px;
+    padding: 20px;    /* Espaciado interno */
+    border: 2px solid #333;
+    margin: 10px;     /* Espaciado externo */
+}
+
+/* Box-sizing alternativo (recomendado) */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+.elemento-alt {
+    width: 200px; /* Ancho total incluyendo padding y border */
+    padding: 20px;
+    border: 2px solid #333;
+}</code></pre>
+
+    <h4>Flexbox - Layout Unidimensional</h4>
+    <pre><code>/* Contenedor flex */
+.flex-container {
+    display: flex;
+    flex-direction: row; /* row, column, row-reverse, column-reverse */
+    justify-content: space-between; /* flex-start, center, flex-end, space-around, space-evenly */
+    align-items: center; /* flex-start, center, flex-end, stretch, baseline */
+    flex-wrap: wrap; /* nowrap, wrap, wrap-reverse */
+    gap: 20px; /* Espaciado entre elementos */
+}
+
+/* Elementos flex */
+.flex-item {
+    flex: 1; /* Equivale a: flex-grow: 1, flex-shrink: 1, flex-basis: 0% */
+}
+
+.flex-item-specific {
+    flex-grow: 2;     /* Crece el doble que otros elementos */
+    flex-shrink: 0;   /* No se encoge */
+    flex-basis: 200px; /* Tamaño base de 200px */
+}</code></pre>
+
+    <h4>CSS Grid - Layout Bidimensional</h4>
+    <pre><code>/* Grid básico */
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr; /* 3 columnas: 25% 50% 25% */
+    grid-template-rows: auto 1fr auto;   /* Header, contenido, footer */
+    gap: 20px;
+    min-height: 100vh;
+}
+
+/* Grid con áreas nombradas */
+.grid-areas {
+    display: grid;
+    grid-template-areas: 
+        "header header header"
+        "sidebar main aside"
+        "footer footer footer";
+    grid-template-columns: 200px 1fr 200px;
+    grid-template-rows: auto 1fr auto;
+    gap: 20px;
+}
+
+.header { grid-area: header; }
+.sidebar { grid-area: sidebar; }
+.main { grid-area: main; }
+.aside { grid-area: aside; }
+.footer { grid-area: footer; }
+
+/* Grid responsive */
+.responsive-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}</code></pre>
+
+    <h4>Media Queries - Diseño Responsive</h4>
+    <pre><code>/* Mobile First approach */
+/* Estilos base para móvil (320px+) */
+.container {
+    padding: 10px;
+    font-size: 14px;
+}
+
+/* Tablet (768px+) */
+@media (min-width: 768px) {
+    .container {
+        padding: 20px;
+        font-size: 16px;
+    }
+    
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Desktop (1024px+) */
+@media (min-width: 1024px) {
+    .container {
+        padding: 40px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Desktop grande (1200px+) */
+@media (min-width: 1200px) {
+    .container {
+        padding: 60px;
+    }
+}
+
+/* Orientación y características específicas */
+@media (orientation: landscape) {
+    .hero { height: 60vh; }
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background: #1a1a1a;
+        color: #ffffff;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}</code></pre>
+
+    <h4>Animaciones y Transiciones</h4>
+    <pre><code>/* Transiciones suaves */
+.button {
+    background: #007bff;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.button:hover {
+    background: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.button:active {
+    transform: translateY(0);
+}
+
+/* Animaciones con keyframes */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* Loading spinner */
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}</code></pre>
+
+    <h3>2.3. JavaScript - Interactividad</h3>
+
+    <h4>Selección y Manipulación del DOM</h4>
+    <pre><code>// Selección de elementos
+const elemento = document.getElementById('mi-id');
+const elementos = document.querySelectorAll('.mi-clase');
+const primer = document.querySelector('nav ul li:first-child a');
+
+// Crear y modificar elementos
+const div = document.createElement('div');
+div.className = 'nueva-clase';
+div.textContent = 'Contenido del div';
+div.setAttribute('data-id', '123');
+
+// Añadir al DOM
+document.body.appendChild(div);
+
+// Modificar contenido y estilos
+elemento.textContent = 'Nuevo texto';
+elemento.innerHTML = '&lt;strong&gt;HTML&lt;/strong&gt;';
+elemento.style.backgroundColor = '#f0f0f0';
+
+// Clases CSS
+elemento.classList.add('activo');
+elemento.classList.remove('inactivo');
+elemento.classList.toggle('visible');
+elemento.classList.contains('activo'); // true/false</code></pre>
+
+    <h4>Gestión de Eventos</h4>
+    <pre><code>// Event listeners básicos
+button.addEventListener('click', function(event) {
+    console.log('Botón clickeado');
+    event.preventDefault(); // Prevenir comportamiento por defecto
+});
+
+// Arrow functions
+button.addEventListener('click', (e) => {
+    console.log('Click con arrow function');
+});
+
+// Múltiples eventos
+['mouseenter', 'mouseleave'].forEach(evento => {
+    elemento.addEventListener(evento, manejarEvento);
+});
+
+function manejarEvento(e) {
+    console.log(`Evento: ${e.type}`);
+}
+
+// Event bubbling y delegation
+document.addEventListener('click', (e) => {
+    // Event bubbling: el evento sube por el DOM
+    console.log('Click detectado en:', e.target);
+    
+    // Delegación de eventos
+    if (e.target.matches('.boton-eliminar')) {
+        eliminarElemento(e.target.closest('.item'));
+    }
+    
+    // Detener propagación si es necesario
+    // e.stopPropagation();
+});
+
+// Eventos de formulario
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const formData = new FormData(e.target);
+    const datos = Object.fromEntries(formData);
+    
+    try {
+        await enviarDatos(datos);
+        mostrarMensaje('Datos enviados correctamente', 'success');
+    } catch (error) {
+        mostrarMensaje('Error al enviar datos', 'error');
+    }
+});</code></pre>
+
+    <h4>Async/Await y Fetch API</h4>
+    <pre><code>// Función asíncrona para obtener datos
+async function obtenerDatos(url) {
+    try {
+        const response = await fetch(url);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const datos = await response.json();
+        return datos;
+    } catch (error) {
+        console.error('Error al obtener datos:', error);
+        throw error;
+    }
+}
+
+// POST request con datos JSON
+async function enviarDatos(datos) {
+    const response = await fetch('/api/guardar', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(datos)
+    });
+    
+    if (!response.ok) {
+        throw new Error('Error en el servidor');
+    }
+    
+    return response.json();
+}
+
+// Uso con manejo de estados de carga
+async function cargarYMostrarDatos() {
+    const loading = document.querySelector('.loading');
+    const contenido = document.querySelector('.contenido');
+    const error = document.querySelector('.error');
+    
+    try {
+        // Mostrar loading
+        loading.style.display = 'block';
+        contenido.style.display = 'none';
+        error.style.display = 'none';
+        
+        const datos = await obtenerDatos('/api/datos');
+        
+        // Mostrar datos
+        contenido.innerHTML = datos.map(item => 
+            `&lt;div class="item"&gt;
+                &lt;h3&gt;${item.titulo}&lt;/h3&gt;
+                &lt;p&gt;${item.descripcion}&lt;/p&gt;
+            &lt;/div&gt;`
+        ).join('');
+        
+        contenido.style.display = 'block';
+        
+    } catch (err) {
+        // Mostrar error
+        error.textContent = 'Error al cargar los datos';
+        error.style.display = 'block';
+    } finally {
+        // Ocultar loading
+        loading.style.display = 'none';
+    }
+}</code></pre>
+
+    <h4>Validación de Formularios</h4>
+    <pre><code>// Validación personalizada
+function validarFormulario(form) {
+    const errores = [];
+    
+    // Validar email
+    const email = form.querySelector('#email');
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email.value)) {
+        errores.push({ campo: 'email', mensaje: 'Email inválido' });
+        marcarError(email);
+    }
+    
+    // Validar teléfono
+    const telefono = form.querySelector('#telefono');
+    const telRegex = /^[0-9]{9}$/;
+    if (telefono.value && !telRegex.test(telefono.value)) {
+        errores.push({ campo: 'telefono', mensaje: 'Teléfono debe tener 9 dígitos' });
+        marcarError(telefono);
+    }
+    
+    // Validar contraseña
+    const password = form.querySelector('#password');
+    if (password.value.length < 8) {
+        errores.push({ campo: 'password', mensaje: 'Contraseña debe tener al menos 8 caracteres' });
+        marcarError(password);
+    }
+    
+    return errores;
+}
+
+function marcarError(campo) {
+    campo.classList.add('error');
+    campo.setAttribute('aria-invalid', 'true');
+}
+
+function limpiarErrores(form) {
+    form.querySelectorAll('.error').forEach(campo => {
+        campo.classList.remove('error');
+        campo.removeAttribute('aria-invalid');
+    });
+    
+    form.querySelectorAll('.mensaje-error').forEach(mensaje => {
+        mensaje.remove();
+    });
+}
+
+function mostrarErrores(errores) {
+    errores.forEach(error => {
+        const campo = document.querySelector(`#${error.campo}`);
+        const mensaje = document.createElement('div');
+        mensaje.className = 'mensaje-error';
+        mensaje.textContent = error.mensaje;
+        campo.parentNode.appendChild(mensaje);
+    });
+}
+
+// Validación en tiempo real
+document.querySelectorAll('input').forEach(input => {
+    input.addEventListener('blur', () => {
+        validarCampo(input);
+    });
+    
+    input.addEventListener('input', () => {
+        if (input.classList.contains('error')) {
+            validarCampo(input);
+        }
+    });
+});
+
+function validarCampo(campo) {
+    // Limpiar errores previos del campo
+    campo.classList.remove('error');
+    const mensajeError = campo.parentNode.querySelector('.mensaje-error');
+    if (mensajeError) {
+        mensajeError.remove();
+    }
+    
+    // Validar según el tipo de campo
+    let esValido = true;
+    let mensaje = '';
+    
+    if (campo.type === 'email') {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (campo.value && !emailRegex.test(campo.value)) {
+            esValido = false;
+            mensaje = 'Email inválido';
+        }
+    }
+    
+    if (!esValido) {
+        marcarError(campo);
+        const div = document.createElement('div');
+        div.className = 'mensaje-error';
+        div.textContent = mensaje;
+        campo.parentNode.appendChild(div);
+    }
+}</code></pre>
+</div>
+
+<div class="content-section">
+    <h2>2.4. Frameworks JavaScript</h2>
+
+    <h3>React</h3>
+
+    <h4>Conceptos Fundamentales</h4>
+    <ul>
+        <li><strong>Componentes:</strong> Piezas reutilizables de UI con lógica encapsulada</li>
+        <li><strong>JSX:</strong> Extensión de sintaxis que permite escribir HTML en JavaScript</li>
+        <li><strong>Props:</strong> Datos pasados de componente padre a hijo (inmutables)</li>
+        <li><strong>State:</strong> Estado interno del componente (mutable)</li>
+        <li><strong>Virtual DOM:</strong> Representación en memoria del DOM que optimiza actualizaciones</li>
+    </ul>
+
+    <h4>Componente Funcional con Hooks</h4>
+    <pre><code>import React, { useState, useEffect } from 'react';
+
+function Contador({ inicial = 0, onCambio }) {
+    // Hook de estado
+    const [contador, setContador] = useState(inicial);
+    const [mensaje, setMensaje] = useState('');
+    
+    // Hook de efecto - se ejecuta después del render
+    useEffect(() => {
+        document.title = `Contador: ${contador}`;
+        
+        // Notificar al componente padre
+        if (onCambio) {
+            onCambio(contador);
+        }
+        
+        // Cleanup function (opcional)
+        return () => {
+            document.title = 'Mi App';
+        };
+    }, [contador, onCambio]); // Dependencias
+    
+    // Event handlers
+    const incrementar = () => {
+        setContador(prev => prev + 1);
+        setMensaje('¡Incrementado!');
+        setTimeout(() => setMensaje(''), 2000);
+    };
+    
+    const decrementar = () => {
+        setContador(prev => prev - 1);
+        setMensaje('¡Decrementado!');
+        setTimeout(() => setMensaje(''), 2000);
+    };
+    
+    const reset = () => {
+        setContador(inicial);
+        setMensaje('Reiniciado');
+        setTimeout(() => setMensaje(''), 2000);
+    };
+    
+    return (
+        &lt;div className="contador"&gt;
+            &lt;h2&gt;Contador: {contador}&lt;/h2&gt;
+            
+            {mensaje && (
+                &lt;p className={`mensaje ${contador > inicial ? 'positivo' : 'negativo'}`}&gt;
+                    {mensaje}
+                &lt;/p&gt;
+            )}
+            
+            &lt;div className="botones"&gt;
+                &lt;button onClick={decrementar} disabled={contador <= 0}&gt;
+                    -
+                &lt;/button&gt;
+                &lt;button onClick={reset}&gt;
+                    Reset
+                &lt;/button&gt;
+                &lt;button onClick={incrementar}&gt;
+                    +
+                &lt;/button&gt;
+            &lt;/div&gt;
+            
+            {contador > 10 && (
+                &lt;div className="alerta"&gt;
+                    ¡Contador muy alto!
+                &lt;/div&gt;
+            )}
+        &lt;/div&gt;
+    );
+}
+
+export default Contador;</code></pre>
+
+    <h4>Lista de Elementos con Estado</h4>
+    <pre><code>import React, { useState } from 'react';
+
+function ListaTareas() {
+    const [tareas, setTareas] = useState([]);
+    const [nuevaTarea, setNuevaTarea] = useState('');
+    
+    const agregarTarea = (e) => {
+        e.preventDefault();
+        if (nuevaTarea.trim()) {
+            const tarea = {
+                id: Date.now(),
+                texto: nuevaTarea.trim(),
+                completada: false
+            };
+            setTareas(prev => [...prev, tarea]);
+            setNuevaTarea('');
+        }
+    };
+    
+    const toggleTarea = (id) => {
+        setTareas(prev => 
+            prev.map(tarea => 
+                tarea.id === id 
+                    ? { ...tarea, completada: !tarea.completada }
+                    : tarea
+            )
+        );
+    };
+    
+    const eliminarTarea = (id) => {
+        setTareas(prev => prev.filter(tarea => tarea.id !== id));
+    };
+    
+    const tareasCompletadas = tareas.filter(t => t.completada).length;
+    
+    return (
+        &lt;div className="lista-tareas"&gt;
+            &lt;h2&gt;Lista de Tareas&lt;/h2&gt;
+            
+            &lt;form onSubmit={agregarTarea}&gt;
+                &lt;input
+                    type="text"
+                    value={nuevaTarea}
+                    onChange={(e) => setNuevaTarea(e.target.value)}
+                    placeholder="Nueva tarea..."
+                    className="input-tarea"
+                /&gt;
+                &lt;button type="submit"&gt;Agregar&lt;/button&gt;
+            &lt;/form&gt;
+            
+            &lt;div className="estadisticas"&gt;
+                Total: {tareas.length} | Completadas: {tareasCompletadas}
+            &lt;/div&gt;
+            
+            &lt;ul&gt;
+                {tareas.map(tarea => (
+                    &lt;li key={tarea.id} className={tarea.completada ? 'completada' : ''}&gt;
+                        &lt;input 
+                            type="checkbox" 
+                            checked={tarea.completada}
+                            onChange={() => toggleTarea(tarea.id)}
+                        /&gt;
+                        &lt;span&gt;{tarea.texto}&lt;/span&gt;
+                        &lt;button 
+                            onClick={() => eliminarTarea(tarea.id)}
+                            className="btn-eliminar"
+                        &gt;
+                            ×
+                        &lt;/button&gt;
+                    &lt;/li&gt;
+                ))}
+            &lt;/ul&gt;
+            
+            {tareas.length === 0 && (
+                &lt;p className="mensaje-vacio"&gt;No hay tareas. ¡Agrega una!&lt;/p&gt;
+            )}
+        &lt;/div&gt;
+    );
+}</code></pre>
+
+    <h3>Angular</h3>
+
+    <h4>Componente Angular con TypeScript</h4>
+    <pre><code>// contador.component.ts
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-contador',
+  template: `
+    &lt;div class="contador"&gt;
+      &lt;h2&gt;Contador: { { contador } }&lt;/h2&gt;
+      
+      &lt;p *ngIf="mensaje" [class]="mensajeClase"&gt;
+        { { mensaje } }
+      &lt;/p&gt;
+      
+      &lt;div class="botones"&gt;
+        &lt;button (click)="decrementar()" [disabled]="contador <= 0"&gt;
+          -
+        &lt;/button&gt;
+        &lt;button (click)="reset()"&gt;
+          Reset
+        &lt;/button&gt;
+        &lt;button (click)="incrementar()"&gt;
+          +
+        &lt;/button&gt;
+      &lt;/div&gt;
+      
+      &lt;!-- Two-way binding --&gt;
+      &lt;div class="control-manual"&gt;
+        &lt;label for="valor-manual"&gt;Valor manual:&lt;/label&gt;
+        &lt;input 
+          id="valor-manual"
+          type="number" 
+          [(ngModel)]="valorManual"
+          (keyup.enter)="establecerValor()"
+        &gt;
+        &lt;button (click)="establecerValor()"&gt;Establecer&lt;/button&gt;
+      &lt;/div&gt;
+      
+      &lt;div *ngIf="contador > 10" class="alerta"&gt;
+        ¡Contador muy alto!
+      &lt;/div&gt;
+      
+      &lt;!-- Lista con *ngFor --&gt;
+      &lt;ul *ngIf="historial.length > 0"&gt;
+        &lt;li *ngFor="let item of historial; trackBy: trackByFn; let i = index"&gt;
+          { { i + 1 } }. { { item.accion } } - Valor: { { item.valor } }
+        &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  `,
+  styleUrls: ['./contador.component.css']
+})
+export class ContadorComponent implements OnInit {
+  @Input() inicial: number = 0;
+  @Output() cambio = new EventEmitter&lt;number&gt;();
+  
+  contador: number = 0;
+  mensaje: string = '';
+  mensajeClase: string = '';
+  valorManual: number = 0;
+  historial: Array&lt;{accion: string, valor: number}&gt; = [];
+  
+  ngOnInit() {
+    this.contador = this.inicial;
+    this.valorManual = this.inicial;
+  }
+  
+  incrementar() {
+    this.contador++;
+    this.mostrarMensaje('Incrementado', 'positivo');
+    this.agregarAlHistorial('Incremento');
+    this.emitirCambio();
+  }
+  
+  decrementar() {
+    if (this.contador > 0) {
+      this.contador--;
+      this.mostrarMensaje('Decrementado', 'negativo');
+      this.agregarAlHistorial('Decremento');
+      this.emitirCambio();
+    }
+  }
+  
+  reset() {
+    this.contador = this.inicial;
+    this.valorManual = this.inicial;
+    this.mostrarMensaje('Reiniciado', 'neutral');
+    this.agregarAlHistorial('Reset');
+    this.emitirCambio();
+  }
+  
+  establecerValor() {
+    if (this.valorManual >= 0) {
+      this.contador = this.valorManual;
+      this.mostrarMensaje('Valor establecido', 'neutral');
+      this.agregarAlHistorial('Valor manual');
+      this.emitirCambio();
+    }
+  }
+  
+  private mostrarMensaje(texto: string, tipo: string) {
+    this.mensaje = texto;
+    this.mensajeClase = `mensaje ${tipo}`;
+    setTimeout(() => {
+      this.mensaje = '';
+      this.mensajeClase = '';
+    }, 2000);
+  }
+  
+  private agregarAlHistorial(accion: string) {
+    this.historial.push({ accion, valor: this.contador });
+    if (this.historial.length > 5) {
+      this.historial.shift(); // Mantener solo los últimos 5
+    }
+  }
+  
+  private emitirCambio() {
+    this.cambio.emit(this.contador);
+  }
+  
+  trackByFn(index: number, item: any) {
+    return index;
+  }
+}</code></pre>
+
+    <h4>Servicio Angular</h4>
+    <pre><code>// datos.service.ts
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError, BehaviorSubject } from 'rxjs';
+import { catchError, map, retry } from 'rxjs/operators';
+
+export interface Usuario {
+  id: number;
+  nombre: string;
+  email: string;
+  activo: boolean;
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class DatosService {
+  private apiUrl = '/api';
+  private usuariosSubject = new BehaviorSubject&lt;Usuario[]&gt;([]);
+  
+  // Observable público para que los componentes se suscriban
+  usuarios$ = this.usuariosSubject.asObservable();
+  
+  constructor(private http: HttpClient) {
+    this.cargarUsuarios();
+  }
+  
+  obtenerUsuarios(): Observable&lt;Usuario[]&gt; {
+    return this.http.get&lt;Usuario[]&gt;(`${this.apiUrl}/usuarios`)
+      .pipe(
+        retry(3), // Reintentar 3 veces en caso de error
+        catchError(this.manejarError)
+      );
+  }
+  
+  obtenerUsuario(id: number): Observable&lt;Usuario&gt; {
+    return this.http.get&lt;Usuario&gt;(`${this.apiUrl}/usuarios/${id}`)
+      .pipe(
+        catchError(this.manejarError)
+      );
+  }
+  
+  crearUsuario(usuario: Omit&lt;Usuario, 'id'&gt;): Observable&lt;Usuario&gt; {
+    return this.http.post&lt;Usuario&gt;(`${this.apiUrl}/usuarios`, usuario)
+      .pipe(
+        map(nuevoUsuario => {
+          // Actualizar el estado local
+          const usuariosActuales = this.usuariosSubject.value;
+          this.usuariosSubject.next([...usuariosActuales, nuevoUsuario]);
+          return nuevoUsuario;
+        }),
+        catchError(this.manejarError)
+      );
+  }
+  
+  actualizarUsuario(id: number, usuario: Partial&lt;Usuario&gt;): Observable&lt;Usuario&gt; {
+    return this.http.put&lt;Usuario&gt;(`${this.apiUrl}/usuarios/${id}`, usuario)
+      .pipe(
+        map(usuarioActualizado => {
+          // Actualizar el estado local
+          const usuarios = this.usuariosSubject.value;
+          const index = usuarios.findIndex(u => u.id === id);
+          if (index !== -1) {
+            usuarios[index] = usuarioActualizado;
+            this.usuariosSubject.next([...usuarios]);
+          }
+          return usuarioActualizado;
+        }),
+        catchError(this.manejarError)
+      );
+  }
+  
+  eliminarUsuario(id: number): Observable&lt;void&gt; {
+    return this.http.delete&lt;void&gt;(`${this.apiUrl}/usuarios/${id}`)
+      .pipe(
+        map(() => {
+          // Actualizar el estado local
+          const usuarios = this.usuariosSubject.value;
+          this.usuariosSubject.next(usuarios.filter(u => u.id !== id));
+        }),
+        catchError(this.manejarError)
+      );
+  }
+  
+  private cargarUsuarios() {
+    this.obtenerUsuarios().subscribe(
+      usuarios => this.usuariosSubject.next(usuarios),
+      error => console.error('Error al cargar usuarios:', error)
+    );
+  }
+  
+  private manejarError(error: HttpErrorResponse) {
+    let mensajeError = 'Ocurrió un error desconocido';
+    
+    if (error.error instanceof ErrorEvent) {
+      // Error del lado del cliente
+      mensajeError = `Error: ${error.error.message}`;
+    } else {
+      // Error del lado del servidor
+      mensajeError = `Código de error: ${error.status}, mensaje: ${error.message}`;
+    }
+    
+    console.error(mensajeError);
+    return throwError(mensajeError);
+  }
+}</code></pre>
+
+    <h3>Comparación de Frameworks</h3>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Aspecto</th>
+                <th>React</th>
+                <th>Angular</th>
+                <th>Vue.js</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Curva de aprendizaje</strong></td>
+                <td>Moderada</td>
+                <td>Empinada</td>
+                <td>Suave</td>
+            </tr>
+            <tr>
+                <td><strong>Tamaño del bundle</strong></td>
+                <td>Pequeño (librería)</td>
+                <td>Grande (framework completo)</td>
+                <td>Pequeño-Mediano</td>
+            </tr>
+            <tr>
+                <td><strong>Virtual DOM</strong></td>
+                <td>✅ Sí</td>
+                <td>❌ No (detección de cambios)</td>
+                <td>✅ Sí</td>
+            </tr>
+            <tr>
+                <td><strong>TypeScript</strong></td>
+                <td>Opcional</td>
+                <td>Por defecto</td>
+                <td>Opcional</td>
+            </tr>
+            <tr>
+                <td><strong>Data Binding</strong></td>
+                <td>Unidireccional</td>
+                <td>Bidireccional</td>
+                <td>Bidireccional</td>
+            </tr>
+            <tr>
+                <td><strong>Ecosistema</strong></td>
+                <td>Muy grande, flexible</td>
+                <td>Completo e integrado</td>
+                <td>Grande, creciendo</td>
+            </tr>
+            <tr>
+                <td><strong>Mejor para</strong></td>
+                <td>SPAs, aplicaciones complejas</td>
+                <td>Aplicaciones empresariales</td>
+                <td>Proyectos de cualquier tamaño</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>2.5. Mejores Prácticas y Herramientas</h3>
+
+    <h4>Performance</h4>
+    <ul>
+        <li><strong>Optimización de imágenes:</strong> WebP, lazy loading, responsive images</li>
+        <li><strong>Minificación:</strong> CSS/JS comprimidos para producción</li>
+        <li><strong>Critical CSS:</strong> CSS inline para contenido above-the-fold</li>
+        <li><strong>Code splitting:</strong> Cargar código según necesidad</li>
+        <li><strong>CDN:</strong> Servir assets desde ubicaciones cercanas al usuario</li>
+        <li><strong>Caching:</strong> Estrategias de caché para recursos estáticos</li>
+    </ul>
+
+    <h4>Accesibilidad</h4>
+    <ul>
+        <li><strong>Contraste:</strong> Mínimo 4.5:1 para texto normal</li>
+        <li><strong>Navegación por teclado:</strong> Todos los elementos interactivos accesibles</li>
+        <li><strong>ARIA:</strong> Atributos para contenido dinámico</li>
+        <li><strong>HTML semántico:</strong> Usar etiquetas apropiadas</li>
+        <li><strong>Testing:</strong> Herramientas como axe-core para auditorías</li>
+    </ul>
+
+    <h4>SEO</h4>
+    <ul>
+        <li><strong>Meta tags:</strong> title, description, keywords relevantes</li>
+        <li><strong>Open Graph:</strong> Para compartir en redes sociales</li>
+        <li><strong>Schema markup:</strong> Datos estructurados para buscadores</li>
+        <li><strong>URLs amigables:</strong> Descriptivas y limpias</li>
+        <li><strong>Sitemap:</strong> XML para indexación</li>
+    </ul>
+
+    <h4>Herramientas de Desarrollo</h4>
+    <ul>
+        <li><strong>Bundlers:</strong> Webpack, Vite, Parcel para empaquetar código</li>
+        <li><strong>Transpilers:</strong> Babel, TypeScript para compatibilidad</li>
+        <li><strong>Linters:</strong> ESLint, Stylelint para calidad de código</li>
+        <li><strong>Formatters:</strong> Prettier para formato consistente</li>
+        <li><strong>DevTools:</strong> Chrome DevTools, React DevTools, Vue DevTools</li>
+    </ul>
+
+    <div class="alert alert-success">
+        <h5>🎯 Checklist de UI/UX</h5>
+        <ul class="mb-0">
+            <li>✅ Diseño responsive en todos los dispositivos</li>
+            <li>✅ Contraste de color adecuado (4.5:1 mínimo)</li>
+            <li>✅ Navegación por teclado funcional</li>
+            <li>✅ Tiempos de carga rápidos (&lt;3 segundos)</li>
+            <li>✅ Feedback visual para todas las acciones</li>
+            <li>✅ Formularios con validación clara</li>
+            <li>✅ Contenido legible en todos los tamaños</li>
+            <li>✅ Funcionalidad básica sin JavaScript</li>
+            <li>✅ Pruebas en múltiples navegadores</li>
+            <li>✅ Optimización para motores de búsqueda</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}
