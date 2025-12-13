@@ -891,6 +891,46 @@ function validarCampo(campo) {
         <li><strong>FormGroup:</strong> Grupo de controles relacionados</li>
     </ul>
 
+    <h4>RxJS (Reactive Extensions)</h4>
+    <ul>
+        <li><strong>Observables:</strong> Streams de datos asíncronos</li>
+        <li><strong>Operators:</strong> map, filter, switchMap, mergeMap, catchError</li>
+        <li><strong>Subjects:</strong> BehaviorSubject, ReplaySubject para estado compartido</li>
+        <li><strong>Subscription:</strong> Gestión de suscripciones y memory leaks</li>
+        <li><strong>Async pipe:</strong> Suscripción automática en templates</li>
+        <li><strong>Hot vs Cold:</strong> Observables que comparten vs crean streams</li>
+    </ul>
+
+    <h4>Novedades de Angular (v15-17)</h4>
+    <ul>
+        <li><strong>Standalone Components (v14+):</strong> Componentes sin NgModules
+            <ul>
+                <li>Simplifica arquitectura eliminando módulos intermedios</li>
+                <li>Imports directos en el decorador @Component</li>
+                <li>Mejor tree-shaking y lazy loading</li>
+            </ul>
+        </li>
+        <li><strong>Signals (v16+):</strong> Nueva gestión de estado reactivo
+            <ul>
+                <li>Alternativa a RxJS para estado local</li>
+                <li>Mejor rendimiento con change detection granular</li>
+                <li>API más simple: signal(), computed(), effect()</li>
+                <li>Interoperabilidad con RxJS mediante toObservable()</li>
+            </ul>
+        </li>
+        <li><strong>Control Flow Syntax (v17):</strong> Nueva sintaxis de templates
+            <ul>
+                <li>@if, @for, @switch en lugar de *ngIf, *ngFor</li>
+                <li>Mejor rendimiento y type safety</li>
+                <li>Sintaxis más limpia y legible</li>
+            </ul>
+        </li>
+        <li><strong>New Application Builder (v17):</strong> Vite + esbuild por defecto</li>
+        <li><strong>Material Design Components (v15+):</strong> MDC-Web integration</li>
+        <li><strong>Optional Injectors:</strong> Dependency injection más flexible</li>
+        <li><strong>Image Optimization:</strong> NgOptimizedImage directive</li>
+    </ul>
+
     <h3>React</h3>
 
     <h4>Conceptos Fundamentales</h4>
@@ -936,6 +976,55 @@ function validarCampo(campo) {
         <li><strong>Updating:</strong> Props o state cambian</li>
         <li><strong>Unmounting:</strong> Componente se desmonta</li>
         <li><strong>useEffect:</strong> Maneja todos los ciclos de vida</li>
+    </ul>
+
+    <h4>Novedades de React (v16-18)</h4>
+    <ul>
+        <li><strong>Concurrent Features (v18):</strong> Renderizado concurrente
+            <ul>
+                <li>Automatic Batching: Agrupa múltiples actualizaciones</li>
+                <li>Transitions: Marca actualizaciones como no urgentes</li>
+                <li>Suspense: Carga diferida de componentes y datos</li>
+                <li>Streaming SSR: Server-side rendering progresivo</li>
+            </ul>
+        </li>
+        <li><strong>React Server Components (Experimental):</strong> Componentes que se ejecutan en servidor
+            <ul>
+                <li>Reducen bundle size del cliente</li>
+                <li>Acceso directo a base de datos</li>
+                <li>Mejor SEO y performance inicial</li>
+            </ul>
+        </li>
+        <li><strong>New Hooks (v18):</strong>
+            <ul>
+                <li>useId: IDs únicos para accesibilidad</li>
+                <li>useDeferredValue: Diferir actualizaciones no críticas</li>
+                <li>useTransition: Marcar actualizaciones como transiciones</li>
+                <li>useSyncExternalStore: Sincronizar con stores externos</li>
+            </ul>
+        </li>
+        <li><strong>Strict Mode Improvements:</strong> Detección de efectos secundarios</li>
+        <li><strong>React DevTools:</strong> Profiler mejorado y componentes timeline</li>
+        <li><strong>New JSX Transform:</strong> No requiere import React</li>
+    </ul>
+
+    <h4>Futuro de React</h4>
+    <ul>
+        <li><strong>React Forget (Compiler):</strong> Optimización automática
+            <ul>
+                <li>Memoización automática sin useMemo/useCallback</li>
+                <li>Elimina re-renders innecesarios</li>
+                <li>Mejor performance por defecto</li>
+            </ul>
+        </li>
+        <li><strong>Fiber Architecture:</strong> Motor de reconciliación actual
+            <ul>
+                <li>No abandona Virtual DOM, lo optimiza</li>
+                <li>Renderizado incremental e interrumpible</li>
+                <li>Priorización de actualizaciones</li>
+            </ul>
+        </li>
+        <li><strong>React Native New Architecture:</strong> Fabric + TurboModules</li>
     </ul>
 
     <h3>Comparación de Frameworks</h3>
