@@ -24,7 +24,15 @@
                     {% else %}
                         <div class="alert alert-danger">
                             <h5>❌ Incorrecto</h5>
-                            <p class="mb-0">La respuesta correcta era la opción que contenía: <strong>{{ pregunta['opcion' ~ pregunta.correcta|upper] }}</strong></p>
+                            {% if pregunta.correcta|lower == 'a' %}
+                                <p class="mb-0">La respuesta correcta era: <strong>{{ pregunta.opcionA }}</strong></p>
+                            {% elseif pregunta.correcta|lower == 'b' %}
+                                <p class="mb-0">La respuesta correcta era: <strong>{{ pregunta.opcionB }}</strong></p>
+                            {% elseif pregunta.correcta|lower == 'c' %}
+                                <p class="mb-0">La respuesta correcta era: <strong>{{ pregunta.opcionC }}</strong></p>
+                            {% else %}
+                                <p class="mb-0">La respuesta correcta era: <strong>{{ pregunta.opcionD }}</strong></p>
+                            {% endif %}
                         </div>
                     {% endif %}
 
