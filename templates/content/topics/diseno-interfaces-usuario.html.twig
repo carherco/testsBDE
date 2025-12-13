@@ -800,6 +800,97 @@ function validarCampo(campo) {
 <div class="content-section">
     <h2>2.4. Frameworks JavaScript</h2>
 
+    <h3>Angular</h3>
+
+    <h4>Arquitectura de Angular</h4>
+    <p>Angular es un framework completo basado en TypeScript que sigue el patrón MVC/MVVM.</p>
+
+    <h4>Componentes</h4>
+    <ul>
+        <li><strong>Definición:</strong> Clases TypeScript con decorador @Component</li>
+        <li><strong>Template:</strong> HTML con sintaxis de Angular (interpolación, directivas)</li>
+        <li><strong>Estilos:</strong> CSS encapsulado por componente</li>
+        <li><strong>Lifecycle hooks:</strong> ngOnInit, ngOnDestroy, ngOnChanges</li>
+        <li><strong>Data binding:</strong> Unidireccional y bidireccional</li>
+    </ul>
+
+    <h4>Servicios</h4>
+    <ul>
+        <li><strong>Propósito:</strong> Encapsular lógica de negocio reutilizable</li>
+        <li><strong>Decorador:</strong> @Injectable para dependency injection</li>
+        <li><strong>Singleton:</strong> Una instancia compartida por defecto</li>
+        <li><strong>Usos:</strong> Llamadas HTTP, gestión de estado, utilidades</li>
+    </ul>
+
+    <h4>Directivas</h4>
+    <ul>
+        <li><strong>Estructurales:</strong> *ngIf, *ngFor, *ngSwitch (modifican DOM)</li>
+        <li><strong>De atributo:</strong> ngClass, ngStyle, ngModel (modifican apariencia/comportamiento)</li>
+        <li><strong>Personalizadas:</strong> Crear directivas propias con @Directive</li>
+    </ul>
+
+    <h4>Pipes</h4>
+    <ul>
+        <li><strong>Función:</strong> Transformar datos en templates</li>
+        <li><strong>Built-in:</strong> date, currency, uppercase, lowercase, json</li>
+        <li><strong>Personalizados:</strong> Crear con @Pipe e implementar PipeTransform</li>
+        <li><strong>Sintaxis:</strong> { { valor | pipeName:parametro } }</li>
+    </ul>
+
+    <h4>Routing</h4>
+    <ul>
+        <li><strong>Router:</strong> Navegación entre vistas/componentes</li>
+        <li><strong>Routes:</strong> Configuración de rutas en RouterModule</li>
+        <li><strong>RouterOutlet:</strong> Donde se renderizan los componentes</li>
+        <li><strong>RouterLink:</strong> Navegación declarativa en templates</li>
+        <li><strong>Parámetros:</strong> Route params, query params, fragments</li>
+        <li><strong>Lazy loading:</strong> Carga diferida de módulos</li>
+    </ul>
+
+    <h4>Guards</h4>
+    <ul>
+        <li><strong>CanActivate:</strong> Controlar acceso a rutas</li>
+        <li><strong>CanDeactivate:</strong> Controlar salida de rutas</li>
+        <li><strong>CanLoad:</strong> Controlar carga de módulos lazy</li>
+        <li><strong>Resolve:</strong> Pre-cargar datos antes de activar ruta</li>
+        <li><strong>Usos:</strong> Autenticación, autorización, validaciones</li>
+    </ul>
+
+    <h4>HttpClient</h4>
+    <ul>
+        <li><strong>Servicio:</strong> Para realizar peticiones HTTP</li>
+        <li><strong>Observables:</strong> Basado en RxJS para programación reactiva</li>
+        <li><strong>Interceptors:</strong> Middleware para peticiones/respuestas</li>
+        <li><strong>Métodos:</strong> GET, POST, PUT, DELETE, PATCH</li>
+        <li><strong>Configuración:</strong> Headers, parámetros, opciones</li>
+    </ul>
+
+    <h4>Módulos</h4>
+    <ul>
+        <li><strong>NgModule:</strong> Decorador para organizar aplicación</li>
+        <li><strong>Declarations:</strong> Componentes, directivas, pipes</li>
+        <li><strong>Imports:</strong> Otros módulos necesarios</li>
+        <li><strong>Providers:</strong> Servicios disponibles</li>
+        <li><strong>Bootstrap:</strong> Componente raíz de la aplicación</li>
+    </ul>
+
+    <h4>Dependency Injection</h4>
+    <ul>
+        <li><strong>Inyector:</strong> Sistema para proveer dependencias</li>
+        <li><strong>Providers:</strong> Configuración de cómo crear servicios</li>
+        <li><strong>Jerarquía:</strong> Inyectores a nivel de módulo, componente</li>
+        <li><strong>Tokens:</strong> Identificadores para dependencias</li>
+    </ul>
+
+    <h4>Forms</h4>
+    <ul>
+        <li><strong>Template-driven:</strong> Formularios basados en templates</li>
+        <li><strong>Reactive:</strong> Formularios basados en código (FormBuilder)</li>
+        <li><strong>Validación:</strong> Validators síncronos y asíncronos</li>
+        <li><strong>FormControl:</strong> Control individual de campo</li>
+        <li><strong>FormGroup:</strong> Grupo de controles relacionados</li>
+    </ul>
+
     <h3>React</h3>
 
     <h4>Conceptos Fundamentales</h4>
@@ -811,396 +902,41 @@ function validarCampo(campo) {
         <li><strong>Virtual DOM:</strong> Representación en memoria del DOM que optimiza actualizaciones</li>
     </ul>
 
-    <h4>Componente Funcional con Hooks</h4>
-    <pre><code>import React, { useState, useEffect } from 'react';
+    <h4>Hooks</h4>
+    <ul>
+        <li><strong>useState:</strong> Gestionar estado en componentes funcionales</li>
+        <li><strong>useEffect:</strong> Efectos secundarios (API calls, suscripciones)</li>
+        <li><strong>useContext:</strong> Acceder a contexto React</li>
+        <li><strong>useReducer:</strong> Gestión de estado complejo</li>
+        <li><strong>useMemo:</strong> Memoización de valores calculados</li>
+        <li><strong>useCallback:</strong> Memoización de funciones</li>
+        <li><strong>Custom hooks:</strong> Lógica reutilizable entre componentes</li>
+    </ul>
 
-function Contador({ inicial = 0, onCambio }) {
-    // Hook de estado
-    const [contador, setContador] = useState(inicial);
-    const [mensaje, setMensaje] = useState('');
-    
-    // Hook de efecto - se ejecuta después del render
-    useEffect(() => {
-        document.title = `Contador: ${contador}`;
-        
-        // Notificar al componente padre
-        if (onCambio) {
-            onCambio(contador);
-        }
-        
-        // Cleanup function (opcional)
-        return () => {
-            document.title = 'Mi App';
-        };
-    }, [contador, onCambio]); // Dependencias
-    
-    // Event handlers
-    const incrementar = () => {
-        setContador(prev => prev + 1);
-        setMensaje('¡Incrementado!');
-        setTimeout(() => setMensaje(''), 2000);
-    };
-    
-    const decrementar = () => {
-        setContador(prev => prev - 1);
-        setMensaje('¡Decrementado!');
-        setTimeout(() => setMensaje(''), 2000);
-    };
-    
-    const reset = () => {
-        setContador(inicial);
-        setMensaje('Reiniciado');
-        setTimeout(() => setMensaje(''), 2000);
-    };
-    
-    return (
-        &lt;div className="contador"&gt;
-            &lt;h2&gt;Contador: {contador}&lt;/h2&gt;
-            
-            {mensaje && (
-                &lt;p className={`mensaje ${contador > inicial ? 'positivo' : 'negativo'}`}&gt;
-                    {mensaje}
-                &lt;/p&gt;
-            )}
-            
-            &lt;div className="botones"&gt;
-                &lt;button onClick={decrementar} disabled={contador <= 0}&gt;
-                    -
-                &lt;/button&gt;
-                &lt;button onClick={reset}&gt;
-                    Reset
-                &lt;/button&gt;
-                &lt;button onClick={incrementar}&gt;
-                    +
-                &lt;/button&gt;
-            &lt;/div&gt;
-            
-            {contador > 10 && (
-                &lt;div className="alerta"&gt;
-                    ¡Contador muy alto!
-                &lt;/div&gt;
-            )}
-        &lt;/div&gt;
-    );
-}
+    <h4>Gestión de Estado</h4>
+    <ul>
+        <li><strong>Local state:</strong> useState para estado del componente</li>
+        <li><strong>Context API:</strong> Estado compartido sin prop drilling</li>
+        <li><strong>Redux:</strong> Librería externa para estado global</li>
+        <li><strong>Zustand:</strong> Alternativa ligera a Redux</li>
+    </ul>
 
-export default Contador;</code></pre>
+    <h4>Routing</h4>
+    <ul>
+        <li><strong>React Router:</strong> Librería para navegación SPA</li>
+        <li><strong>BrowserRouter:</strong> Router principal para aplicaciones web</li>
+        <li><strong>Route:</strong> Definir rutas y componentes</li>
+        <li><strong>Link/NavLink:</strong> Navegación declarativa</li>
+        <li><strong>useNavigate:</strong> Navegación programática</li>
+    </ul>
 
-    <h4>Lista de Elementos con Estado</h4>
-    <pre><code>import React, { useState } from 'react';
-
-function ListaTareas() {
-    const [tareas, setTareas] = useState([]);
-    const [nuevaTarea, setNuevaTarea] = useState('');
-    
-    const agregarTarea = (e) => {
-        e.preventDefault();
-        if (nuevaTarea.trim()) {
-            const tarea = {
-                id: Date.now(),
-                texto: nuevaTarea.trim(),
-                completada: false
-            };
-            setTareas(prev => [...prev, tarea]);
-            setNuevaTarea('');
-        }
-    };
-    
-    const toggleTarea = (id) => {
-        setTareas(prev => 
-            prev.map(tarea => 
-                tarea.id === id 
-                    ? { ...tarea, completada: !tarea.completada }
-                    : tarea
-            )
-        );
-    };
-    
-    const eliminarTarea = (id) => {
-        setTareas(prev => prev.filter(tarea => tarea.id !== id));
-    };
-    
-    const tareasCompletadas = tareas.filter(t => t.completada).length;
-    
-    return (
-        &lt;div className="lista-tareas"&gt;
-            &lt;h2&gt;Lista de Tareas&lt;/h2&gt;
-            
-            &lt;form onSubmit={agregarTarea}&gt;
-                &lt;input
-                    type="text"
-                    value={nuevaTarea}
-                    onChange={(e) => setNuevaTarea(e.target.value)}
-                    placeholder="Nueva tarea..."
-                    className="input-tarea"
-                /&gt;
-                &lt;button type="submit"&gt;Agregar&lt;/button&gt;
-            &lt;/form&gt;
-            
-            &lt;div className="estadisticas"&gt;
-                Total: {tareas.length} | Completadas: {tareasCompletadas}
-            &lt;/div&gt;
-            
-            &lt;ul&gt;
-                {tareas.map(tarea => (
-                    &lt;li key={tarea.id} className={tarea.completada ? 'completada' : ''}&gt;
-                        &lt;input 
-                            type="checkbox" 
-                            checked={tarea.completada}
-                            onChange={() => toggleTarea(tarea.id)}
-                        /&gt;
-                        &lt;span&gt;{tarea.texto}&lt;/span&gt;
-                        &lt;button 
-                            onClick={() => eliminarTarea(tarea.id)}
-                            className="btn-eliminar"
-                        &gt;
-                            ×
-                        &lt;/button&gt;
-                    &lt;/li&gt;
-                ))}
-            &lt;/ul&gt;
-            
-            {tareas.length === 0 && (
-                &lt;p className="mensaje-vacio"&gt;No hay tareas. ¡Agrega una!&lt;/p&gt;
-            )}
-        &lt;/div&gt;
-    );
-}</code></pre>
-
-    <h3>Angular</h3>
-
-    <h4>Componente Angular con TypeScript</h4>
-    <pre><code>// contador.component.ts
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-
-@Component({
-  selector: 'app-contador',
-  template: `
-    &lt;div class="contador"&gt;
-      &lt;h2&gt;Contador: { { contador } }&lt;/h2&gt;
-      
-      &lt;p *ngIf="mensaje" [class]="mensajeClase"&gt;
-        { { mensaje } }
-      &lt;/p&gt;
-      
-      &lt;div class="botones"&gt;
-        &lt;button (click)="decrementar()" [disabled]="contador <= 0"&gt;
-          -
-        &lt;/button&gt;
-        &lt;button (click)="reset()"&gt;
-          Reset
-        &lt;/button&gt;
-        &lt;button (click)="incrementar()"&gt;
-          +
-        &lt;/button&gt;
-      &lt;/div&gt;
-      
-      &lt;!-- Two-way binding --&gt;
-      &lt;div class="control-manual"&gt;
-        &lt;label for="valor-manual"&gt;Valor manual:&lt;/label&gt;
-        &lt;input 
-          id="valor-manual"
-          type="number" 
-          [(ngModel)]="valorManual"
-          (keyup.enter)="establecerValor()"
-        &gt;
-        &lt;button (click)="establecerValor()"&gt;Establecer&lt;/button&gt;
-      &lt;/div&gt;
-      
-      &lt;div *ngIf="contador > 10" class="alerta"&gt;
-        ¡Contador muy alto!
-      &lt;/div&gt;
-      
-      &lt;!-- Lista con *ngFor --&gt;
-      &lt;ul *ngIf="historial.length > 0"&gt;
-        &lt;li *ngFor="let item of historial; trackBy: trackByFn; let i = index"&gt;
-          { { i + 1 } }. { { item.accion } } - Valor: { { item.valor } }
-        &lt;/li&gt;
-      &lt;/ul&gt;
-    &lt;/div&gt;
-  `,
-  styleUrls: ['./contador.component.css']
-})
-export class ContadorComponent implements OnInit {
-  @Input() inicial: number = 0;
-  @Output() cambio = new EventEmitter&lt;number&gt;();
-  
-  contador: number = 0;
-  mensaje: string = '';
-  mensajeClase: string = '';
-  valorManual: number = 0;
-  historial: Array&lt;{accion: string, valor: number}&gt; = [];
-  
-  ngOnInit() {
-    this.contador = this.inicial;
-    this.valorManual = this.inicial;
-  }
-  
-  incrementar() {
-    this.contador++;
-    this.mostrarMensaje('Incrementado', 'positivo');
-    this.agregarAlHistorial('Incremento');
-    this.emitirCambio();
-  }
-  
-  decrementar() {
-    if (this.contador > 0) {
-      this.contador--;
-      this.mostrarMensaje('Decrementado', 'negativo');
-      this.agregarAlHistorial('Decremento');
-      this.emitirCambio();
-    }
-  }
-  
-  reset() {
-    this.contador = this.inicial;
-    this.valorManual = this.inicial;
-    this.mostrarMensaje('Reiniciado', 'neutral');
-    this.agregarAlHistorial('Reset');
-    this.emitirCambio();
-  }
-  
-  establecerValor() {
-    if (this.valorManual >= 0) {
-      this.contador = this.valorManual;
-      this.mostrarMensaje('Valor establecido', 'neutral');
-      this.agregarAlHistorial('Valor manual');
-      this.emitirCambio();
-    }
-  }
-  
-  private mostrarMensaje(texto: string, tipo: string) {
-    this.mensaje = texto;
-    this.mensajeClase = `mensaje ${tipo}`;
-    setTimeout(() => {
-      this.mensaje = '';
-      this.mensajeClase = '';
-    }, 2000);
-  }
-  
-  private agregarAlHistorial(accion: string) {
-    this.historial.push({ accion, valor: this.contador });
-    if (this.historial.length > 5) {
-      this.historial.shift(); // Mantener solo los últimos 5
-    }
-  }
-  
-  private emitirCambio() {
-    this.cambio.emit(this.contador);
-  }
-  
-  trackByFn(index: number, item: any) {
-    return index;
-  }
-}</code></pre>
-
-    <h4>Servicio Angular</h4>
-    <pre><code>// datos.service.ts
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError, BehaviorSubject } from 'rxjs';
-import { catchError, map, retry } from 'rxjs/operators';
-
-export interface Usuario {
-  id: number;
-  nombre: string;
-  email: string;
-  activo: boolean;
-}
-
-@Injectable({
-  providedIn: 'root'
-})
-export class DatosService {
-  private apiUrl = '/api';
-  private usuariosSubject = new BehaviorSubject&lt;Usuario[]&gt;([]);
-  
-  // Observable público para que los componentes se suscriban
-  usuarios$ = this.usuariosSubject.asObservable();
-  
-  constructor(private http: HttpClient) {
-    this.cargarUsuarios();
-  }
-  
-  obtenerUsuarios(): Observable&lt;Usuario[]&gt; {
-    return this.http.get&lt;Usuario[]&gt;(`${this.apiUrl}/usuarios`)
-      .pipe(
-        retry(3), // Reintentar 3 veces en caso de error
-        catchError(this.manejarError)
-      );
-  }
-  
-  obtenerUsuario(id: number): Observable&lt;Usuario&gt; {
-    return this.http.get&lt;Usuario&gt;(`${this.apiUrl}/usuarios/${id}`)
-      .pipe(
-        catchError(this.manejarError)
-      );
-  }
-  
-  crearUsuario(usuario: Omit&lt;Usuario, 'id'&gt;): Observable&lt;Usuario&gt; {
-    return this.http.post&lt;Usuario&gt;(`${this.apiUrl}/usuarios`, usuario)
-      .pipe(
-        map(nuevoUsuario => {
-          // Actualizar el estado local
-          const usuariosActuales = this.usuariosSubject.value;
-          this.usuariosSubject.next([...usuariosActuales, nuevoUsuario]);
-          return nuevoUsuario;
-        }),
-        catchError(this.manejarError)
-      );
-  }
-  
-  actualizarUsuario(id: number, usuario: Partial&lt;Usuario&gt;): Observable&lt;Usuario&gt; {
-    return this.http.put&lt;Usuario&gt;(`${this.apiUrl}/usuarios/${id}`, usuario)
-      .pipe(
-        map(usuarioActualizado => {
-          // Actualizar el estado local
-          const usuarios = this.usuariosSubject.value;
-          const index = usuarios.findIndex(u => u.id === id);
-          if (index !== -1) {
-            usuarios[index] = usuarioActualizado;
-            this.usuariosSubject.next([...usuarios]);
-          }
-          return usuarioActualizado;
-        }),
-        catchError(this.manejarError)
-      );
-  }
-  
-  eliminarUsuario(id: number): Observable&lt;void&gt; {
-    return this.http.delete&lt;void&gt;(`${this.apiUrl}/usuarios/${id}`)
-      .pipe(
-        map(() => {
-          // Actualizar el estado local
-          const usuarios = this.usuariosSubject.value;
-          this.usuariosSubject.next(usuarios.filter(u => u.id !== id));
-        }),
-        catchError(this.manejarError)
-      );
-  }
-  
-  private cargarUsuarios() {
-    this.obtenerUsuarios().subscribe(
-      usuarios => this.usuariosSubject.next(usuarios),
-      error => console.error('Error al cargar usuarios:', error)
-    );
-  }
-  
-  private manejarError(error: HttpErrorResponse) {
-    let mensajeError = 'Ocurrió un error desconocido';
-    
-    if (error.error instanceof ErrorEvent) {
-      // Error del lado del cliente
-      mensajeError = `Error: ${error.error.message}`;
-    } else {
-      // Error del lado del servidor
-      mensajeError = `Código de error: ${error.status}, mensaje: ${error.message}`;
-    }
-    
-    console.error(mensajeError);
-    return throwError(mensajeError);
-  }
-}</code></pre>
+    <h4>Ciclo de Vida</h4>
+    <ul>
+        <li><strong>Mounting:</strong> Componente se crea y monta</li>
+        <li><strong>Updating:</strong> Props o state cambian</li>
+        <li><strong>Unmounting:</strong> Componente se desmonta</li>
+        <li><strong>useEffect:</strong> Maneja todos los ciclos de vida</li>
+    </ul>
 
     <h3>Comparación de Frameworks</h3>
     <table class="table table-bordered">
