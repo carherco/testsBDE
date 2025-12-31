@@ -78,7 +78,222 @@
     <p>La elección pública/privada/consorcio depende de requisitos de <strong>gobernanza, privacidad, rendimiento y cumplimiento legal</strong>.</p>
 
     <h2 id="wallets">5. Seguridad de wallets y exchanges</h2>
-    <h3>Wallets (billeteras)</h3>
+    
+    <div class="alert alert-info">
+        <p><strong>Estrategia de Seguridad:</strong> La seguridad de wallets y exchanges varía: wallets (especialmente hardware) ofrecen control total y autocustodia, siendo ideales para el largo plazo, pero dependen del usuario para proteger la frase semilla, mientras que los exchanges son convenientes para operar, pero ceden la custodia de claves a un tercero, lo que los hace vulnerables a hacks y regulaciones, siendo una buena práctica usar una estrategia híbrida: fondos pequeños para operar en exchanges y la mayoría en una hardware wallet offline para mayor seguridad.</p>
+    </div>
+
+    <h3>¿Qué es un Wallet vs Exchange?</h3>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Wallet (Billetera)</h4>
+            <ul>
+                <li><strong>Definición:</strong> Software/hardware que almacena tus claves privadas</li>
+                <li><strong>Función principal:</strong> Guardar, enviar y recibir criptomonedas</li>
+                <li><strong>Control:</strong> Tú controlas tus claves privadas</li>
+                <li><strong>Analogía:</strong> Como tu billetera física con dinero en efectivo</li>
+                <li><strong>Ejemplos:</strong>
+                    <ul>
+                        <li>Hardware: Ledger, Trezor</li>
+                        <li>Software: MetaMask, Trust Wallet</li>
+                        <li>Móvil: Coinbase Wallet, Exodus</li>
+                    </ul>
+                </li>
+                <li><strong>Ventajas:</strong> Control total, privacidad, seguridad</li>
+                <li><strong>Desventajas:</strong> Responsabilidad total, no puedes "recuperar contraseña"</li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <h4>Exchange (Casa de Cambio)</h4>
+            <ul>
+                <li><strong>Definición:</strong> Plataforma online para comprar, vender e intercambiar criptomonedas</li>
+                <li><strong>Función principal:</strong> Trading, conversión entre cripto y dinero fiat</li>
+                <li><strong>Control:</strong> El exchange controla las claves (custodia)</li>
+                <li><strong>Analogía:</strong> Como un banco que guarda tu dinero</li>
+                <li><strong>Ejemplos:</strong>
+                    <ul>
+                        <li>Centralizados: Binance, Coinbase, Kraken</li>
+                        <li>Descentralizados: Uniswap, PancakeSwap</li>
+                    </ul>
+                </li>
+                <li><strong>Ventajas:</strong> Fácil de usar, soporte al cliente, trading avanzado</li>
+                <li><strong>Desventajas:</strong> Riesgo de hack, no controlas las claves</li>
+            </ul>
+        </div>
+    </div>
+
+    <h4>Diferencias Clave</h4>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Aspecto</th>
+                <th>Wallet</th>
+                <th>Exchange</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Control de claves</strong></td>
+                <td>✅ Tú tienes las claves</td>
+                <td>❌ El exchange tiene las claves</td>
+            </tr>
+            <tr>
+                <td><strong>Propósito principal</strong></td>
+                <td>Almacenar y transferir</td>
+                <td>Comprar, vender, intercambiar</td>
+            </tr>
+            <tr>
+                <td><strong>Seguridad</strong></td>
+                <td>Depende de ti</td>
+                <td>Depende del exchange</td>
+            </tr>
+            <tr>
+                <td><strong>Recuperación</strong></td>
+                <td>Solo con seed phrase</td>
+                <td>Soporte puede ayudar</td>
+            </tr>
+            <tr>
+                <td><strong>Trading</strong></td>
+                <td>Limitado o ninguno</td>
+                <td>✅ Funcionalidad principal</td>
+            </tr>
+            <tr>
+                <td><strong>Conexión a internet</strong></td>
+                <td>Opcional (hardware wallets)</td>
+                <td>✅ Siempre requerida</td>
+            </tr>
+            <tr>
+                <td><strong>Regulación</strong></td>
+                <td>No aplica</td>
+                <td>Sujeto a regulaciones</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="alert alert-warning">
+        <h5>🔑 Regla de Oro</h5>
+        <p><strong>"Not your keys, not your crypto"</strong></p>
+        <p class="mb-0">Si no controlas las claves privadas (como en un exchange), técnicamente no posees las criptomonedas. El exchange puede congelar tu cuenta, ser hackeado, o quebrar.</p>
+    </div>
+
+    <h3>Seguridad en Wallets (Billeteras)</h3>
+    
+    <h4>Autocustodia</h4>
+    <ul>
+        <li><strong>Control total:</strong> Tienes control completo sobre tus claves privadas</li>
+        <li><strong>Responsabilidad total:</strong> Eres responsable de la seguridad de tus fondos</li>
+        <li><strong>Principio:</strong> "Not your keys, not your crypto"</li>
+    </ul>
+
+    <h4>Hardware Wallets (Frío)</h4>
+    <ul>
+        <li><strong>La opción más segura:</strong> Almacenan claves offline</li>
+        <li><strong>Protección:</strong> Inmunes a malware y hacks remotos</li>
+        <li><strong>Ejemplos:</strong> Ledger, Trezor, KeepKey</li>
+        <li><strong>Uso ideal:</strong> Almacenamiento a largo plazo de grandes cantidades</li>
+    </ul>
+
+    <h4>Software Wallets (Caliente)</h4>
+    <ul>
+        <li><strong>Conectadas a internet:</strong> Aplicaciones móviles o de escritorio</li>
+        <li><strong>Más convenientes:</strong> Fácil acceso para transacciones frecuentes</li>
+        <li><strong>Más expuestas:</strong> Vulnerables a malware y ataques</li>
+        <li><strong>Recomendación:</strong> Mantén solo pequeñas cantidades para uso diario</li>
+    </ul>
+
+    <h4>Frase Semilla (Seed Phrase)</h4>
+    <ul>
+        <li><strong>¡NUNCA la guardes digitalmente!</strong> No en fotos, emails, o archivos</li>
+        <li><strong>Papel físico:</strong> Escríbela en papel o metal resistente</li>
+        <li><strong>Almacenamiento seguro:</strong> Lugares seguros y separados</li>
+        <li><strong>Copias múltiples:</strong> En ubicaciones diferentes por seguridad</li>
+        <li><strong>Privacidad:</strong> Nunca la compartas con nadie</li>
+    </ul>
+
+    <h4>PIN y Contraseña</h4>
+    <ul>
+        <li><strong>Contraseñas fuertes:</strong> Únicas y complejas para cada wallet</li>
+        <li><strong>PIN fuerte:</strong> Para acceso al dispositivo hardware</li>
+        <li><strong>Gestores de contraseñas:</strong> Para generar y almacenar contraseñas seguras</li>
+    </ul>
+
+    <h4>Verificación</h4>
+    <ul>
+        <li><strong>Verificar en dispositivo:</strong> Siempre confirma direcciones y montos en la pantalla del hardware wallet</li>
+        <li><strong>No confiar solo en pantalla:</strong> La app o web puede estar comprometida</li>
+        <li><strong>Doble verificación:</strong> Compara direcciones carácter por carácter</li>
+    </ul>
+
+    <h3>Seguridad en Exchanges (Plataformas de Intercambio)</h3>
+
+    <h4>Riesgo de Terceros</h4>
+    <ul>
+        <li><strong>Custodia centralizada:</strong> El exchange controla tus claves, no tú</li>
+        <li><strong>Riesgos:</strong> Hacks, mala gestión, quiebra, regulaciones</li>
+        <li><strong>Historial:</strong> Mt. Gox, QuadrigaCX, FTX como ejemplos de fallos</li>
+    </ul>
+
+    <h4>2FA (Autenticación de Dos Factores)</h4>
+    <ul>
+        <li><strong>Obligatorio:</strong> Activa 2FA para iniciar sesión y retirar fondos</li>
+        <li><strong>Aplicaciones recomendadas:</strong> Google Authenticator, Authy</li>
+        <li><strong>Evitar SMS:</strong> Vulnerable a SIM swapping</li>
+    </ul>
+
+    <h4>Whitelisting (Lista Blanca)</h4>
+    <ul>
+        <li><strong>Direcciones preaprobadas:</strong> Solo permite retiros a direcciones verificadas</li>
+        <li><strong>Período de espera:</strong> Tiempo de confirmación para nuevas direcciones</li>
+        <li><strong>Protección adicional:</strong> Previene retiros no autorizados</li>
+    </ul>
+
+    <h4>Contraseñas Fuertes</h4>
+    <ul>
+        <li><strong>Únicas por exchange:</strong> Nunca reutilizar contraseñas</li>
+        <li><strong>Complejas:</strong> Combinación de letras, números y símbolos</li>
+        <li><strong>Gestores de contraseñas:</strong> Para generar y almacenar de forma segura</li>
+    </ul>
+
+    <h4>Almacenamiento en Frío del Exchange</h4>
+    <ul>
+        <li><strong>Buscar exchanges seguros:</strong> Que mantengan la mayoría de fondos offline</li>
+        <li><strong>Segregación de fondos:</strong> Fondos de usuarios separados de operaciones</li>
+        <li><strong>Auditorías:</strong> Proof of reserves y auditorías de seguridad</li>
+    </ul>
+
+    <h4>Protección contra Phishing</h4>
+    <ul>
+        <li><strong>Verificar URL:</strong> Siempre comprobar la dirección exacta del sitio</li>
+        <li><strong>Bookmarks:</strong> Usar marcadores en lugar de buscar en Google</li>
+        <li><strong>Emails sospechosos:</strong> Desconfiar de correos urgentes o alarmantes</li>
+        <li><strong>Verificación oficial:</strong> Contactar soporte oficial ante dudas</li>
+    </ul>
+
+    <h3>Estrategia Híbrida Recomendada</h3>
+
+    <h4>Para Trading Diario</h4>
+    <ul>
+        <li><strong>Fondos mínimos:</strong> Mantén solo el dinero que necesitas para operar</li>
+        <li><strong>Exchanges reputados:</strong> Usa plataformas establecidas con buena seguridad</li>
+        <li><strong>Retiros regulares:</strong> Mueve ganancias a cold storage periódicamente</li>
+    </ul>
+
+    <h4>Para Ahorro a Largo Plazo</h4>
+    <ul>
+        <li><strong>Hardware wallet:</strong> Mueve la mayoría de criptomonedas a autocustodia</li>
+        <li><strong>Almacenamiento offline:</strong> Mantén el dispositivo desconectado</li>
+        <li><strong>Backup seguro:</strong> Múltiples copias de la seed phrase en ubicaciones seguras</li>
+    </ul>
+
+    <h4>Regla 80/20</h4>
+    <ul>
+        <li><strong>80% en cold storage:</strong> Para hodling a largo plazo</li>
+        <li><strong>20% en hot wallets/exchanges:</strong> Para trading y gastos</li>
+        <li><strong>Ajustar según perfil:</strong> Traders activos pueden usar 50/50</li>
+    </ul>
+
+    <h3>Conceptos Técnicos de Wallets</h3>
     <p>Dos tipos esenciales:</p>
     <ul>
         <li><strong>Hot wallets:</strong> conectadas a Internet (exchange wallets, wallets de navegador). Convenientes pero más expuestas.</li>
@@ -117,11 +332,135 @@
         <li><strong>Testnets:</strong> redes de prueba (Goerli, Sepolia...) para desarrollo y testeo.</li>
     </ul>
 
+    <h4>Costes de Gas en Ethereum</h4>
+    <p>El gas mide el coste computacional de las operaciones. Cada operación tiene un coste fijo:</p>
+    
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Operación</th>
+                <th>Coste (Gas)</th>
+                <th>Descripción</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Transferencia ETH</strong></td>
+                <td>21,000</td>
+                <td>Transacción básica entre cuentas</td>
+            </tr>
+            <tr>
+                <td><strong>Consultar saldo</strong></td>
+                <td>0</td>
+                <td>Lectura de estado (no modifica blockchain)</td>
+            </tr>
+            <tr>
+                <td><strong>Calcular hash (SHA3)</strong></td>
+                <td>30 + 6/palabra</td>
+                <td>Función criptográfica básica</td>
+            </tr>
+            <tr>
+                <td><strong>Almacenar dato (SSTORE)</strong></td>
+                <td>20,000</td>
+                <td>Escribir nuevo valor en storage</td>
+            </tr>
+            <tr>
+                <td><strong>Modificar dato existente</strong></td>
+                <td>5,000</td>
+                <td>Cambiar valor ya almacenado</td>
+            </tr>
+            <tr>
+                <td><strong>Crear contrato</strong></td>
+                <td>32,000 + código</td>
+                <td>Desplegar nuevo smart contract</td>
+            </tr>
+            <tr>
+                <td><strong>Llamada a función</strong></td>
+                <td>2,300-9,000</td>
+                <td>Ejecutar función de contrato</td>
+            </tr>
+            <tr>
+                <td><strong>Transferencia ERC-20</strong></td>
+                <td>~65,000</td>
+                <td>Token transfer (incluye validaciones)</td>
+            </tr>
+            <tr>
+                <td><strong>Swap en DEX</strong></td>
+                <td>150,000-300,000</td>
+                <td>Intercambio en exchange descentralizado</td>
+            </tr>
+            <tr>
+                <td><strong>Mint NFT</strong></td>
+                <td>80,000-150,000</td>
+                <td>Crear nuevo token no fungible</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p><strong>Cálculo del coste:</strong> Gas usado × Gas price (gwei) = Coste total en ETH</p>
+    <p><strong>Ejemplo:</strong> Transferencia ETH con gas price de 20 gwei = 21,000 × 20 = 420,000 gwei = 0.00042 ETH</p>
+
     <h3>Hyperledger — visión práctica</h3>
     <p><strong>Qué es:</strong> conjunto de proyectos (Fabric, Sawtooth...) orientado a soluciones empresariales permissioned.</p>
+
+    <h4>Hyperledger Fabric - Arquitectura</h4>
     <ul>
-        <li><strong>Hyperledger Fabric:</strong> arquitectura modular, identidad gestionada (MSP), canales para privacidad y chaincode (smart contracts) en Go/Node.</li>
-        <li><strong>Casos de uso:</strong> supply chain, banca, industria donde la privacidad y control de participantes son críticos.</li>
+        <li><strong>Arquitectura modular:</strong> Componentes pluggables (consenso, membership, ledger)</li>
+        <li><strong>MSP (Membership Service Provider):</strong> Gestión de identidades y certificados</li>
+        <li><strong>Canales:</strong> Subredes privadas para transacciones confidenciales</li>
+        <li><strong>Peers:</strong> Nodos que mantienen el ledger y ejecutan chaincode</li>
+        <li><strong>Orderers:</strong> Nodos que ordenan transacciones y crean bloques</li>
+    </ul>
+
+    <h4>Smart Contracts en Hyperledger (Chaincode)</h4>
+    <ul>
+        <li><strong>Chaincode:</strong> Equivalente a smart contracts en Ethereum</li>
+        <li><strong>Lenguajes soportados:</strong> Go, Node.js, Java</li>
+        <li><strong>Ejecución:</strong> Se ejecuta en contenedores Docker aislados</li>
+        <li><strong>Estado:</strong> Acceso a world state (base de datos clave-valor)</li>
+        <li><strong>Funciones:</strong> Invoke (escribir) y Query (leer)</li>
+    </ul>
+
+    <h4>Transacciones en Hyperledger Fabric</h4>
+    <ol>
+        <li><strong>Propuesta:</strong> Cliente envía propuesta de transacción a peers</li>
+        <li><strong>Simulación:</strong> Peers ejecutan chaincode y devuelven resultado</li>
+        <li><strong>Endorsement:</strong> Peers firman la propuesta si es válida</li>
+        <li><strong>Ordenación:</strong> Orderer agrupa transacciones en bloques</li>
+        <li><strong>Validación:</strong> Peers validan y confirman transacciones</li>
+        <li><strong>Commit:</strong> Transacciones válidas se escriben al ledger</li>
+    </ol>
+
+    <h4>Mecanismos de Consenso en Hyperledger</h4>
+    <ul>
+        <li><strong>SOLO:</strong> Un solo orderer (desarrollo/testing)</li>
+        <li><strong>Kafka:</strong> Basado en Apache Kafka (deprecated)</li>
+        <li><strong>Raft:</strong> Algoritmo de consenso tolerante a fallos
+            <ul>
+                <li>Líder-seguidor con elección de líder</li>
+                <li>Tolerante a (n-1)/2 fallos de n nodos</li>
+                <li>Más simple que PBFT</li>
+            </ul>
+        </li>
+        <li><strong>PBFT (futuro):</strong> Practical Byzantine Fault Tolerance</li>
+    </ul>
+
+    <h4>Características Únicas de Hyperledger</h4>
+    <ul>
+        <li><strong>Sin criptomoneda nativa:</strong> No requiere tokens para operar</li>
+        <li><strong>Identidades conocidas:</strong> Todos los participantes están identificados</li>
+        <li><strong>Privacidad por diseño:</strong> Canales permiten transacciones privadas</li>
+        <li><strong>Rendimiento:</strong> Miles de TPS (vs ~15 en Ethereum)</li>
+        <li><strong>Finalidad:</strong> Transacciones son finales inmediatamente</li>
+    </ul>
+
+    <h4>Casos de Uso Empresariales</h4>
+    <ul>
+        <li><strong>Supply Chain:</strong> Trazabilidad de productos (Walmart, Maersk)</li>
+        <li><strong>Banca:</strong> Cartas de crédito, trade finance</li>
+        <li><strong>Seguros:</strong> Procesamiento automático de reclamaciones</li>
+        <li><strong>Salud:</strong> Historiales médicos seguros y compartidos</li>
+        <li><strong>Gobierno:</strong> Votación electrónica, registros públicos</li>
     </ul>
 
     <h3>Comparación práctica</h3>

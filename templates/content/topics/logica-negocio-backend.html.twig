@@ -1,0 +1,886 @@
+{% extends 'content/base.html.twig' %}
+
+{% block content_title %}{{ tema.nombre }}{% endblock %}
+
+{% block content_body %}
+<div class="content-section">
+    <h2>1. Diseño de Bases de Datos y Gestión de Datos</h2>
+
+    <h3>1.1. Normalización de Bases de Datos</h3>
+
+    <h4>¿Qué es la Normalización?</h4>
+    <p>Proceso de organizar datos en tablas para reducir redundancia y dependencias, mejorando la integridad de los datos.</p>
+
+    <h4>Formas Normales</h4>
+    <ul>
+        <li><strong>Primera Forma Normal (1NF):</strong>
+            <ul>
+                <li>Valores atómicos (no divisibles)</li>
+                <li>No grupos repetitivos</li>
+                <li>Cada columna contiene un solo valor</li>
+            </ul>
+        </li>
+        <li><strong>Segunda Forma Normal (2NF):</strong>
+            <ul>
+                <li>Cumple 1NF</li>
+                <li>Elimina dependencias funcionales parciales</li>
+                <li>Atributos no clave dependen completamente de la clave primaria</li>
+            </ul>
+        </li>
+        <li><strong>Tercera Forma Normal (3NF):</strong>
+            <ul>
+                <li>Cumple 2NF</li>
+                <li>Elimina dependencias transitivas</li>
+                <li>Atributos no clave no dependen de otros atributos no clave</li>
+            </ul>
+        </li>
+        <li><strong>Forma Normal de Boyce-Codd (BCNF):</strong>
+            <ul>
+                <li>Versión más estricta de 3NF</li>
+                <li>Elimina anomalías adicionales</li>
+            </ul>
+        </li>
+    </ul>
+
+    <div class="alert alert-info">
+        <strong>Trade-off:</strong> La normalización mejora la integridad pero puede afectar el rendimiento debido a más JOINs. A veces se desnormaliza intencionalmente para optimizar consultas frecuentes.
+    </div>
+
+    <h3>1.2. Integridad de Datos</h3>
+
+    <h4>Claves y Relaciones</h4>
+    <ul>
+        <li><strong>Clave Primaria:</strong> Identifica únicamente cada fila</li>
+        <li><strong>Clave Foránea:</strong> Referencia clave primaria de otra tabla
+            <ul>
+                <li>Garantiza integridad referencial</li>
+                <li>Opciones: CASCADE, SET NULL, RESTRICT</li>
+            </ul>
+        </li>
+        <li><strong>Clave Única:</strong> Garantiza unicidad sin ser primaria</li>
+    </ul>
+
+    <h4>Restricciones (Constraints)</h4>
+    <ul>
+        <li><strong>NOT NULL:</strong> Campo obligatorio</li>
+        <li><strong>CHECK:</strong> Validación de valores</li>
+        <li><strong>DEFAULT:</strong> Valor por defecto</li>
+        <li><strong>UNIQUE:</strong> Valores únicos</li>
+    </ul>
+
+    <h3>1.3. Transacciones ACID</h3>
+
+    <h4>Propiedades ACID</h4>
+    <ul>
+        <li><strong>Atomicidad:</strong> Todo o nada - la transacción se ejecuta completamente o no se ejecuta</li>
+        <li><strong>Consistencia:</strong> La base de datos pasa de un estado válido a otro estado válido</li>
+        <li><strong>Aislamiento:</strong> Las transacciones concurrentes no interfieren entre sí</li>
+        <li><strong>Durabilidad:</strong> Los cambios confirmados persisten incluso ante fallos del sistema</li>
+    </ul>
+
+    <h4>Control de Transacciones</h4>
+    <ul>
+        <li><strong>BEGIN/START TRANSACTION:</strong> Inicia transacción</li>
+        <li><strong>COMMIT:</strong> Confirma cambios</li>
+        <li><strong>ROLLBACK:</strong> Deshace cambios</li>
+        <li><strong>SAVEPOINT:</strong> Punto de guardado parcial</li>
+    </ul>
+
+    <h4>Problemas de Concurrencia</h4>
+    <ul>
+        <li><strong>Dirty Read:</strong> Leer datos no confirmados</li>
+        <li><strong>Non-repeatable Read:</strong> Diferentes valores en lecturas consecutivas</li>
+        <li><strong>Phantom Read:</strong> Nuevas filas aparecen entre lecturas</li>
+        <li><strong>Deadlock:</strong> Dos transacciones esperan recursos que la otra tiene</li>
+    </ul>
+
+    <h3>1.4. Índices y Optimización</h3>
+
+    <h4>Tipos de Índices</h4>
+    <ul>
+        <li><strong>B-Tree:</strong> Para rangos y ordenación (por defecto)</li>
+        <li><strong>Hash:</strong> Para búsquedas de igualdad exacta</li>
+        <li><strong>Bitmap:</strong> Para columnas con pocos valores distintos</li>
+        <li><strong>Full-text:</strong> Para búsquedas de texto</li>
+        <li><strong>Espaciales:</strong> Para datos geográficos</li>
+    </ul>
+
+    <h4>Consideraciones de Índices</h4>
+    <ul>
+        <li><strong>Ventajas:</strong> Mejoran velocidad de SELECT, WHERE, ORDER BY, JOIN</li>
+        <li><strong>Desventajas:</strong> Ralentizan INSERT/UPDATE/DELETE, consumen espacio</li>
+        <li><strong>Estrategia:</strong> Indexar columnas frecuentemente consultadas y claves foráneas</li>
+    </ul>
+
+    <h3>1.5. Vistas y Procedimientos Almacenados</h3>
+
+    <h4>Vistas (Views)</h4>
+    <ul>
+        <li><strong>Definición:</strong> Consulta SELECT almacenada que se comporta como tabla virtual</li>
+        <li><strong>Ventajas:</strong>
+            <ul>
+                <li>Seguridad: ocultar columnas sensibles</li>
+                <li>Simplicidad: encapsular consultas complejas</li>
+                <li>Abstracción: capa entre aplicación y esquema</li>
+            </ul>
+        </li>
+        <li><strong>Tipos:</strong>
+            <ul>
+                <li>Simples: actualizables</li>
+                <li>Complejas: solo lectura</li>
+                <li>Materializadas: almacenan resultados físicamente</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h4>Procedimientos Almacenados</h4>
+    <ul>
+        <li><strong>Definición:</strong> Conjunto de sentencias SQL precompiladas</li>
+        <li><strong>Ventajas:</strong>
+            <ul>
+                <li>Rendimiento: precompilados y cacheados</li>
+                <li>Seguridad: encapsulan lógica, previenen SQL injection</li>
+                <li>Reutilización: lógica centralizada</li>
+            </ul>
+        </li>
+        <li><strong>Desventajas:</strong>
+            <ul>
+                <li>Acoplamiento a SGBD específico</li>
+                <li>Dificultad para versionado y testing</li>
+                <li>Lógica de negocio en base de datos</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h4>Triggers</h4>
+    <ul>
+        <li><strong>Definición:</strong> Código que se ejecuta automáticamente ante eventos</li>
+        <li><strong>Tipos:</strong> BEFORE/AFTER INSERT/UPDATE/DELETE</li>
+        <li><strong>Usos:</strong> Auditoría, validación, sincronización, cálculos automáticos</li>
+        <li><strong>Precauciones:</strong> Pueden afectar rendimiento y crear dependencias ocultas</li>
+    </ul>
+
+    <h3>1.6. ORM (Object-Relational Mapping)</h3>
+
+    <h4>¿Qué es un ORM?</h4>
+    <p>Herramienta que mapea objetos de programación a tablas de base de datos, abstrayendo SQL.</p>
+
+    <h4>Ventajas del ORM</h4>
+    <ul>
+        <li><strong>Productividad:</strong> Menos código SQL manual</li>
+        <li><strong>Portabilidad:</strong> Independencia del SGBD</li>
+        <li><strong>Seguridad:</strong> Prevención automática de SQL injection</li>
+        <li><strong>Mantenibilidad:</strong> Código más legible y mantenible</li>
+    </ul>
+
+    <h4>Desventajas del ORM</h4>
+    <ul>
+        <li><strong>Rendimiento:</strong> Consultas SQL generadas pueden ser ineficientes</li>
+        <li><strong>Complejidad:</strong> Consultas complejas pueden ser difíciles de expresar</li>
+        <li><strong>Abstracción:</strong> Pérdida de control sobre SQL específico</li>
+        <li><strong>Curva de aprendizaje:</strong> Requiere conocer el ORM además de SQL</li>
+    </ul>
+
+    <h4>ORMs Populares</h4>
+    <ul>
+        <li><strong>Java:</strong> Hibernate, JPA, MyBatis</li>
+        <li><strong>.NET:</strong> Entity Framework, Dapper</li>
+        <li><strong>Python:</strong> SQLAlchemy, Django ORM</li>
+        <li><strong>Node.js:</strong> Sequelize, TypeORM, Prisma</li>
+        <li><strong>PHP:</strong> Eloquent (Laravel), Doctrine</li>
+    </ul>
+
+    <h3>1.7. Patrones de Acceso a Datos</h3>
+
+    <h4>Repository Pattern</h4>
+    <ul>
+        <li><strong>Propósito:</strong> Abstrae acceso a datos, separando lógica de negocio de persistencia</li>
+        <li><strong>Beneficios:</strong>
+            <ul>
+                <li>Testabilidad: fácil crear mocks</li>
+                <li>Flexibilidad: cambiar tecnología de persistencia</li>
+                <li>Separación de responsabilidades</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h4>Unit of Work Pattern</h4>
+    <ul>
+        <li><strong>Propósito:</strong> Mantiene lista de objetos afectados por transacción</li>
+        <li><strong>Beneficios:</strong>
+            <ul>
+                <li>Agrupa operaciones en transacción única</li>
+                <li>Mejora rendimiento (batch operations)</li>
+                <li>Garantiza consistencia</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3>1.8. Escalabilidad de Bases de Datos</h3>
+
+    <h4>Escalabilidad Vertical vs Horizontal</h4>
+    <ul>
+        <li><strong>Vertical (Scale Up):</strong> Más potencia al servidor existente</li>
+        <li><strong>Horizontal (Scale Out):</strong> Más servidores</li>
+    </ul>
+
+    <h4>Técnicas de Escalabilidad</h4>
+    <ul>
+        <li><strong>Read Replicas:</strong> Copias de solo lectura para distribuir carga</li>
+        <li><strong>Sharding:</strong> Particionamiento horizontal entre servidores</li>
+        <li><strong>Connection Pooling:</strong> Reutilización de conexiones</li>
+        <li><strong>Caching:</strong> Redis, Memcached para datos frecuentes</li>
+    </ul>
+
+    <h4>Sharding</h4>
+    <ul>
+        <li><strong>Definición:</strong> Dividir datos horizontalmente entre múltiples servidores</li>
+        <li><strong>Estrategias:</strong>
+            <ul>
+                <li>Por rango: dividir por rangos de valores</li>
+                <li>Por hash: usar función hash de clave</li>
+                <li>Por directorio: tabla de mapeo</li>
+            </ul>
+        </li>
+        <li><strong>Desafíos:</strong>
+            <ul>
+                <li>Consultas entre shards</li>
+                <li>Transacciones distribuidas</li>
+                <li>Rebalanceo de datos</li>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+<div class="content-section">
+    <h2>2. Desarrollo de APIs y Servicios Web</h2>
+
+    <h3>2.1. APIs REST</h3>
+
+    <h4>Principios REST</h4>
+    <ul>
+        <li><strong>Stateless:</strong> Sin estado en el servidor entre peticiones</li>
+        <li><strong>Client-Server:</strong> Separación clara de responsabilidades</li>
+        <li><strong>Cacheable:</strong> Respuestas pueden ser cacheadas</li>
+        <li><strong>Uniform Interface:</strong> Interfaz uniforme y consistente</li>
+        <li><strong>Layered System:</strong> Arquitectura en capas</li>
+        <li><strong>Code on Demand:</strong> Opcional - enviar código ejecutable</li>
+    </ul>
+
+    <h4>Métodos HTTP</h4>
+    <ul>
+        <li><strong>GET:</strong> Obtener recursos (idempotente, seguro)</li>
+        <li><strong>POST:</strong> Crear recursos (no idempotente)</li>
+        <li><strong>PUT:</strong> Actualizar recurso completo (idempotente)</li>
+        <li><strong>PATCH:</strong> Actualización parcial (no idempotente)</li>
+        <li><strong>DELETE:</strong> Eliminar recurso (idempotente)</li>
+        <li><strong>HEAD:</strong> Como GET pero solo headers</li>
+        <li><strong>OPTIONS:</strong> Métodos permitidos</li>
+    </ul>
+
+    <h4>Códigos de Estado HTTP</h4>
+    <ul>
+        <li><strong>2xx Éxito:</strong>
+            <ul>
+                <li>200 OK - Petición exitosa</li>
+                <li>201 Created - Recurso creado</li>
+                <li>204 No Content - Éxito sin contenido</li>
+            </ul>
+        </li>
+        <li><strong>3xx Redirección:</strong>
+            <ul>
+                <li>301 Moved Permanently</li>
+                <li>304 Not Modified</li>
+            </ul>
+        </li>
+        <li><strong>4xx Error del Cliente:</strong>
+            <ul>
+                <li>400 Bad Request - Petición malformada</li>
+                <li>401 Unauthorized - No autenticado</li>
+                <li>403 Forbidden - No autorizado</li>
+                <li>404 Not Found - Recurso no encontrado</li>
+                <li>429 Too Many Requests - Rate limiting</li>
+            </ul>
+        </li>
+        <li><strong>5xx Error del Servidor:</strong>
+            <ul>
+                <li>500 Internal Server Error</li>
+                <li>502 Bad Gateway</li>
+                <li>503 Service Unavailable</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h4>Idempotencia</h4>
+    <p>Múltiples peticiones idénticas tienen el mismo efecto que una sola:</p>
+    <ul>
+        <li><strong>Idempotentes:</strong> GET, PUT, DELETE, HEAD, OPTIONS</li>
+        <li><strong>No idempotentes:</strong> POST, PATCH</li>
+        <li><strong>Beneficio:</strong> Permite reintentos seguros ante fallos de red</li>
+    </ul>
+
+    <div class="alert alert-warning">
+        <strong>Ejemplo de PATCH no idempotente:</strong>
+        <pre><code>PATCH /productos/10
+{
+  "stock": -1
+}</code></pre>
+        <p class="mb-0">Cada petición reduce el stock en 1. Múltiples peticiones tienen efectos acumulativos diferentes, por lo que PATCH no es idempotente por naturaleza.</p>
+    </div>
+
+    <h3>2.2. Diseño de APIs</h3>
+
+    <h4>Convenciones de Naming</h4>
+    <ul>
+        <li><strong>Recursos:</strong> Sustantivos en plural (/users, /orders)</li>
+        <li><strong>Jerarquías:</strong> /users/123/orders/456</li>
+        <li><strong>Filtros:</strong> Query parameters (?status=active&sort=name)</li>
+        <li><strong>Versionado:</strong> /v1/users o Accept: application/vnd.api+json;version=1</li>
+    </ul>
+
+    <h4>Versionado de APIs</h4>
+    <ul>
+        <li><strong>URL Path:</strong> /v1/users, /v2/users</li>
+        <li><strong>Query Parameter:</strong> /users?version=1</li>
+        <li><strong>Header:</strong> Accept: application/vnd.api+json;version=1</li>
+        <li><strong>Subdomain:</strong> v1.api.example.com</li>
+    </ul>
+
+    <h4>Versionado Semántico (SemVer)</h4>
+    <p><strong>MAJOR.MINOR.PATCH</strong></p>
+    <ul>
+        <li><strong>MAJOR:</strong> Cambios incompatibles</li>
+        <li><strong>MINOR:</strong> Funcionalidad compatible hacia atrás</li>
+        <li><strong>PATCH:</strong> Corrección de bugs compatibles</li>
+    </ul>
+
+    <h3>2.3. Paginación</h3>
+
+    <h4>Métodos de Paginación</h4>
+    <ul>
+        <li><strong>Offset/Limit:</strong>
+            <ul>
+                <li>Simple: ?page=2&size=20 o ?offset=20&limit=20</li>
+                <li>Problema: inconsistente con datos cambiantes</li>
+            </ul>
+        </li>
+        <li><strong>Cursor-based:</strong>
+            <ul>
+                <li>Usa cursor opaco: ?cursor=eyJpZCI6MTIzfQ==</li>
+                <li>Consistente pero no permite saltos</li>
+            </ul>
+        </li>
+        <li><strong>Keyset:</strong>
+            <ul>
+                <li>Usa último valor: ?after_id=123</li>
+                <li>Eficiente y consistente</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h4>Metadata de Paginación</h4>
+    <ul>
+        <li>Total de elementos</li>
+        <li>Página actual</li>
+        <li>Total de páginas</li>
+        <li>Enlaces a siguiente/anterior</li>
+        <li>Tamaño de página</li>
+    </ul>
+
+    <h3>2.4. Content Negotiation</h3>
+
+    <h4>Headers de Negociación</h4>
+    <ul>
+        <li><strong>Accept:</strong> Formatos aceptados (application/json, text/xml)</li>
+        <li><strong>Accept-Language:</strong> Idiomas preferidos</li>
+        <li><strong>Accept-Encoding:</strong> Codificaciones (gzip, deflate)</li>
+        <li><strong>Content-Type:</strong> Formato del contenido enviado</li>
+    </ul>
+
+    <h3>2.5. HATEOAS</h3>
+
+    <h4>Hypermedia As The Engine Of Application State</h4>
+    <ul>
+        <li><strong>Principio:</strong> Respuestas incluyen enlaces que guían al cliente</li>
+        <li><strong>Beneficios:</strong>
+            <ul>
+                <li>API autodescriptiva</li>
+                <li>Reduce acoplamiento cliente-servidor</li>
+                <li>Evolución de API sin romper clientes</li>
+            </ul>
+        </li>
+        <li><strong>Ejemplo:</strong> Respuesta incluye links a recursos relacionados y acciones disponibles</li>
+    </ul>
+
+    <h3>2.6. GraphQL</h3>
+
+    <h4>¿Qué es GraphQL?</h4>
+    <ul>
+        <li><strong>Definición:</strong> Lenguaje de consulta donde el cliente especifica exactamente qué datos necesita</li>
+        <li><strong>Características:</strong>
+            <ul>
+                <li>Un único endpoint</li>
+                <li>Evita over-fetching y under-fetching</li>
+                <li>Tipado fuerte</li>
+                <li>Introspección</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h4>GraphQL vs REST</h4>
+    <ul>
+        <li><strong>GraphQL:</strong> Flexible, un endpoint, cliente controla datos</li>
+        <li><strong>REST:</strong> Múltiples endpoints, cacheable, estándar establecido</li>
+    </ul>
+
+    <h3>2.7. Middleware y Arquitectura</h3>
+
+    <h4>Middleware</h4>
+    <ul>
+        <li><strong>Definición:</strong> Funciones que procesan peticiones antes del handler final</li>
+        <li><strong>Usos comunes:</strong>
+            <ul>
+                <li>Autenticación y autorización</li>
+                <li>Logging y auditoría</li>
+                <li>Validación de entrada</li>
+                <li>Manejo de errores</li>
+                <li>Rate limiting</li>
+                <li>CORS</li>
+            </ul>
+        </li>
+        <li><strong>Pipeline:</strong> Se encadenan en secuencia</li>
+    </ul>
+
+    <h4>Service Layer Pattern</h4>
+    <ul>
+        <li><strong>Propósito:</strong> Encapsula lógica de negocio entre controladores y repositorios</li>
+        <li><strong>Responsabilidades:</strong>
+            <ul>
+                <li>Coordinar operaciones</li>
+                <li>Aplicar reglas de negocio</li>
+                <li>Gestionar transacciones</li>
+                <li>Validar datos</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h4>DTO (Data Transfer Object)</h4>
+    <ul>
+        <li><strong>Propósito:</strong> Transportar datos entre capas sin lógica de negocio</li>
+        <li><strong>Beneficios:</strong>
+            <ul>
+                <li>Separa modelo de dominio de representación externa</li>
+                <li>Permite versionado de API</li>
+                <li>Oculta campos internos</li>
+                <li>Optimiza transferencia de datos</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3>2.8. Rate Limiting y Throttling</h3>
+
+    <h4>Rate Limiting</h4>
+    <ul>
+        <li><strong>Propósito:</strong> Limitar número de peticiones por tiempo</li>
+        <li><strong>Objetivos:</strong>
+            <ul>
+                <li>Prevenir abuso y DDoS</li>
+                <li>Proteger recursos del servidor</li>
+                <li>Garantizar calidad de servicio</li>
+            </ul>
+        </li>
+        <li><strong>Respuesta:</strong> 429 Too Many Requests</li>
+    </ul>
+
+    <h4>Algoritmos de Rate Limiting</h4>
+    <ul>
+        <li><strong>Token Bucket:</strong> Tokens se añaden a ritmo constante</li>
+        <li><strong>Leaky Bucket:</strong> Peticiones salen a ritmo constante</li>
+        <li><strong>Fixed Window:</strong> Contador por ventana de tiempo fija</li>
+        <li><strong>Sliding Window:</strong> Ventana deslizante más precisa</li>
+    </ul>
+
+    <h4>Throttling</h4>
+    <ul>
+        <li><strong>Diferencia:</strong> Ralentiza peticiones en lugar de bloquearlas</li>
+        <li><strong>Implementación:</strong> Delays progresivos o reducción de ancho de banda</li>
+    </ul>
+
+    <h3>2.9. CORS (Cross-Origin Resource Sharing)</h3>
+
+    <h4>¿Qué es CORS?</h4>
+    <ul>
+        <li><strong>Propósito:</strong> Permitir peticiones entre dominios diferentes</li>
+        <li><strong>Problema:</strong> Same-Origin Policy del navegador bloquea peticiones cross-origin</li>
+        <li><strong>Solución:</strong> Headers HTTP que indican qué orígenes están permitidos</li>
+    </ul>
+
+    <h4>Headers CORS</h4>
+    <ul>
+        <li><strong>Access-Control-Allow-Origin:</strong> Orígenes permitidos</li>
+        <li><strong>Access-Control-Allow-Methods:</strong> Métodos HTTP permitidos</li>
+        <li><strong>Access-Control-Allow-Headers:</strong> Headers permitidos</li>
+        <li><strong>Access-Control-Allow-Credentials:</strong> Permitir cookies</li>
+    </ul>
+
+    <h3>2.10. API Gateway</h3>
+
+    <h4>¿Qué es un API Gateway?</h4>
+    <ul>
+        <li><strong>Definición:</strong> Punto de entrada único que gestiona todas las peticiones a APIs backend</li>
+        <li><strong>Funcionalidades:</strong>
+            <ul>
+                <li>Enrutamiento y load balancing</li>
+                <li>Autenticación y autorización</li>
+                <li>Rate limiting y throttling</li>
+                <li>Transformación de datos</li>
+                <li>Agregación de respuestas</li>
+                <li>Logging y monitoreo</li>
+                <li>Caching</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h4>Beneficios del API Gateway</h4>
+    <ul>
+        <li>Centraliza funcionalidades transversales</li>
+        <li>Simplifica clientes</li>
+        <li>Facilita evolución de APIs</li>
+        <li>Mejora seguridad</li>
+        <li>Proporciona analytics centralizados</li>
+    </ul>
+
+    <h3>2.11. Webhooks</h3>
+
+    <h4>¿Qué son los Webhooks?</h4>
+    <ul>
+        <li><strong>Definición:</strong> Callbacks HTTP que notifican eventos en tiempo real</li>
+        <li><strong>Funcionamiento:</strong> El servidor envía POST a URLs configuradas cuando ocurren eventos</li>
+        <li><strong>Ventajas:</strong> Tiempo real, eficiente (vs polling)</li>
+        <li><strong>Usos:</strong> Notificaciones de pago, actualizaciones de estado, integraciones</li>
+    </ul>
+
+    <h4>Consideraciones de Webhooks</h4>
+    <ul>
+        <li><strong>Seguridad:</strong> Verificar firma HMAC</li>
+        <li><strong>Idempotencia:</strong> Manejar duplicados</li>
+        <li><strong>Reintentos:</strong> Política de reintentos ante fallos</li>
+        <li><strong>Timeouts:</strong> Límites de tiempo de respuesta</li>
+    </ul>
+</div>
+
+<div class="content-section">
+    <h2>3. Seguridad en el Desarrollo de Software</h2>
+
+    <h3>3.1. Autenticación</h3>
+
+    <h4>¿Qué es la Autenticación?</h4>
+    <p>Proceso de verificar la identidad de un usuario o sistema.</p>
+
+    <h4>Métodos de Autenticación</h4>
+    <ul>
+        <li><strong>Factores de Autenticación:</strong>
+            <ul>
+                <li>Algo que sabes (contraseña, PIN)</li>
+                <li>Algo que tienes (token, smartphone, tarjeta)</li>
+                <li>Algo que eres (biometría: huella, rostro)</li>
+            </ul>
+        </li>
+        <li><strong>MFA (Multi-Factor Authentication):</strong>
+            <ul>
+                <li>Combina dos o más factores diferentes</li>
+                <li>Aumenta significativamente la seguridad</li>
+                <li>2FA es caso específico con dos factores</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h4>Gestión de Contraseñas</h4>
+    <ul>
+        <li><strong>Hashing de Contraseñas:</strong>
+            <ul>
+                <li>Nunca almacenar contraseñas en texto plano</li>
+                <li>Usar algoritmos lentos: bcrypt, Argon2, PBKDF2</li>
+                <li>Salt único por contraseña</li>
+                <li>Verificar comparando hashes</li>
+            </ul>
+        </li>
+        <li><strong>Políticas de Contraseñas:</strong>
+            <ul>
+                <li>Longitud mínima (12+ caracteres)</li>
+                <li>Complejidad balanceada</li>
+                <li>Evitar contraseñas comunes</li>
+                <li>Rotación periódica para cuentas privilegiadas</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h4>Salt en Hashing</h4>
+    <ul>
+        <li><strong>Propósito:</strong> Valor aleatorio único añadido antes de hashear</li>
+        <li><strong>Beneficios:</strong>
+            <ul>
+                <li>Previene ataques con rainbow tables</li>
+                <li>Hace únicos los hashes de contraseñas idénticas</li>
+                <li>Aumenta tiempo de ataques de fuerza bruta</li>
+            </ul>
+        </li>
+        <li><strong>Implementación:</strong> Salt diferente por usuario, almacenar junto al hash</li>
+    </ul>
+
+    <h3>3.2. Autorización</h3>
+
+    <h4>¿Qué es la Autorización?</h4>
+    <p>Proceso de determinar qué acciones puede realizar un usuario autenticado.</p>
+
+    <h4>Modelos de Control de Acceso</h4>
+    <ul>
+        <li><strong>RBAC (Role-Based Access Control):</strong>
+            <ul>
+                <li>Permisos asignados a roles</li>
+                <li>Usuarios asignados a roles</li>
+                <li>Simplifica gestión de permisos</li>
+            </ul>
+        </li>
+        <li><strong>ABAC (Attribute-Based Access Control):</strong>
+            <ul>
+                <li>Decisiones basadas en atributos</li>
+                <li>Más flexible y granular</li>
+                <li>Considera contexto (tiempo, ubicación)</li>
+            </ul>
+        </li>
+        <li><strong>ACL (Access Control Lists):</strong>
+            <ul>
+                <li>Lista de permisos por recurso</li>
+                <li>Simple pero puede ser difícil de gestionar</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h4>Principios de Seguridad</h4>
+    <ul>
+        <li><strong>Principio de Menor Privilegio:</strong>
+            <ul>
+                <li>Dar solo permisos mínimos necesarios</li>
+                <li>Aplicar a usuarios, procesos, sistemas</li>
+                <li>Revisar y ajustar periódicamente</li>
+            </ul>
+        </li>
+        <li><strong>Defensa en Profundidad:</strong>
+            <ul>
+                <li>Múltiples capas de controles de seguridad</li>
+                <li>Si una capa falla, otras protegen</li>
+                <li>Capas: red, aplicación, datos, identidad</li>
+            </ul>
+        </li>
+        <li><strong>Fail-Safe:</strong>
+            <ul>
+                <li>Diseñar para que fallos no causen daño</li>
+                <li>Por defecto denegar acceso</li>
+                <li>Validación, transacciones, rollback</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3>3.3. Tokens y Sesiones</h3>
+
+    <h4>JWT (JSON Web Token)</h4>
+    <ul>
+        <li><strong>Estructura:</strong> header.payload.signature</li>
+        <li><strong>Características:</strong>
+            <ul>
+                <li>Compacto y autónomo</li>
+                <li>Stateless (no requiere almacenamiento en servidor)</li>
+                <li>Puede contener claims (información del usuario)</li>
+            </ul>
+        </li>
+        <li><strong>Verificación:</strong>
+            <ul>
+                <li>HMAC con clave secreta compartida</li>
+                <li>RSA/ECDSA con clave pública</li>
+            </ul>
+        </li>
+        <li><strong>Consideraciones:</strong>
+            <ul>
+                <li>No almacenar información sensible</li>
+                <li>Tiempo de vida limitado</li>
+                <li>Difícil de revocar antes de expiración</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h4>OAuth 2.0</h4>
+    <ul>
+        <li><strong>Roles:</strong>
+            <ul>
+                <li>Resource Owner: usuario propietario de datos</li>
+                <li>Client: aplicación que solicita acceso</li>
+                <li>Authorization Server: emite tokens</li>
+                <li>Resource Server: protege recursos</li>
+            </ul>
+        </li>
+        <li><strong>Flujos (Grant Types):</strong>
+            <ul>
+                <li>Authorization Code: para aplicaciones web</li>
+                <li>Implicit: para SPAs (deprecated)</li>
+                <li>Client Credentials: para aplicaciones</li>
+                <li>Resource Owner Password: para aplicaciones confiables</li>
+            </ul>
+        </li>
+        <li><strong>Tokens:</strong>
+            <ul>
+                <li>Access Token: acceso a recursos</li>
+                <li>Refresh Token: obtener nuevos access tokens</li>
+            </ul>
+        </li>
+        <li><strong>Scopes:</strong> Definen permisos específicos del token</li>
+    </ul>
+
+    <h3>3.4. Cifrado</h3>
+
+    <h4>Tipos de Cifrado</h4>
+    <ul>
+        <li><strong>Simétrico:</strong>
+            <ul>
+                <li>Misma clave para cifrar y descifrar</li>
+                <li>Rápido para grandes volúmenes</li>
+                <li>Algoritmos: AES, ChaCha20</li>
+                <li>Problema: distribución segura de claves</li>
+            </ul>
+        </li>
+        <li><strong>Asimétrico (Clave Pública):</strong>
+            <ul>
+                <li>Par de claves: pública y privada</li>
+                <li>Cifrar con pública, descifrar con privada</li>
+                <li>Algoritmos: RSA, ECC</li>
+                <li>Más lento pero resuelve distribución de claves</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h4>HTTPS/TLS</h4>
+    <ul>
+        <li><strong>Propósito:</strong> HTTP sobre TLS para comunicación cifrada</li>
+        <li><strong>Beneficios:</strong>
+            <ul>
+                <li>Confidencialidad: cifrado de datos</li>
+                <li>Integridad: detección de modificaciones</li>
+                <li>Autenticación: verificación de identidad del servidor</li>
+            </ul>
+        </li>
+        <li><strong>Certificados:</strong>
+            <ul>
+                <li>Emitidos por Certificate Authorities (CA)</li>
+                <li>Let's Encrypt ofrece certificados gratuitos</li>
+                <li>Validación: Domain, Organization, Extended</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3>3.5. Vulnerabilidades Comunes</h3>
+
+    <h4>SQL Injection</h4>
+    <ul>
+        <li><strong>Descripción:</strong> Inyectar código SQL malicioso en campos de entrada</li>
+        <li><strong>Impacto:</strong> Extraer, modificar o eliminar datos</li>
+        <li><strong>Prevención:</strong>
+            <ul>
+                <li>Prepared statements / parameterized queries</li>
+                <li>Validación y sanitización de entrada</li>
+                <li>ORM con protección automática</li>
+                <li>Principio de menor privilegio en BD</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h4>XSS (Cross-Site Scripting)</h4>
+    <ul>
+        <li><strong>Descripción:</strong> Inyectar scripts maliciosos en páginas web</li>
+        <li><strong>Tipos:</strong>
+            <ul>
+                <li>Reflected: script en URL o formulario</li>
+                <li>Stored: script almacenado en BD</li>
+                <li>DOM-based: manipulación del DOM</li>
+            </ul>
+        </li>
+        <li><strong>Prevención:</strong>
+            <ul>
+                <li>Escapar salida HTML</li>
+                <li>Content Security Policy (CSP)</li>
+                <li>HttpOnly cookies</li>
+                <li>Validación de entrada</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h4>CSRF (Cross-Site Request Forgery)</h4>
+    <ul>
+        <li><strong>Descripción:</strong> Forzar a usuario autenticado a ejecutar acciones no deseadas</li>
+        <li><strong>Prevención:</strong>
+            <ul>
+                <li>Tokens CSRF únicos por sesión</li>
+                <li>SameSite cookies</li>
+                <li>Validar origen/referer</li>
+                <li>Requerir confirmación para acciones críticas</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3>3.6. Patrones de Resiliencia</h3>
+
+    <h4>Circuit Breaker</h4>
+    <ul>
+        <li><strong>Propósito:</strong> Prevenir llamadas a servicios que fallan repetidamente</li>
+        <li><strong>Estados:</strong>
+            <ul>
+                <li>Closed: funcionamiento normal</li>
+                <li>Open: bloqueado tras fallos consecutivos</li>
+                <li>Half-Open: probando si el servicio se recuperó</li>
+            </ul>
+        </li>
+        <li><strong>Beneficios:</strong> Evita cascadas de fallos, mejora resiliencia</li>
+    </ul>
+
+    <h4>Saga Pattern</h4>
+    <ul>
+        <li><strong>Propósito:</strong> Gestionar transacciones distribuidas</li>
+        <li><strong>Funcionamiento:</strong> Secuencia de transacciones locales con compensaciones</li>
+        <li><strong>Tipos:</strong>
+            <ul>
+                <li>Orquestada: coordinador central</li>
+                <li>Coreografiada: basada en eventos</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h4>CQRS (Command Query Responsibility Segregation)</h4>
+    <ul>
+        <li><strong>Propósito:</strong> Separar modelos de lectura y escritura</li>
+        <li><strong>Beneficios:</strong>
+            <ul>
+                <li>Optimización independiente</li>
+                <li>Escalabilidad diferenciada</li>
+                <li>Modelos especializados</li>
+            </ul>
+        </li>
+        <li><strong>Consideraciones:</strong> Aumenta complejidad, eventual consistency</li>
+    </ul>
+
+    <div class="alert alert-success">
+        <h5>🔒 Checklist de Seguridad Backend</h5>
+        <ul class="mb-0">
+            <li>✅ Usar HTTPS en todas las comunicaciones</li>
+            <li>✅ Implementar autenticación robusta (MFA cuando sea posible)</li>
+            <li>✅ Aplicar principio de menor privilegio</li>
+            <li>✅ Validar y sanitizar todas las entradas</li>
+            <li>✅ Usar prepared statements para prevenir SQL injection</li>
+            <li>✅ Implementar rate limiting y throttling</li>
+            <li>✅ Hashear contraseñas con salt único</li>
+            <li>✅ Configurar CORS correctamente</li>
+            <li>✅ Implementar logging y monitoreo de seguridad</li>
+            <li>✅ Mantener dependencias actualizadas</li>
+            <li>✅ Realizar auditorías de seguridad regulares</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}
